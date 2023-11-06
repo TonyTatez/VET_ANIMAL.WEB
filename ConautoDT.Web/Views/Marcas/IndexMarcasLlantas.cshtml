@@ -1,0 +1,259 @@
+﻿@{
+}
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.css" />
+
+<link rel="stylesheet" href="~/Content/bootstrap.css" />
+<link rel="stylesheet" href="~/Content/Site.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
+@model List<TMS_MANTENIMIENTO.WEB.Models.MarcaViewModel>
+@{
+    ViewData["Title"] = "Marcas Llantas";
+}
+
+<div class="row" style="font-size: 13px !important;">
+    <div class="col-md-12">
+        <div class="widget">
+            <header class="widget-header" style="padding-bottom: 5px !important;">
+                <div class="row">
+                    <h4 class="widget-title col-md-12" style="font-weight:400 !important;font-size: 21px; color:#333333; font-family: Calibri, Helvetica Neue, Helvetica, Arial, sans-serif;">Marcas de Llantas</h4>
+                </div>
+            </header>
+            <hr class="widget-separator" style="margin-top:2px !important">
+            <div class="widget-body">
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example" style="margin-bottom:5px !important;">
+                    <button class="btn btn-success btn-sm bi bi-clipboard-plus" id="crear"><i class="zmdi zmdi-plus-circle-o"></i> Agregar</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm  dataTable" id="tablaLlantas">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Descripción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count() > 0)
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    <tr data-id="@item.idMarca">
+                                        <td>
+                                            @Html.DisplayFor(model => item.idMarca)
+                                        </td>
+                                        <td class="field">@item.descripcion</td>
+                                        <td>
+                                            <button class="btn p-v-sm btn-success btn-sm btn-edit" data-id="@item.idMarca" data-toggle="tooltip" data-placement="top" title="Editar">
+                                                <i class="bi bi-pen"></i>
+                                            </button>
+                                            <button class="btn p-v-sm btn-danger btn-sm btn-delete" data-id="@item.idMarca" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Id</th>
+                                <th>Descripción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+    </div>
+</div>
+
+@*---------------------Modal Agregar Marca Llanta------------------------*@
+<div class="modal" id="modalNew" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title title1">Nueva Marca Llanta</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Descripción</label>
+                        <input type="text" style="text-transform: uppercase;" class="form-control" id="description-input" placeholder="Añade una descripción">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-id="0" id="btnOk">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*---------------------Modal Deshabilitar Marca Llanta------------------------*@
+<div class="modal" id="modalDelete" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 style="font-size: 18px !important;" class="modal-title title-2">TMS - MANTENIMIENTO</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div style="font-size: 15px !important; padding-left: 20px !important; " class="modal-body">
+                ¿Desea eliminar este registro?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn p-v-sm btn-danger" data-id="0" id="btnDeleteOk">Eliminar</button>
+                <button type="button" class="btn p-v-sm btn-primary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Content/jquery-2.2.4.js"></script>
+    <script src="~/Content/bootstrap.js"></script>
+    <script src="~/Content/modernizr-2.8.3.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#tablaLlantas').DataTable();
+        });
+
+        //enviar datos para agregar o agregar
+        $('#btnOk').click(function () {
+
+            var obj = getCampos();
+
+            if (obj == false) return;
+
+            var baseUrl = '@Url.Action("CrearEditarMarcaLlanta")';
+
+            $.ajax({
+                type: "POST",
+                url: baseUrl,
+                content: "application/json; charset=utf-8",
+                dataType: "json",
+                data: { data: obj },
+                success: function (result) {
+                    if (result == "OK") {
+                        limpiarModalAgregar();
+                    }
+                    window.location.reload();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    //alertify.error("Ha ocurrido un error inesperado. Por favor vuelva a intentar");
+                }
+            });
+        });
+
+        $('table').on("click", ".btn-edit", function () {
+            $(".title1").text("Editar marca");
+            var id = $(this).attr('data-id');
+            $('#btnOk').attr('data-id', id);
+            setCamposEdit(id);
+            $('#modalNew').modal('show');
+        });
+
+        //eliminar
+        $('table').on("click", ".btn-delete", function () {
+            $('#btnDeleteOk').attr('data-id', $(this).attr('data-id'));
+            $('#modalDelete').modal('show');
+        });
+
+        //eliminar OK
+        $('#btnDeleteOk').click(function () {
+            var id = $(this).attr('data-id');
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("DesactivarMarcaLlanta")',
+                content: "application/json; charset=utf-8",
+                dataType: "json",
+                data: { id: id },
+                success: function (result) {
+                    if (result == "OK") {
+                        //alertify.success('Eliminado Correctamente!');
+                        limpiarModalEliminar();
+                    }
+
+                    window.location.reload();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    //alertify.error("Ha ocurrido un error inesperado. Por favor vuelva a intentar");
+                }
+            });
+        });
+
+        $("#crear").click(function () {
+            limpiarModalAgregar();
+            $(".title1").text("Agregar Nueva Marca");
+            $("#btnOk").attr("data-id", "0");
+            $('#modalNew').modal('show');
+        });
+
+        function limpiarModalEliminar() {
+            $('#btnDeleteOk').attr('data-id', 0);
+            $('#modalDelete').modal('hide');
+        }
+
+        $("#btnNuevo").click(function () {
+            inputElement.style.border = "1px solid #ced4da";
+        });
+
+        function limpiarModalAgregar() {
+            limpiarCampos();
+            $('#btnOk').attr('data-id', 0);
+            $('#modalNew').modal('hide');
+        }
+
+        function limpiarCampos(formulario) {
+            $('#description-input').val("");
+            $('#btnOk').attr('data-id', 0);
+        }
+
+        function getCampos() {
+            var camposVacios = false;
+            var obj = getCamposAsObject();
+            if (!obj.descripcion) {
+                alertify.error('El campo "Descripción" no puede estar vacío');
+                camposVacios = true;
+            }
+
+            return camposVacios ? false : obj;
+        }
+
+        function limpiarCampos(formulario) {
+            $('#description-input').val("");
+            $('#btnOk').attr('data-id', 0);
+        }
+
+        function getCamposAsObject() {
+            
+            var idMarca = $("#btnOk").attr("data-id");
+            var descripcion = $('#description-input').val();
+            console.log(idMarca);
+            console.log(descripcion);
+            return { idMarca, descripcion };
+        }
+
+        function setCamposEdit(id) {
+            var obj = $(`tr[data-id='${id}'] .field`);
+            console.log(obj);
+            $('#description-input').val(obj.eq(0).text());
+            console.log(obj.eq(0).text());
+            $('#btnOk').attr('data-id', id);
+        }
+    </script>
+}

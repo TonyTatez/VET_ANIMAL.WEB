@@ -1,0 +1,2009 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.css" />
+
+<link rel="stylesheet" href="~/Content/bootstrap.css" />
+<link rel="stylesheet" href="~/Content/Site.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
+
+@model TMS_MANTENIMIENTO.WEB.Models.ListaVehiculo
+@{
+    ViewData["Title"] = "Vehiculo";
+}
+
+<div class="d-flex ">
+    <p class="lead fw-normal mb-0 me-3  TMSTitulo">Registro de Vehiculos</p>
+    <button type="button" class="btn-sm btn p-v-xl btn-success bi bi-clipboard-plus" data-bs-toggle="modal" data-bs-target="#AgregVehiculoModal" onclick="nuevos();"> Nuevo </button>
+</div>
+<hr />
+<!-- Modal Guardar -->
+
+<div class="modal fade" id="AgregVehiculoModal" aria-labelledby="AgregVehiculoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content " style="height:auto">
+            <div class="modal-header TMSHeaderModal">
+                <h5 class="modal-title TMSTituloModal">Vehiculo</h5>
+                <div class="d-flex align-items-end flex-column">
+                    <button type="button" class="justify-content-end btn btn-dark TMSBotonCerrarModal bi bi-box-arrow-left" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+            </div>
+
+            <div class="modal-body" style="height:auto;">
+                <form asp-action="GuardaryEditarInfo">
+                    <div class="form-outline mb-4" hidden>
+                        <input type="text" id="idVehiculo" asp-for="@Model.Id" class="form-control form-control-lg TMSTextBoxValores" />
+
+                        <label class="form-label TMSlabelText" for="id">Id</label>
+                        <input type="text" id="idVehiculo" class="form-control form-control-lg TMSTextBoxValores" />
+                        <input type="text" id="NumeroLlantasHabilitado" style="width:100%" asp-for="@Model.NumeroLlantas" class="form-control form-control TMSTextBoxValores"
+                               placeholder="Seleccione el tipo de estructura" />
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <div class="col-md-6">
+                            <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="TipoVehiculoLabel" id="TipoVehiculoLabel">Año</label>
+                        </div>
+                        <div class="col-md-6">
+                            @if (Model.ListaAnio != null)
+                            {
+                                @Html.DropDownListFor(m => m.idAnio,
+                                new SelectList(Model.ListaAnio, "idAnio", "descripcion", Model.idAnio),
+                                new { @class = "form-control", placeholder = "Filtar" , id="AnioTipo"  , style = "margin-left:1%;text-align:center;width:100%; color:blue; " } )
+                            }
+                            else
+                            {
+                                <select class="custom-select" id="AnioTipo" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                                </select>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <div class="col-md-6">
+                            <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="TipoVehiculoLabel" id="TipoVehiculoLabel">Tipo Vehiculo</label>
+                        </div>
+                        <div class="col-md-6">
+                            @if (Model.ListaTipoVehiculo != null)
+                            {
+                                @Html.DropDownListFor(m => m.TipoVehiculoId,
+                                new SelectList(Model.ListaTipoVehiculo, "idTipo", "descripcion", Model.TipoVehiculoId),
+                                new { @class = "form-control", placeholder = "Filtar",onchange = "tipoVehiculoIdentificador();" , id="TipoVehiculoId",style="margin-left:1%;text-align:center;  color:blue;  width:100%",required= "required"})
+                            }
+                            else
+                            {
+                                <select class="custom-select" id="TipoVehiculoId" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                                </select>
+                            }
+                        </div>
+                        @* <select class="custom-select" id="TipoVehiculo" asp-for="@Model.TipoEstructuraId" onchange="tipoVehiculo();" >
+                        <option value="1">Cabezal</option>
+                        <option value="2">Chasis</option>
+                        <option value="3">Generador</option>
+                        </select>*@
+                    </div>
+
+                    <div style="margin-top:1% ; width:100% ; height:auto; background-color:white ;" class="form-group " id="PlacaElement" hidden>
+                        <div class="form-group row mb-3">
+                            <div  class="col-md-6">
+                                <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="ruc">Placa</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input id="descripcionCabezalId" type="text" asp-for="@Model.DescripcionCabezal" style="margin-left:1%;text-align:center; color:blue;" class="form-control form-control TMSTextBoxValores estiloTextBox"
+                                       placeholder="Ingrese el cabezal"  />
+                            </div>
+                        </div>
+                        <div class="input-group row mb-4 TMSComboValores">
+                            <div class="col-md-6">
+                                <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="ruc">VIN</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input id="idCabezalVin" type="text" asp-for="@Model.VinCabezal" style="margin-left:10%; text-align:center; color:blue;" class="form-control form-control TMSTextBoxValores estiloTextBox"
+                                       placeholder="Ingrese el VIN" pattern="^[A-Za-z0-9]*$" />
+                            </div>
+                        </div>
+                        <div style="" class="input-group mb-4 TMSComboValores">
+                            <div>
+                                <label class="input-group-text TMSlabelComboValores" for="TipoVehiculoLabel" style="background-color:lightblue; " id="TipoVehiculoLabel">Marca Cabezal</label>
+                            </div>
+                            @if (Model.ListaCabezales != null)
+                            {
+                                @Html.DropDownListFor(m => m.idMarcaCabezal,
+                                new SelectList(Model.ListaCabezales, "idMarca", "descripcion", Model.idMarcaCabezal),
+                                new { @class = "form-control", placeholder = "Filtar", id="ListaCabezalesId",style="margin-left:7%;text-align:center;  color:blue;  width:100%"})
+                            }
+                            else
+                            {
+                                <select class="custom-select" id="ListaCabezalesId" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                                </select>
+                            }
+                        </div>
+
+                        <div style="" class="input-group mb-4 TMSComboValores">
+                            <div>
+                                <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="TipoVehiculoLabel" id="TipoVehiculoLabel">Modelo Cabezal</label>
+                            </div>
+
+                            @if (Model.ListaModeloCabezales != null)
+                            {
+                                @Html.DropDownListFor(m => m.idModeloCabezales,
+                                new SelectList(Model.ListaModeloCabezales, "idModelo", "descripcion", Model.idModeloCabezales),
+                                new { @class = "form-control", placeholder = "Filtar" , id="ModeloCabezal",style=" margin-left:5%;text-align:center;  color:blue; width:100%"})
+                            }
+                            else
+                            {
+                                <select class="custom-select" id="ModeloCabezal" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                                </select>
+                            }
+                        </div>
+
+                        <div style="" class="input-group mb-4 TMSComboValores">
+                            <div>
+                                <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="TipoVehiculoLabel" id="TipoVehiculoLabel">Color</label>
+                            </div>
+                            <select class="custom-select" id="colorData" asp-for="@Model.ColorId" onchange="cambiarColor();" style=" margin-left:23%;text-align:center;  color:blue; width:100%">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="  width:100% ;margin-top:10px; height:auto; background-color:white;" class="input-group mb-4 TMSComboValores" id="ChasisElement" hidden>
+                        <div class="input-group mb-4 TMSComboValores">
+                            <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="ruc">Placa</label>
+                            <input id="descipcionChasisId" type="text" asp-for="@Model.DescripcionChasis" style="margin-left:23%;text-align:center;width:100%; color:blue; " class="form-control   TMSTextBoxValores estiloTextBox"
+                                   placeholder="Ingrese la Descripcion" pattern="^[A-Za-z0-9]*$" />
+                        </div>
+                        <div class="input-group mb-4 TMSComboValores">
+                            <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="ruc">VIN</label>
+                            <input id="vinChasisId" type="text" asp-for="@Model.VinChasis" style="margin-left:24%;text-align:center;width:100%; color:blue; " class="form-control MSTextBoxValores"
+                                   placeholder="Ingrese el VIN" pattern="^[A-Za-z0-9]*$" />
+                        </div>
+                        <div class="input-group mb-4 TMSComboValores">
+                            <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="ruc">Tamaño</label>
+                            <input id="tamanioId" type="text" asp-for="@Model.tamanio" style="margin-left:17%;text-align:center;width:100%; color:blue; " class="form-control   TMSTextBoxValores"
+                                   placeholder="Ingrese el tamaño" pattern="^[A-Za-z0-9]*$" />
+                        </div>
+                        <div class="input-group mb-4 TMSComboValores">
+                            <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="ruc">Placa Antigua</label>
+                            <input itemid="" type="text" asp-for="@Model.placaAntigua" style="margin-left:8%;text-align:center;width:100%; color:blue; " class="form-control  TMSTextBoxValores"
+                                   placeholder="Ingrese la Placa Antigua" pattern="^[A-Za-z0-9]*$" />
+                        </div>
+                        <div style="" class="input-group mb-4 TMSComboValores">
+                            <div>
+                                <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " id="idMarcaChasis">Marca Chasis</label>
+                            </div>
+                            @if (Model.ListaChasisMarca != null)
+                            {
+                                @Html.DropDownListFor(m => m.idMarcaChasis,
+                                new SelectList(Model.ListaChasisMarca, "idMarca", "descripcion", Model.idMarcaChasis),
+                                new { @class = "form-control", placeholder = "Filtar", id="ListaMarcaChasisId",style = "margin-left:9%;text-align:center;width:100%; color:blue; "})
+                            }
+                            else
+                            {
+                                <select class="custom-select" id="ListaMarcaChasisId" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                                </select>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <div class="col-md-6">
+                            <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="TipoEstructuraLabel" id="TipoEstructuraLabel">Tipo Estructura</label>
+                        </div>
+                        <div class="col-md-6">
+                            @if (Model.ListaTipoEstructura != null)
+                            {
+                                @Html.DropDownListFor(m => m.TipoEstructuraId,
+                                new SelectList(Model.ListaTipoEstructura, "idTipoEstructura", "descripcion", Model.TipoEstructuraId ),
+                                new { @class = "form-control", placeholder = "Filtar", id="TipoEstructura" ,style=" margin-left:1%;text-align:center;width:100%; color:blue;",onchange = "tiposEstructuras();",required= "required"})
+                            }
+                            else
+                            {
+                                <select class="custom-select" id="TipoEstructura" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                                </select>
+                            }
+                        </div>
+                    </div>
+
+                    <div hidden>
+                        <input type="text" asp-for="@Model.numerosTotalTipo" id="NumeroLlantas" style="width:100%;  color:darkblue ; text-align:center ; font-size:16px" class="form-control form-control TMSTextBoxValores"
+                               placeholder="Seleccione el tipo de estructura" />
+                    </div>
+                    <div class="form-group row mb-3">
+                        <div class="col-md-6">
+                            <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue;" for="ruc">Numero de Llantas</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="NumeroLlantasfinal" style="width:100%;  color:darkblue ; text-align:center ; font-size:16px" class="form-control form-control"
+                                   disabled />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer TMSHeaderModal">
+                        <button id="guardarInformacion" type="submit" class="btn btn-success bi bi-save btn-grad btn-md"> Guardar </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal editar vehiculo -->
+
+<div class="modal fade" id="EditarVehiculoModal" aria-labelledby="EditarVehiculoModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content " style="height:auto" >
+            <div class="modal-header TMSHeaderModal">
+                <h5 class="modal-title TMSTituloModal">Vehiculo</h5>
+                <div class="d-flex align-items-end flex-column">
+                    <button type="button" class="justify-content-end btn btn-dark TMSBotonCerrarModal bi bi-box-arrow-left" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+            </div>
+
+            <div class="modal-body" style="height:auto;" >
+                <form asp-action="GuardaryEditarInfo">
+                    <div class="">
+                        <div class="form-outline mb-4" hidden>
+                            <input id="descripcionChasisId2" type="text"  class="form-control form-control-lg  TMSTextBoxValores"
+                                   placeholder="Ingrese la Descripcion" />
+                            <input type="text" id="cabezalIdEditar" asp-for="@Model.cabezalId" class="form-control form-control-lg TMSTextBoxValores" />
+                            <input type="text" id="chasisIdEditar" asp-for="@Model.chasisId" class="form-control form-control-lg TMSTextBoxValores" />
+                            <input type="text" id="idTipoVehiculo1" asp-for="@Model.TipoVehiculoId" class="form-control form-control-lg TMSTextBoxValores" />
+                                                      
+                            <input type="text" id="idVehiculo1" asp-for="@Model.Id" class="form-control form-control-lg TMSTextBoxValores" />
+                            <input id="descripcionCabezalId2" type="text"  class="form-control form-control-lg  TMSTextBoxValores"
+                                   placeholder="Ingrese el cabezal" />
+                            <label class="form-label TMSlabelText" for="id">Id</label>
+                            <input type="text" id="idVehiculo1"  class="form-control form-control-lg TMSTextBoxValores" />
+                            <input type="text" id="q" style="width:100%" asp-for="@Model.NumeroLlantas" class="form-control form-control TMSTextBoxValores"
+                                   placeholder="Seleccione el tipo de estructura"  />
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <div class="col-md-6">
+                            <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="TipoVehiculoLabel" id="TipoVehiculoLabel">Año</label>
+                        </div>
+                        <div class="col-md-6">
+                            @if(Model.ListaAnio != null){
+                                @Html.DropDownListFor(m => m.idAnio,
+                                new SelectList(Model.ListaAnio, "idAnio", "descripcion", Model.idAnio),
+                                new { @class = "form-control", placeholder = "Filtar" , id="AnioTipo2"  , style = "margin-left:2%;text-align:center;width:100%; color:blue; " })
+                            }
+                            else
+                            {
+                                <select class="custom-select" id="AnioTipo" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                                </select>
+                            }
+                        </div>
+                    </div>
+              
+                    <div >
+                        <div class="form-group row mb-3">
+                            <div class="col-md-6">
+                                <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="TipoVehiculoLabel" id="TipoVehiculoLabel">Tipo Vehiculo</label>
+                            </div>
+                            <div class="col-md-6">
+                                @if (Model.ListaTipoVehiculo != null)
+                                {
+                                    @Html.DropDownListFor(m => m.TipoVehiculoId,
+                                    new SelectList(Model.ListaTipoVehiculo, "idTipo", "descripcion", Model.TipoVehiculoId),
+                                    new { @class = "form-control", placeholder = "Filtar", id="idTipoVehiculo25",style="margin-left:1%;text-align:center;  color:blue;  width:100%" , disabled ="disabled"})
+                                }
+                                else
+                                {
+                                    <select class="custom-select" id="idTipoVehiculo25" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                                    </select>
+                                }
+                            </div>
+                           @* <select class="custom-select" id="TipoVehiculo" asp-for="@Model.TipoEstructuraId" onchange="tipoVehiculo();" >
+                            <option value="1">Cabezal</option>
+                            <option value="2">Chasis</option>
+                                <option value="3">Generador</option>
+                            </select>*@
+
+                        </div>
+
+
+                        <div class="form-group row mb-3 " id="PlacaElement1" hidden>                          
+                            <div class="col-md-6">
+                                <label class="input-group-text" style="background-color:lightblue; " for="ruc">Placa</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input id="descripcionCabezalId1" type="text" asp-for="@Model.DescripcionCabezal" style=" text-align:center; color:blue;" class="form-control TMSTextBoxValores "
+                                    placeholder="Ingrese el cabezal" />
+                            </div>                        
+                            <div class="form-group row mt-3 ">
+                                <div class="col-md-6">
+                                    <label class="input-group-text TMSlabelComboValores" style="width:100%;background-color:lightblue; " for="ruc">VIN</label>
+                                </div>
+                                <div class="col-md-6">
+                                <input id="idCabezalVin1" type="text" asp-for="@Model.VinCabezal" style="margin-left:0.5%;text-align:center; color:blue" class="form-control  TMSTextBoxValores"
+                                    placeholder="Ingrese el VIN" />
+                                </div>
+                            </div>
+                            <div class="form-group row mb-3 ">
+                                <div class="col-md-6">
+                                    <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="TipoVehiculoLabel" id="TipoVehiculoLabel">Marca Cabezal</label>
+                                </div>
+                                <div class="col-md-6">
+                                    @if (Model.ListaCabezales != null)
+                                    {
+                                        @Html.DropDownListFor(m => m.idMarcaCabezal,
+                                        new SelectList(Model.ListaCabezales, "idMarca", "descripcion", Model.idMarcaCabezal),
+                                        new { @class = "form-control", placeholder = "Filtar", id="ListaCabezalesId1",style="margin-left:1%;text-align:center;  color:blue;  width:100%"})
+                                    }
+                                    else
+                                    {
+                                        <select class="custom-select" id="ListaCabezalesId1" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                                        </select>
+                                    }
+                                </div>
+                            </div>
+                            <div class="form-group row mb-3 ">
+                                <div class="col-md-6">
+                                    <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="TipoVehiculoLabel" id="TipoVehiculoLabel">Modelo Cabezal</label>
+                                </div>
+                                <div class="col-md-6">
+                                    @if(Model.ListaModeloCabezales != null)
+                                    {
+                                        @Html.DropDownListFor(m => m.idModeloCabezales,
+                                        new SelectList(Model.ListaModeloCabezales, "idModelo", "descripcion", Model.idModeloCabezales),
+                                        new { @class = "form-control", placeholder = "Filtar" , id="ModeloCabezal1",style=" margin-left:1%;text-align:center;  color:blue; width:100%"})
+                                    }
+                                    else
+                                    {
+                                        <select class="custom-select" id="ModeloCabezal1" style=" margin-left:1%;text-align:center;  color:blue; width:100%">
+                                        </select>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-3 ">
+                            <div class="col-md-6">
+                                <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="TipoVehiculoLabel" id="TipoVehiculoLabel">Color</label>
+                            </div>
+                            <div class="col-md-6">
+                                <select class="custom-select" id="colorData1" asp-for="@Model.ColorId" onchange="cambiarColor1();" style=" margin-left:1%;text-align:center; width:100%">
+                                </select>
+                            </div>
+                        </div>                     
+
+                        <div class="form-group row mb-3 " id="ChasisElement1" hidden>                   
+                            <div class="col-md-6">
+                                <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="ruc">Placa</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input id="descripcionChasisId" type="text" asp-for="@Model.DescripcionChasis" class="form-control form-control-md  TMSTextBoxValores" style="margin-left:1%;text-align:center;width:100%; color:blue; "
+                                       placeholder="Ingrese la Descripcion"  />
+                            </div>                         
+                            <div class="col-md-6 mt-3 ">
+                                <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="ruc">VIN</label>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <input id="vinChasisId1" type="text" asp-for="@Model.VinChasis" class="form-control form-control-md  TMSTextBoxValores" style="margin-left:1%;text-align:center;width:100%; color:blue; "
+                                       placeholder="Ingrese el VIN" />
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="ruc">Tamaño</label>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <input id="tamanioId1" type="text" asp-for="@Model.tamanio" class="form-control form-control-md  TMSTextBoxValores" style="margin-left:2%;text-align:center;width:100%; color:blue; "
+                                       placeholder="Ingrese el tamanio" />
+                            </div>
+
+                            <div class="form-group row mt-3">
+                                <div class="col-md-6">
+                                    <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="ruc">Placa Antigua</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <input id="placaAntiguaid1" type="text" asp-for="@Model.placaAntigua" class="form-control form-control-md  TMSTextBoxValores" style="margin-left:1%;text-align:center;width:100%; color:blue; "
+                                           placeholder="Ingrese la Placa Antigua" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                <div class="col-md-6">
+                                    <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="TipoVehiculoLabel" id="idMarcaChasis">Marca Chasis</label>
+                                </div>
+                                <div class="col-md-6">
+                                    @if(Model.ListaChasisMarca != null)
+                                    {
+                                        @Html.DropDownListFor(m => m.idMarcaChasis,
+                                        new SelectList(Model.ListaChasisMarca, "idMarca", "descripcion", Model.idMarcaChasis),
+                                        new { @class = "form-control", placeholder = "Filtar", id="ListaMarcaChasisId1",style = "margin-left:1%;text-align:center;width:100%; color:blue; "})                              
+                                    }
+                                    else
+                                    {
+                                        <select class="custom-select" id="ListaMarcaChasisId1" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                                        </select>
+                                    }
+                                </div>
+                            </div>                    
+                        </div>
+                        @*
+                                <div style="  width:100% ; height:auto; background-color:whitesmoke ;   " class="input-group mb-4 TMSComboValores" id="GeneradorElement" hidden>
+                            <div class="" style="width:100%;">
+                                <label class="form-label btn-color-info TMSlabelText" style="text-align:center; width:100%; padding:4px;font-size:17px ; color:forestgreen;" for="ruc">Generador</label>
+
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label btn-color-info TMSlabelText" for="ruc">Placa</label>
+                                <input id="idPlacaGenerador" type="text" asp-for="@Model.DescripcionGenerador" class="form-control form-control-lg  TMSTextBoxValores"
+                                       placeholder="Ingrese la Descripcion" />
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label class="form-label btn-color-info TMSlabelText" for="ruc">VIN</label>
+                                <input type="text" asp-for="@Model.Vingeneradores" class="form-control form-control-lg  TMSTextBoxValores"
+                                       placeholder="Ingrese el VIN" />
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label class="form-label btn-color-info TMSlabelText" for="ruc">Horometro</label>
+                                <input type="text" asp-for="@Model.horometro" class="form-control form-control-lg  TMSTextBoxValores"
+                                       placeholder="Ingrese el Horometro" />
+                            </div>
+                         <div style="" class="input-group mb-4 TMSComboValores">
+                                <div>
+                                    <label class="input-group-text TMSlabelComboValores" for="TipoVehiculoLabel" id="TipoVehiculoLabel">Marca Generador</label>
+                                </div>
+                                
+                                @Html.DropDownListFor(m => m.IdMarcaGenerador,
+                                new SelectList(Model.ListaMarcaGenerador, "idMarca", "descripcion", Model.IdMarcaGenerador),
+                                new { @class = "form-control", placeholder = "Filtar", id="ListaMarcaGeneradorId",style="width:100%"}
+                                )                              
+                            </div>
+                        </div>*@
+                    </div>
+
+                    <div >
+                        <div class="form-group row mb-3">
+                            <div class="col-md-6">
+                                <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="TipoEstructuraLabel" id="TipoEstructuraLabel">Tipo Estructura</label>
+                            </div>
+                            <div class="col-md-6">
+                                @if(Model.ListaTipoEstructura != null)
+                                {
+                                    @Html.DropDownListFor(m => m.TipoEstructuraId,
+                                    new SelectList(Model.ListaTipoEstructura, "idTipoEstructura", "descripcion", Model.TipoEstructuraId ),
+                                    new { @class = "form-control", placeholder = "Filtar", id="TipoEstructura1" ,style=" margin-left:1%;text-align:center;width:100%; color:blue;",onchange = "tiposEstructurasEditar();",required= "required", @disabled = "disabled"})
+                                }
+                                else 
+                                {
+                                    <select class="custom-select" id="TipoEstructura1" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                                    </select>
+                                }
+                            </div>
+                        </div>
+                        @*<div hidden>
+                              <input type="text" asp-for="@Model.numerosTotalTipo" id="NumeroLlantas12" style="width:100%;  color:darkblue ; text-align:center ; font-size:16px" class="form-control form-control TMSTextBoxValores"
+                                       placeholder="Seleccione el tipo de estructura" />
+                        </div>*@
+                        <div class="form-group row mb-3">
+                            <div class="col-md-6">
+                                    <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue; " for="ruc">Numero de Llantas</label>
+                            </div>
+                            <div class="col-md-6">
+                                 <input type="text"  id="NumeroLlantas12" style="width:100%;  color:darkblue ; text-align:center ; font-size:16px" class="form-control form-control TMSTextBoxValores"
+                                       placeholder="Tipo de estructura" disabled />
+                            </div>                                                       
+                        </div>
+                    </div>                                        
+                    <div class="modal-footer TMSHeaderModal">
+                        <button id="guardarInformacion" type="submit" class="btn btn-success bi bi-save btn-grad btn-md"> Editar </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="seleccionarLlanta" tabindex="-1" aria-hidden="true" style="overflow:auto">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="height:auto">
+            <div class="modal-header TMSHeaderModal">
+                <h5 class="modal-title TMSTituloModal"><span style="color:darkblue ; font-size: 20px">Atcotrans Llanta</span> </h5>
+                <div class="d-flex align-items-end flex-column">          
+                    <button id="cerrarModalLlanta" type="button" class="justify-content-end cross btn btn-dark TMSBotonCerrarModal bi bi-box-arrow-left"  data-bs-dismiss="modal" onclick="obtenerLLantas();" aria-label="Cerrar"></button>
+                </div>
+            </div>
+
+            <div class="modal-body" style="height:auto" >             
+                <label class="form-label TMSlabelText" for="ruc" style="width:100% ; font-size:25px;">Información de la Llanta <span id="colocarDatos" style="font-size:25px;"></span> </label>
+                <img asp-for="@Model.image" style="position:absolute; margin-left:-89%;margin-top:50px;  height:100px; width:50px;" src="~/imagenes/llantaDIseño.png" />
+                <div hidden>
+                    <input type="text" id="idLlantaEditar"  class="form-control form-control-lg TMSTextBoxValores" />
+                    <input type="text" id="termicoEditar"  class="form-control form-control-lg TMSTextBoxValores" />
+                </div>
+
+                <div class="form-group row mb-4" style="margin-left:20%">
+                    <div class="col-md-4">
+                        <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue;" for="ruc">Térmico</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="number" id="obtenerValor3" min="0" max="9999999" step="1" style="width:100%;padding:2%; background: #e4fbfb; border:0.5px dotted gray ; color:red; text-align:center" disabled />
+                         @*<input type="text" id="Termico"  asp-for="@Model.Termicos" class="form-control form-placa-lg TMSTextBoxValores"*@
+                    </div>
+                </div>
+
+                <div hidden style="width:100%">
+                    <input type="text" id="ultimoEditar"  style="width:100%" class="form-control form-control-lg TMSTextBoxValores" />
+                </div>
+
+                <div class="form-group row mb-4" style="margin-left:20%">
+                    <div class="col-md-4">
+                        <label  class="input-group-text TMSlabelComboValores" style="background-color:lightblue;" for="ruc">Ultima Inspección</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" id="obtenerValor4" style="width:100%;padding:1%; background: #e4fbfb; border:0.5px dotted gray ; color:blue; text-align:center" disabled />
+                    </div>                    
+                </div>
+
+                <div class="form-group row mb-4" style="margin-left:20%">
+                    <div class="col-md-4">
+                        <label  class="input-group-text TMSlabelComboValores" style="background-color:lightblue;" for="ruc">MM Original</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" id="originalEditar" autocomplete="off" step="any" style="width:100%; padding:1%;background: #e4fbfb; border:0.5px dotted gray ; color: blue; text-align:center" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group row mb-4" style="margin-left:20%">
+                    <div class="col-md-4">
+                        <label  class="input-group-text TMSlabelComboValores" style="background-color:lightblue;" for="ruc">Marca</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" id="marcalEditar"   autocomplete="off" step="any" style="width:100%;padding:1%; background: #e4fbfb; border:0.5px dotted gray ; color: blue; text-align:center" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group row mb-4" style="margin-left:20%">
+                    <div class="col-md-4">
+                        <label  class="input-group-text TMSlabelComboValores" style="background-color:lightblue;" for="ruc">Medida</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" id="medidaEditar"  autocomplete="off" step="any" style="width:100%;padding:1%; background: #e4fbfb; border:0.5px dotted gray ; color: blue; text-align:center" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group row mb-4" style="margin-left:20%">
+                    <div class="col-md-4">
+                        <label  class="input-group-text TMSlabelComboValores" style="background-color:lightblue;" for="ruc">Vehiculo</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" id="vehiculoEditar"  autocomplete="off" step="any" style="width:100%;padding:1%; background: #e4fbfb; border:0.5px dotted gray ; color: blue; text-align:center" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group row mb-4" style="margin-left:20%">
+                    <div class="col-md-4">
+                        <label  class="input-group-text TMSlabelComboValores" style="background-color:lightblue;" for="ruc">Eje </label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" id="EjeEditar" autocomplete="off" step="any" style="width:100%;padding:1%;background: #e4fbfb; border:0.5px dotted gray ; color: blue; text-align:center" disabled />
+                    </div>
+                </div>
+                 
+                <div class="form-group row mb-4" style="margin-left:20%">
+                    <div class="col-md-4">
+                        <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue;" for="ruc">Tipo de llanta </label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" id="TipoLLantaEditar" autocomplete="off" step="any" style="width:100%;padding:1%;background: #e4fbfb; border:0.5px dotted gray ; color: blue; text-align:center" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group row mb-4" style="margin-left:20%">
+                    <div class="col-md-4">
+                        <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue;" for="ruc">Diseño </label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" id="DisenoLlantaEditar" autocomplete="off" step="any" style="width:100%;padding:1%;background: #e4fbfb; border:0.5px dotted gray ; color: blue; text-align:center" disabled />
+                    </div>   
+                </div>
+
+                <div class="form-group row mb-4" style="margin-left:20%">
+                    <div class="col-md-4">
+                        <label class="input-group-text TMSlabelComboValores" style="background-color:lightblue;" for="ruc">Estado </label>
+                    </div> 
+                    <div class="col-md-8">
+                        <input type="text" id="estadoLlantaEditar" autocomplete="off" step="any" style="width:100%; padding:1%;background: #e4fbfb; border:0.5px dotted gray ; color: blue; text-align:center" disabled />
+                    </div>   
+                </div>
+            </div>     
+        </div>
+    </div>
+</div>
+
+<!-- Modal OK-->
+<div class="modal fade" id="ModalListaLlantaAsignada" tabindex="-1" aria-labelledby="ModalListaLlantaAsignadaLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex justify-content-center align-items-center">
+        <div class="modal-content TMSModal">
+            <div class="modal-header TMSHeaderModal">
+                <h5 class="modal-title TMSTituloModal">Lista de Llantas Asignadas</h5>
+                <div class="d-flex align-items-end flex-column">
+                    <button type="button" class="justify-content-end rounded-circle TMSBotonCerrarModal" data-bs-dismiss="modal" aria-label="Cerrar">X</button>
+                </div>
+            </div>
+            <div class="modal-body ">
+                <div class="row d-flex">
+                    <div class="col-md-18 col-lg-18 col-xl-18">
+                        <div class="table-responsive ">
+                            <table class="table table-striped table-bordered dataTables_scrollBody ">
+                                <thead class="TMSTituloTabla">
+                                    <tr>
+                                        <th >
+                                            Termico
+                                        </th>
+                                        <th >
+                                            Posicion
+                                        </th>
+                                        <th colspan="2">
+                                            Acciones
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="TMSBodyTabla">
+                                    @* @foreach (var item in Model.ItemVehiculo.FirstOrDefault().ListaPosicionLlantaVehiculo)
+                                    {*@
+                                    <tr>
+                                        <td>
+                                            @* @Html.DisplayFor(model => item.LlantaId)*@
+                                        </td>
+                                        @* <td>
+                                        @Html.DisplayFor(model => item.VehiculoId)
+                                        </td>*@
+
+                                        <td>
+                                            @* @Html.DisplayFor(model => item.Posicion)*@
+                                        </td>
+                                        <td>
+                                            <button title="Editar Posicion" class="btn p-v-sm btn-success btn-sm" id="btnEditarPosicion" data-bs-toggle="modal" data-bs-target="#PosicionModal">
+                                                <i class="bi bi-pen"></i>
+                                            </button>
+                                        </td>
+
+                                        <td>
+
+                                        </td>
+                                    </tr>
+                                    @* }*@
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-sm btn p-v-xl btn-success bi bi-clipboard-plus" data-bs-toggle="modal" data-bs-target="#AgregVehiculoModal">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalListaInspeccionLlanta" aria-hidden="true">   
+    <div class="modal-dialog" style="border:solid 2px green;">   
+        <div class="modal-content TMSModal" style="width:100%">
+            <div hidden>
+                <input type="text" id="obtenerVehiculoId" style="width:100%" class="form-control form-control-lg TMSTextBoxValores" />
+            </div>
+
+            <div class="modal-header TMSHeaderModal" style="width:100%; ">
+                <h5 class="modal-title TMSTituloModal">Lista de Llantas Asignadas</h5>
+                <div class="d-flex align-items-end flex-column">
+                    <button id="obtenerPantallaAnterior" type="button" class="justify-content-end cross btn btn-dark TMSBotonCerrarModal bi bi-box-arrow-left" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+            </div>
+            <div class="modal-body" style="height:500px;width:600px;">              
+                <div class="row d-flex">
+                    <div class="" id="strimage2" hidden>
+                        <img asp-for="@Model.image" src="~/imagenes/ruedast2.png" style="height:450px; width:478px;" />
+                        
+                        <div id="input1" class="form-check" style="position: absolute; left: 110px; top:35px; width: 160px; height: 40px;" disabled hidden>
+                            
+                            <label class="form-check-label" id="idTermico1Ch" for="flexCheckChecked">
+
+                            </label>
+                        </div>
+                        <button type="button" id="modal1" class="rounded-circle popupBusquedaParroquia" style="left:104px; top:77px; position:absolute; height:50px; padding:5px; background-color:white;  width:50px; font-size:25px;border:none " data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(1);">1</button>
+                        <div id="input2" class="form-check" style="position: absolute; left: 330px; top:35px; width:160px; height: 40px;" disabled hidden>
+                           
+                            <label class="form-check-label" id="idTermico2Ch" for="flexCheckChecked">
+
+                            </label>
+                        </div>
+                        
+                        <button type="button" id="modal2" class="rounded-circle popupBusquedaParroquia" style="left:320px; top:91px; position:absolute; height:50px; width:50px;background-color:white; font-size:25px; border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(2);">2</button>
+                        <div id="input3" class="form-check" style="position: absolute; left: 40px; top:359px; width: 60px; height: 40px;" disabled hidden>
+                           
+                            <label class="form-check-label" id="idTermico3Ch" for="flexCheckChecked">
+
+                            </label>
+                        </div>
+                       
+                        
+                        <button type="button" id="modal3" class="rounded-circle popupBusquedaParroquia" style="left:35px; top:267px; position:absolute; height:50px; width:50px;background-color :yellow ; font-size:25px;border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(3);">3</button>
+                        <div id="input4" class="form-check" style="position: absolute; left: 150px; top:359px; width: 60px; height: 40px;" disabled hidden>
+                           
+                            <label class="form-check-label" id="idTermico4Ch" for="flexCheckChecked">
+
+                            </label>
+                        </div>
+                        
+                        <button type="button" id="modal4" class="rounded-circle popupBusquedaParroquia" style="left:145px; top:270px; position:absolute; height:45px; width:45px;background-color:yellow; font-size:25px;border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(4);">4</button>
+                          <div id="input5" class="form-check" style="position: absolute; left: 302px; top:350px; width: 60px; height: 40px;" disabled hidden>
+                            
+                            <label class="form-check-label" id="idTermico5Ch" for="flexCheckChecked">
+
+                            </label>
+                        </div>
+                        <button type="button" id="modal5" class="rounded-circle popupBusquedaParroquia" style="left:287px; top:260px; position:absolute; height:50px; width:50px;background-color:yellow; font-size:25px; border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(5);">5</button>
+                        <div id="input6" class="form-check" style="position: absolute; left: 407px; top:350px; width: 60px; height: 40px;" disabled hidden>
+                          
+                            <label class="form-check-label" id="idTermico6Ch" for="flexCheckChecked">
+
+                            </label>
+                        </div>
+                        
+                        
+                        <button type="button" id="modal7" class="rounded-circle popupBusquedaParroquia" style="left:391px; top:260px; position:absolute; height:50px; width:50px;background-color:yellow; font-size:25px; border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(6);">6</button>
+                    </div>
+
+                    <div style="height:400px;width:200px;" id="strimage3" hidden>
+                        <div class="TMSDivImage">
+                            <img asp-for="@Model.image" style="position:fixed; height:450px; width:478px;" src="~/imagenes/ruedast3.png" />
+                            <div id="T31" class="form-check" style="position: absolute; left: 107px; top:10px; width: 60px; height: 40px" disabled hidden>
+                               
+                                <label class="form-check-label" id="idTermico31" for="flexCheckChecked">
+                                </label>
+                            </div>
+                            <button type="button" class="rounded-circle" style="left:102px; top:60px; position:absolute; height:50px; padding:5px; background-color:white;  width:50px; font-size:25px;border:none " data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(1);">1</button>
+
+                            <div id="T32" class="rounded-input" style="position: absolute; left: 318px; top: 10px; width: 60px; height: 40px;" disabled hidden>
+                             
+                                <label class="form-check-label" id="idTermico32" for="flexCheckChecked">
+                                </label>
+                            </div>
+                            <button type="button" class="rounded-circle" style="left:310px; top:60px; position:absolute; height:50px; width:50px;background-color:white; font-size:25px; border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(2);">2</button>
+                               <div id="T33" class="rounded-input" style="position: absolute; left: 45px; top: 170px; width: 60px; height: 40px;" disabled hidden>
+                                
+                                <label class="form-check-label" id="idTermico33" for="flexCheckChecked">
+                                </label>
+                            </div>
+                            <button type="button" class="rounded-circle " style="left:32px; top:220px; position:absolute; height:50px; width:50px;background-color :yellow ; font-size:25px;border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(3);" >3</button>
+                            <div id="T34" class="rounded-input" style="position: absolute; left: 145px; top: 170px; width: 60px; height: 40px;" disabled hidden>
+                              
+                                <label class="form-check-label" id="idTermico34" for="flexCheckChecked">
+                                </label>
+                            </div>
+                            
+                            <button type="button" class="rounded-circle " style="left:138px; top:220px; position:absolute; height:45px; width:45px;background-color:yellow; font-size:25px;border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(4);">4</button>
+                                 <div id="T35" class="rounded-input" style="position: absolute; left: 290px; top: 170px; width: 60px; height: 40px;" disabled hidden>
+                               
+                                <label class="form-check-label" id="idTermico35" for="flexCheckChecked">
+                                </label>
+                            </div>
+                            <button type="button" class="rounded-circle " style="left:280px; top:210px; position:absolute; height:50px; width:50px;background-color:yellow; font-size:25px; border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(5);">5</button>
+
+                            <div id="T36" class="rounded-input" style="position: absolute; left: 389px; top: 170px; width: 60px; height: 40px;" disabled hidden>
+                              
+                                <label class="form-check-label" id="idTermico36" for="flexCheckChecked">
+                                </label>
+                            </div>
+                            <button type="button" class="rounded-circle " style="left:380px; top:210px; position:absolute; height:50px; width:50px;background-color:yellow; font-size:25px; border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(6);">6</button>
+
+                            <div id="T37" class="rounded-input" style="position: absolute; left: 43px; top: 418px; width: 60px; height: 40px;" disabled hidden>
+                                
+                                <label class="form-check-label" id="idTermico37" for="flexCheckChecked">
+                                </label>
+                            </div>
+                            <button type="button" class="rounded-circle " style="left:32px; top:344px; position:absolute; height:50px; width:50px;background-color:yellow; font-size:25px;border:none"  data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(7);">7</button>
+                            <div id="T38" class="rounded-input" style="position: absolute; left: 150px; top: 418px; width: 60px; height: 40px;" disabled hidden>
+                               
+                                <label class="form-check-label" id="idTermico38" for="flexCheckChecked">
+                                </label>
+                            </div>
+                            <button type="button" class="rounded-circle " style="left:147px; top:344px; position:absolute; height:50px; width:50px;background-color:yellow; font-size:25px; border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(8);">8</button>
+                            <div id="T39" class="rounded-input" style="position: absolute; left: 296px; top: 419px; width: 60px; height: 40px;" disabled hidden>
+                              
+                                <label class="form-check-label" id="idTermico39" for="flexCheckChecked">
+                                </label>
+                            </div>
+                            <button type="button" class="rounded-circle " style="left:285px; top:344px; position:absolute; height:50px; width:50px;background-color:yellow;  font-size:25px;border:none"  data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(9);">9</button>
+                            <div id="T40" class="rounded-input" style="position: absolute; left: 388px; top: 419px; width: 60px; height: 40px;" disabled hidden>
+                               
+                                <label class="form-check-label" id="idTermico40" for="flexCheckChecked">
+                                </label>
+                            </div>
+                            <button type="button" class="rounded-circle " style="left:385px; top:344px; position:absolute; height:50px; width:50px;background-color:yellow;  font-size:25px;border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(10);">10</button>
+                        </div>
+                    </div>
+
+                    <div style="height:400px;width:200px;" id="strimage4" hidden>
+                        <div class="TMSDivImage">
+                            <img asp-for="@Model.image" style="position:fixed; height:450px; width:478px;" src="~/imagenes/ruedasS2.png">
+                            <div id="input11" class="rounded-input" style="position: absolute; left: 50px; top:65px; width: 60px; height: 40px" disabled hidden>
+                             
+                                <label class="form-check-label" id="idTermicoS11" for="flexCheckChecked">
+
+
+                                </label>
+                            </div>
+                            <button type="button" class="" style="left:47px; top:135px; position:absolute; height:50px; padding:3px; background-color:black; color:white;  width:40px; font-size:25px;border:none " data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(1);">1</button>
+
+                            <div id="input22" class="rounded-input" style="position: absolute; left: 155px; top:65px; width: 60px; height: 40px" disabled hidden>
+                               
+                                <label class="form-check-label" id="idTermicoS22" for="flexCheckChecked">
+
+                                </label>
+                            </div>
+                            <button type="button" class="" style="left:150px; top:135px; position:absolute; height:50px; width:40px;background-color:black;  color:white; font-size:25px; border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(2);">2</button>
+                            
+                            <div id="input33" class="rounded-input" style="position: absolute; left: 295px; top:65px; width: 60px; height: 40px" disabled hidden>
+                               
+                                <label class="form-check-label" id="idTermicoS33" for="flexCheckChecked">
+
+                                </label>
+                            </div>
+                            <button type="button" class="" style="left:290px; top:135px; position:absolute; height:50px; width:40px;background-color :black ; color:white; font-size:25px;border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(3);">3</button>
+                            <div id="input44" class="rounded-input" style="position: absolute; left: 407px; top:65px; width: 60px; height: 40px;" disabled hidden>
+                              
+                                <label class="form-check-label" id="idTermicoS44" for="flexCheckChecked">
+
+                                </label>
+                            </div>
+                            <button type="button" class="" style="left:399px; top:135px; position:absolute; height:45px; width:45px;background-color:black; color:white; font-size:25px;border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(4);">4</button>
+                            
+                            <div id="input55" class="rounded-input" style="position: absolute; left: 55px; top:425px; width: 60px; height: 40px" disabled hidden>
+                                
+                                <label class="form-check-label" id="idTermicoS55" for="flexCheckChecked">
+
+                                </label>
+                            </div>
+                            <button type="button" class="" style="left:50px; top:330px; position:absolute; height:50px; width:40px;background-color:black; color:white; font-size:25px; border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(5);">5</button>
+                         
+                                 <div id="input66" class="rounded-input" style="position: absolute; left: 165px; top:425px; width: 60px; height: 40px" disabled hidden>
+                               
+                                <label class="form-check-label" id="idTermicoS66" for="flexCheckChecked">
+
+                                </label>
+                            </div>
+                            <button type="button" class="" style="left:159px; top:330px; position:absolute; height:50px; width:40px;background-color:black; color:white; font-size:25px; border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(6);">6</button>
+                            
+                            <div id="input77" class="rounded-input" style="position: absolute; left: 310px; top:425px; width: 60px; height: 40px" disabled hidden>
+                                
+                                <label class="form-check-label" id="idTermicoS77" for="flexCheckChecked">
+
+                                </label>
+                            </div>
+                            <button type="button" class="" style="left:299px; top:330px; position:absolute; height:50px; width:35px;background-color:black; color:white; font-size:25px;border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(7);">7</button>
+                            <div id="input88" class="rounded-input" style="position: absolute; left: 425px; top:426px; width: 60px; height: 40px" disabled hidden>
+                                
+                                <label class="form-check-label" id="idTermicoS88" for="flexCheckChecked">
+
+                                </label>
+                            </div>
+                            <button type="button" class="" style="left:407px; top:330px; position:absolute; height:50px; width:40px;background-color:black; color:white; font-size:25px; border:none" data-bs-toggle="modal" data-bs-target="#seleccionarLlanta" aria-label="Cerrar" onclick="LlantaVisualizar(8);">8</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @* <div class="modal-footer">
+            <button type="button" class="btn-sm btn p-v-xl btn-success bi bi-clipboard-plus" data-bs-toggle="modal" data-bs-target="#AgregVehiculoModal">
+            </button>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+<!-- Modal Eliminar -->
+<div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content " style="width:100%">
+            <div class="modal-header TMSHeaderModal">
+                <h5 class="modal-title TMSTituloModal">TMS Mantenimiento</h5>
+                <div class="d-flex align-items-end flex-column">
+                    <button type="button" class="justify-content-end cross btn btn-dark TMSBotonCerrarModal bi bi-box-arrow-left" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+            </div>
+            <form asp-action="DeleteInformacion">
+                <div class="modal-body ">
+                    <div hidden class="form-outline mb-4">
+                        <label class="form-label btn-color-info TMSlabelText">Id</label>
+                        <input type="text" asp-for="@Model.Id" id="idVehiculoEliminar" class="form-control form-control-lg  TMSTextBoxValores" />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <label class="form-label btn-color-info TMSlabelText" style="margin-top:28px; font-size:13px">¿Está seguro de querer eliminar este Vehiculo?</label>
+                    </div>
+                </div>
+                <div class="modal-footer TMSHeaderModal">
+                    <button id="eliminarInfoData" style="padding:10px; width:50px;" type="submit" class=" btn btn-success  btn-sm btn-grad">Sí </button>
+                    <button id="eliminarInfoDatos" style="padding:10px; width:50px;" data-bs-dismiss="modal" aria-label="Cerrar" type="button" class=" btn btn-danger  btn-sm btn-grad">No </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="font-size: 13px !important;">
+    <div class="col-md-12">
+        <div class="widget">
+            <header class="widget-header" style="padding-bottom: 5px !important;">
+
+            </header>
+            <div class="widget-body">             
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm  dataTable" id="tablaLlantas">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Id
+                                </th>
+                                <th>
+                                    Tipo de Vehículo
+                                </th>
+                                <th>
+                                    Color
+                                </th>
+                                <th>
+                                    Año del Vehículo
+                                </th>
+                                <th>
+                                    Placa
+                                </th>
+                                <th>
+                                    Placa Antigua
+                                </th>
+                                <th>
+                                    Vin
+                                </th>
+                                <th>
+                                    Tamaño
+                                </th>
+                                <th>
+                                    Marca
+                                </th>
+                                <th>
+                                    Modelo
+                                </th>
+                                <th>
+                                    Tipo Estructura
+                                </th>
+                                <th>
+                                    Número de Llantas
+                                </th>
+                                <th>
+                                    Acciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.ListaVehiculos != null)
+                            {
+                                @foreach (var item in Model.ListaVehiculos)
+                                {
+                                    @Html.HiddenFor(model => item.idMarcaChasis);
+                                    @Html.HiddenFor(model => item.idModeloCabezal);
+                                    @Html.HiddenFor(model => item.idMarcaCabezal);
+                                    @Html.HiddenFor(model => item.idAnio);
+                                    @Html.HiddenFor(model => item.idChasis);
+                                    @Html.HiddenFor(model => item.idCabezal);                                   
+                                    @Html.HiddenFor(model => item.idColor);
+                                    <tr>
+                                        <td>                                         
+                                            @Html.DisplayFor(model => item.idVehiculo)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.tipoVehiculo)
+                                        </td>
+                                        @if (item.tipoVehiculo == "Cabezal" || item.tipoVehiculo == "CABEZAL")
+                                        {
+                                            <td>
+                                                <input type="text" style="background-color:@item.color ; border-radius:50px ; width:20px" disabled />                                           
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                           
+                                            </td>    
+                                        }                                     
+                                        <td>
+                                            @Html.DisplayFor(model => item.anio)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(model => item.placa)
+                                        </td>                                                                                      
+                                        <td>
+                                            @Html.DisplayFor(model => item.placaAntigua)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.vin)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.tamanio)
+                                        </td>
+                                        @if (item.tipoVehiculo == "Cabezal" || item.tipoVehiculo == "CABEZAL")
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(model => item.marcaCabezal)
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(model => item.marcaChasis)
+                                            </td>
+                                        }                                      
+                                        <td>
+                                            @Html.DisplayFor(model => item.modeloCabezal)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.tipoEstructura)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.numeroLlantasEstructura)
+                                        </td>
+                                        <td>
+                                            @if (item.tipoVehiculo == "Cabezal" || item.tipoVehiculo == "CABEZAL")
+                                            {
+                                                <button title="Editar Cabezal" class="btn p-v-sm btn-success btn-sm" id="btnEditarVehiculo" style="margin-right: 2px !important;" data-bs-toggle="modal"
+                                                        data-bs-target="#EditarVehiculoModal" onclick="editarDatos({ descripcionTipoVehiculo:'@item.tipoVehiculo', numeroLlantas:@item.numeroLlantasEstructura 
+                                                                                                                      ,vinCabezal:'@item.vin',idVehiculo : @item.idVehiculo ,
+                                                                                                                      anio:parseInt(@item.idAnio), descripcionCabezal:'@item.placa',tipoVehiculoId:@item.idTipoVehiculo  ,
+                                                                                                                     marcaCabezal:@item.idMarcaCabezal , modeloCabezal:parseInt(@item.idModeloCabezal) , 
+                                                                                                                        color:parseInt(@item.idColor) , tipoEstructura:@item.idTipoEstructura ,
+                                                                                                                        colorNombre:'@item.color' , cabezalIds:@item.idCabezal}) ">
+                                                    <i class="bi bi-pen"></i>
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button title="Editar chasis" class="btn p-v-sm btn-success btn-sm" id="btnEditarchasis" style="margin-right: 2px !important;" data-bs-toggle="modal"
+                                                        data-bs-target="#EditarVehiculoModal" onclick="editarDatos({ descripcionTipoVehiculo:'@item.tipoVehiculo', numeroLlantas:@item.numeroLlantasEstructura ,
+                                                                                                                        idVehiculo : @item.idVehiculo ,anio:parseInt(@item.idAnio) ,tipoVehiculoId:parseInt(@item.idTipoVehiculo) , 
+                                                                                                                        tipoEstructura:parseInt(@item.idTipoEstructura) , descripcionChasisId2:'@item.placa', 
+                                                                                                                       vin:'@item.vin' , tamanio:'@item.tamanio' ,placaAntigua:'@item.placaAntigua' ,marcaChasis:parseInt(@item.idMarcaChasis) ,chasisIds:parseInt(@item.idChasis)
+                                                                                                                          }) ">
+                                                    <i class="bi bi-pen"></i>
+                                                </button>
+                                            }
+                                            @*
+                                            <button title="Asignacion de Llantas" class="btn p-v-sm btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#ModalListaLlantaAsignada" onclick="LlantaVisualizar({TipoEstructuraId:'@item.tipoEstructuraId' });">
+                                            <i class="bi bi-view-stacked"></i>
+                                            </button>*@
+                                            <button title="Detalle de cada llanta" class="btn p-v-sm btn-primary btn-sm" style="margin-right: 2px !important;" data-bs-toggle="modal" data-bs-target="#ModalListaInspeccionLlanta" onclick="InspeccionLlanta({Vehiculoid:@item.idVehiculo ,TipoEstructuraId:'@item.idTipoEstructura' ,strimage:'@item.image'  , numLlanta: @item.numeroLlantasEstructura  , tipoEstructuraId: '@item.idTipoEstructura' , estructurasNombre:'@item.tipoEstructura', idCabezal:'@item.idCabezal' , idChasis:'@item.idChasis' , idTipoVehiculo:'@item.idTipoVehiculo' });">
+                                                <i class="bi bi-view-stacked"></i>
+                                            </button>
+                                            <button title="Eliminar Vehiculo" class="btn p-v-sm btn-danger btn-sm" onclick="eliminarVehiculo({idVehiculo:@item.idVehiculo})" data-bs-toggle="modal" data-bs-target="#eliminarModal">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+
+                                            @* <button title="Eliminar Llanta" class="btn p-v-sm btn-danger btn-sm" id="btnEliminar" data-bs-toggle="modal" data-bs-target="#eliminarModal" onclick="eliminarMarca({idMarca:@item.idLlantas});">
+                                            <i class="bi bi-trash"></i>
+                                            </button>*@
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>No existen datos para mostrar</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>
+                                    Id
+                                </th>
+                                <th>
+                                    Tipo de Vehículo
+                                </th>
+                                <th>
+                                    Color
+                                </th>
+                                <th>
+                                    Año del Vehículo
+                                </th>
+                                <th>
+                                    Placa
+                                </th>
+                                <th>
+                                    Placa Antigua
+                                </th>
+                                <th>
+                                    Vin
+                                </th>
+                                <th>
+                                    Tamaño
+                                </th>
+                                <th>
+                                    Marca
+                                </th>
+                                <th>
+                                    Modelo
+                                </th>
+                                <th>
+                                    Tipo Estructura
+                                </th>
+                                <th>
+                                    Número de Llantas
+                                </th>
+                                <th>
+                                    Acciones
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Content/jquery-2.2.4.js"></script>
+    <script src="~/Content/bootstrap.js"></script>
+    <script src="~/Content/modernizr-2.8.3.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#tablaLlantas').DataTable();
+          //obtenerColores();
+       
+
+
+          //  var colores2 = document.getElementById('colorData1');
+          //  var selectElement = document.getElementById("colorData1");
+          //  var selectedText = selectElement.options[selectElement.selectedIndex].text;
+
+          //  colores2.style.backgroundColor = selectedText;
+          //  colores2.style.color = selectedText;
+
+        });
+
+        function obtenerLLantas() {
+            //     $("#cerrarModalLlanta").val()
+            //var miModal = document.getElementById('ModalListaInspeccionLlanta');
+            //miModal.style.display = 'block';
+            $("#ModalListaInspeccionLlanta").modal('show');
+        }
+
+        function LlantaVisualizar(id) {
+            $("#termicoEditar").val("");
+            $("#obtenerValor3").val("");
+            $("#ultimoEditar").val("");
+            $("#obtenerValor4").val("");
+            $("#originalEditar").val("");
+            $("#marcalEditar").val("");
+            $("#medidaEditar").val("");
+            $("#vehiculoEditar").val("");
+            $("#EjeEditar").val("");
+            $("#TipoLLantaEditar").val("");
+            $("#DisenoLlantaEditar").val("");
+            $("#estadoLlantaEditar").val("");
+                    
+            const valor = document.getElementById('colocarDatos');
+            valor.innerHTML = id;
+            var dato = $("#obtenerVehiculoId").val();
+            console.log(dato);
+            var arregloRuta = [];
+         
+            var tipo = {
+                "vehiculoId": dato,
+                "posicionLlanta":id
+            };
+            arregloRuta.push(tipo);
+            var json = JSON.stringify(arregloRuta);
+            //   alert(id);
+            $.ajax({
+                url: '@Url.Action("FindLlantaPosicion","Vehiculo")',
+                type: "POST",
+                dataType: 'json',
+                data: { json: json },
+                success: function (result) {
+                    /*console.log(result.results);*/
+                    $("#termicoEditar").val(result.data[0].termico);
+                    $("#obtenerValor3").val(result.data[0].termico);
+                    $("#ultimoEditar").val(result.data[0].fechaUltimaInspeccion);
+                    $("#obtenerValor4").val(result.data[0].fechaUltimaInspeccion);
+                    $("#originalEditar").val(result.data[0].mmOriginal);
+                    $("#marcalEditar").val(result.data[0].marcas);
+                    $("#medidaEditar").val(result.data[0].medidas);
+                    $("#vehiculoEditar").val(result.data[0].vehiculo);
+                    $("#EjeEditar").val(result.data[0].eje);
+                    $("#TipoLLantaEditar").val(result.data[0].tipoLlanta);
+                    $("#DisenoLlantaEditar").val(result.data[0].diseño);
+                    $("#estadoLlantaEditar").val(result.data[0].estado);                  
+                    console.log(result.data[0]);               
+                },
+                error: function (errormessage) {
+                    console.log("no hay");
+                }
+            });
+            $("#ModalListaInspeccionLlanta").modal('hide');            
+        }
+        var arregloTermicos = [];
+
+        function InspeccionLlanta(vehiculo) {
+            console.log(vehiculo.estructurasNombre);
+            //alert(vehiculo.estructurasNombre);
+            // alert(vehiculo.tipoEstructuraId);
+            $("#obtenerVehiculoId").val(vehiculo.Vehiculoid);
+
+            $('#strimage').val(vehiculo.strimage);
+            var dato = vehiculo.strimage;
+
+
+            var elemento2 = document.getElementById('strimage2');
+            var elemento3 = document.getElementById('strimage3');
+            var elemento4 = document.getElementById('strimage4');
+
+            console.log(dato);
+            if (vehiculo.estructurasNombre == "T2")
+            {
+                elemento2.removeAttribute("hidden");
+                elemento4.setAttribute("hidden", true);
+                elemento3.setAttribute("hidden", true);
+            } 
+            
+            if (vehiculo.estructurasNombre == "T3")
+            {            
+                elemento3.removeAttribute("hidden");
+                elemento2.setAttribute("hidden", true);
+                elemento4.setAttribute("hidden", true);
+            }
+            if (vehiculo.estructurasNombre == "S2")
+            {
+                elemento4.removeAttribute("hidden");
+                elemento2.setAttribute("hidden", true);
+                elemento3.setAttribute("hidden", true);
+            }
+
+                        var IdCabezal =vehiculo.idCabezal;
+            var IdChasis = vehiculo.idChasis;
+          //   arregloTermicos.length = 0;
+            var tipoVehiculo = vehiculo.idTipoVehiculo;
+            var arregloRuta2 = [];
+            var tipo2 = {
+                "cabezalId": IdCabezal,
+                "chasisId": IdChasis,
+                "tipoVehiculo": tipoVehiculo
+
+            };
+     
+           
+         
+            arregloRuta2.push(tipo2);
+           var  json2 = JSON.stringify(arregloRuta2);
+
+            //t2
+             var elemento6 = document.getElementById('input1'); 
+            var elemento7 = document.getElementById('input2'); 
+            var elemento8 = document.getElementById('input3'); 
+            var elemento9 = document.getElementById('input4'); 
+            var elemento10 = document.getElementById('input5'); 
+            var elemento11 = document.getElementById('input6'); 
+            //s2
+            var elemento12 = document.getElementById('input11');
+            var elemento13 = document.getElementById('input22');
+            var elemento14 = document.getElementById('input33');
+            var elemento15 = document.getElementById('input44');
+            var elemento16 = document.getElementById('input55');
+            var elemento17 = document.getElementById('input66');
+            var elemento18 = document.getElementById('input77');
+            var elemento19 = document.getElementById('input88');
+
+
+            //t3
+            var elemento20 = document.getElementById('T31');
+            var elemento21 = document.getElementById('T32');
+            var elemento22 = document.getElementById('T33');
+            var elemento23 = document.getElementById('T34');
+            var elemento24 = document.getElementById('T35');
+            var elemento25 = document.getElementById('T36');
+            var elemento26 = document.getElementById('T37');
+            var elemento27 = document.getElementById('T38');
+            var elemento28 = document.getElementById('T39');
+            var elemento29 = document.getElementById('T40');
+
+
+               arregloTermicos.length = 0;
+            $.ajax({
+                url: '@Url.Action("BuscarTermicoMontajeLlanta","Llanta")',
+                type: "POST",
+                dataType: 'json',
+                data: { json: json2 },
+                success: function (result) {
+                    console.log("visualizar llanta OBTENIDAS CAMBIO ");
+                    console.log(result.data);
+
+                    var datosTer;
+
+                    for (var i = 0; i < result.data.length; i++) {
+                        console.log("entr");
+                        datosTer = {
+                            "termico": result.data[i].termico,
+                            "posicion": result.data[i].posicionActual
+
+                        };
+                        arregloTermicos.push(datosTer);
+
+                    }
+                    console.log("arreglo termico llanta caso especial");
+                    console.log(arregloTermicos);
+
+                    var llantaespecial = vehiculo.estructurasNombre;
+   if (llantaespecial == "T2") {
+                           console.log("estoy adentro llanta especial");
+                       
+                        var labelElement1e = document.getElementById("idTermico1Ch");
+                        if (result.data[0].termico != 0 && (result.data[0].estado == "EN USO" || result.data[0].estado == "DISPONIBLE" || result.data[0].estado == "EMERGENCIA")) {
+                            labelElement1e.textContent = result.data[0].termico;
+                           
+                            elemento6.removeAttribute("hidden");
+                           
+                        } else {
+                             elemento6.removeAttribute("hidden");
+                             labelElement1e.textContent = "Sin Termico";
+
+                        }
+
+                        var labelElement2e = document.getElementById("idTermico2Ch");
+                        if (result.data[1].termico != 0 && (result.data[1].estado == "EN USO" || result.data[1].estado == "DISPONIBLE" || result.data[1].estado == "EMERGENCIA")) {
+                            labelElement2e.textContent = result.data[1].termico;
+                            elemento7.removeAttribute("hidden");
+                           // elemento31.removeAttribute("disabled");
+
+                        } else {
+                            //var botonAgregar2 = document.getElementById('botonAgregarLlantaId2');
+                            //botonAgregar2.removeAttribute("hidden");
+                              elemento7.removeAttribute("hidden");
+                                              labelElement2e.textContent = "Sin Termico";
+                        }
+
+                        var labelElement3e = document.getElementById("idTermico3Ch");
+                        if (result.data[2].termico != 0 && (result.data[2].estado == "EN USO" || result.data[2].estado == "DISPONIBLE" || result.data[2].estado == "EMERGENCIA")) {
+                            labelElement3e.textContent = result.data[2].termico;
+                         //   elemento32.removeAttribute("disabled");
+                            elemento8.removeAttribute("hidden");
+                        } else {
+                            //var botonAgregar3 = document.getElementById('botonAgregarLlantaId3');
+
+                            //botonAgregar3.removeAttribute("hidden");
+                              elemento8.removeAttribute("hidden");
+                                              labelElement3e.textContent = "Sin Termico";
+
+                        }
+
+                        var labelElement4e = document.getElementById("idTermico4Ch");
+                        if (result.data[3].termico != 0 && (result.data[3].estado == "EN USO" || result.data[3].estado == "DISPONIBLE" || result.data[3].estado == "EMERGENCIA")) {
+                            labelElement4e.textContent = result.data[3].termico;
+                          //  elemento33.removeAttribute("disabled");
+                            elemento9.removeAttribute("hidden");
+                        } else {
+                                           elemento9.removeAttribute("hidden");
+                                              labelElement4e.textContent = "Sin Termico";
+
+                        }
+
+                        var labelElement5e = document.getElementById("idTermico5Ch");
+                        if (result.data[4].termico != 0 && (result.data[4].estado == "EN USO" || result.data[4].estado == "DISPONIBLE" || result.data[4].estado == "EMERGENCIA")) {
+                         
+                            labelElement5e.textContent = result.data[4].termico;
+                          // elemento34.removeAttribute("disabled");
+                           elemento10.removeAttribute("hidden");
+                        } else {
+                              elemento10.removeAttribute("hidden");
+                         labelElement5e.textContent = "Sin Termico";
+
+                        }
+
+                        var labelElement6e = document.getElementById("idTermico6Ch");
+                        if (result.data[5].termico != 0 && (result.data[5].estado == "EN USO" || result.data[5].estado == "DISPONIBLE" || result.data[5].estado == "EMERGENCIA")) {
+                            labelElement6e.textContent = result.data[5].termico;
+                       //     elemento35.removeAttribute("disabled");
+                            elemento11.removeAttribute("hidden");
+                        } else {
+                            elemento11.removeAttribute("hidden");
+                            labelElement6e.textContent ="Sin Termico";
+                            
+
+                        }
+
+                    }
+                    if (llantaespecial == "T3") {
+
+
+                        var labellElementT31 = document.getElementById("idTermico31");
+                        if (result.data[0].termico != 0 && (result.data[0].estado == "EN USO" || result.data[0].estado == "DISPONIBLE" || result.data[0].estado == "EMERGENCIA")) {
+                            labellElementT31.textContent = result.data[0].termico;
+
+
+                         //   elemento44.removeAttribute("disabled");
+                            elemento20.removeAttribute("hidden");
+
+                        } else {
+                            elemento20.removeAttribute("hidden");
+                            labellElementT31.textContent = "Sin Termico";
+                            labellElementT31.style.whiteSpace = "nowrap";
+                        }
+
+                        var labellElementT32 = document.getElementById("idTermico32");
+                        if (result.data[1].termico != 0 && (result.data[1].estado == "EN USO" || result.data[1].estado == "DISPONIBLE" || result.data[1].estado == "EMERGENCIA")) {
+                            labellElementT32.textContent = result.data[1].termico;
+
+                         //   elemento45.removeAttribute("disabled");
+                            elemento21.removeAttribute("hidden");
+                        } else {
+                            elemento21.removeAttribute("hidden");
+                            labellElementT32.textContent = "Sin Termico";
+                            labellElementT32.style.whiteSpace = "nowrap";
+
+                        }
+
+                        var labellElementT33 = document.getElementById("idTermico33");
+                        if (result.data[2].termico != 0 && (result.data[2].estado == "EN USO" || result.data[2].estado == "DISPONIBLE" || result.data[2].estado == "EMERGENCIA")) {
+                            labellElementT33.textContent = result.data[2].termico;
+
+
+                        //    elemento46.removeAttribute("disabled");
+                            elemento22.removeAttribute("hidden");
+                        } else {
+                            elemento22.removeAttribute("hidden");
+                            labellElementT33.textContent = "Sin Termico";
+                            labellElementT33.style.whiteSpace = "nowrap";
+
+                        }
+
+                        var labellElementT34 = document.getElementById("idTermico34");
+                        if (result.data[3].termico != 0 && (result.data[3].estado == "EN USO" || result.data[3].estado == "DISPONIBLE" || result.data[3].estado == "EMERGENCIA")) {
+                            labellElementT34.textContent = result.data[3].termico;
+                            labellElementT34.removeAttribute("hidden");
+
+
+                           // elemento47.removeAttribute("disabled");
+                            elemento23.removeAttribute("hidden");
+                        } else {
+                            elemento23.removeAttribute("hidden");
+                            labellElementT34.textContent = "Sin Termico";
+                            labellElementT34.style.whiteSpace = "nowrap";
+
+                        }
+
+                        var labellElementT35 = document.getElementById("idTermico35");
+                        if (result.data[4].termico != 0 && (result.data[4].estado == "EN USO" || result.data[4].estado == "DISPONIBLE" || result.data[4].estado == "EMERGENCIA")) {
+                            labellElementT35.textContent = result.data[4].termico;
+                            labellElementT35.removeAttribute("hidden");
+
+                         //   elemento48.removeAttribute("disabled");
+                            elemento24.removeAttribute("hidden");
+                        } else {
+                            elemento24.removeAttribute("hidden");
+                            labellElementT35.textContent = "Sin Termico";
+                            labellElementT35.style.whiteSpace = "nowrap";
+
+                        }
+
+                        var labellElementT36 = document.getElementById("idTermico36");
+                        if (result.data[5].termico != 0 && (result.data[5].estado == "EN USO" || result.data[5].estado == "DISPONIBLE" || result.data[5].estado == "EMERGENCIA")) {
+                            labellElementT36.textContent = result.data[5].termico;
+                            labellElementT36.removeAttribute("hidden");
+
+                         //   elemento49.removeAttribute("disabled");
+                            elemento25.removeAttribute("hidden");
+                        } else {
+
+                            elemento25.removeAttribute("hidden");
+                            labellElementT36.textContent = "Sin Termico";
+                            labellElementT36.style.whiteSpace = "nowrap";
+
+                        }
+
+                        var labellElementT37 = document.getElementById("idTermico37");
+                        if (result.data[6].termico != 0 && (result.data[6].estado == "EN USO" || result.data[6].estado == "DISPONIBLE" || result.data[6].estado == "EMERGENCIA")) {
+                            labellElementT37.textContent = result.data[6].termico;
+                            labellElementT37.removeAttribute("hidden");
+
+                           // elemento50.removeAttribute("disabled");
+                            elemento26.removeAttribute("hidden");
+                        } else {
+
+                            elemento26.removeAttribute("hidden");
+                            labellElementT37.textContent = "Sin Termico";
+                            labellElementT37.style.whiteSpace = "nowrap";
+                        }
+                        var labellElementT38 = document.getElementById("idTermico38");
+                        if (result.data[7].termico != 0 && (result.data[7].estado == "EN USO" || result.data[7].estado == "DISPONIBLE" || result.data[7].estado == "EMERGENCIA")) {
+                            labellElementT38.textContent = result.data[7].termico;
+                            labellElementT38.removeAttribute("hidden");
+
+                           // elemento51.removeAttribute("disabled");
+                            elemento27.removeAttribute("hidden");
+                        } else {
+
+                            elemento27.removeAttribute("hidden");
+                            labellElementT38.textContent = "Sin Termico";
+                            labellElementT38.style.whiteSpace = "nowrap";
+                        }
+
+                        var labellElementT39 = document.getElementById("idTermico39");
+                        if (result.data[8].termico != 0 && (result.data[8].estado == "EN USO" || result.data[8].estado == "DISPONIBLE" || result.data[8].estado == "EMERGENCIA")) {
+                            labellElementT39.textContent = result.data[8].termico;
+                            labellElementT39.removeAttribute("hidden");
+                            elemento28.removeAttribute("hidden");
+                           // elemento52.removeAttribute("disabled");
+                        } else {
+
+                            elemento28.removeAttribute("hidden");
+                            labellElementT39.textContent = "Sin Termico";
+                            labellElementT39.style.whiteSpace = "nowrap";
+
+                        }
+
+                        var labellElementT40 = document.getElementById("idTermico40");
+                        if (result.data[9].termico != 0 && (result.data[9].estado == "EN USO" || result.data[9].estado == "DISPONIBLE" || result.data[9].estado == "EMERGENCIA")) {
+                            labellElementT40.textContent = result.data[9].termico;
+                            labellElementT40.removeAttribute("hidden");
+
+                          //  elemento53.removeAttribute("disabled");
+                            elemento29.removeAttribute("hidden");
+                        } else {
+
+                            elemento29.removeAttribute("hidden");
+                            labellElementT40.textContent = "Sin Termico";
+                            labellElementT40.style.whiteSpace = "nowrap";
+
+                        }
+
+                    }
+
+  if (llantaespecial == "S2") {
+                           console.log("estoy adentro llanta especial");
+                       
+                       var labelElementS20 = document.getElementById("idTermicoS11");
+                            if( result.data[0].termico != 0 &&  (result.data[0].estado == "EN USO" || result.data[0].estado == "DISPONIBLE" || result.data[0].estado == "EMERGENCIA") ){
+                            labelElementS20.textContent = result.data[0].termico;
+                            
+                           //     elemento36.removeAttribute("disabled");
+                                elemento12.removeAttribute("hidden");
+                                
+                            }else{
+                               elemento12.removeAttribute("hidden");
+                               labelElementS20.textContent = "Sin Termico";
+                               labelElementS20.style.whiteSpace = "nowrap";
+            
+                               
+                            }
+
+                    var labelElementS21 = document.getElementById("idTermicoS22");
+                            if (result.data[1].termico != 0 &&  (result.data[1].estado == "EN USO" || result.data[1].estado == "DISPONIBLE" || result.data[1].estado == "EMERGENCIA") ) {
+                            labelElementS21.textContent = result.data[1].termico;
+                            elemento13.removeAttribute("hidden");
+           
+                            //    elemento37.removeAttribute("disabled");
+                            }else{
+                                 elemento13.removeAttribute("hidden");
+                               labelElementS21.textContent = "Sin Termico";
+                               labelElementS21.style.whiteSpace = "nowrap";
+                                
+                            }
+
+                    var labelElementS22 = document.getElementById("idTermicoS33");
+                            if (result.data[2].termico != 0 &&  (result.data[2].estado == "EN USO" || result.data[2].estado == "DISPONIBLE" || result.data[2].estado == "EMERGENCIA") ) {
+                            labelElementS22.textContent = result.data[2].termico;
+                          elemento14.removeAttribute("hidden");
+           
+                           //     elemento38.removeAttribute("disabled");
+                            }else{
+                                elemento14.removeAttribute("hidden");
+                               labelElementS22.textContent = "Sin Termico";
+                               labelElementS22.style.whiteSpace = "nowrap";
+                                
+                            }
+
+                    var labelElementS23 = document.getElementById("idTermicoS44");
+                            if (result.data[3].termico != 0 &&  (result.data[3].estado == "EN USO" || result.data[3].estado == "DISPONIBLE" || result.data[3].estado == "EMERGENCIA") ) {
+                            labelElementS23.textContent = result.data[3].termico;
+                              elemento15.removeAttribute("hidden");
+                        
+          
+                              //      elemento39.removeAttribute("disabled");
+                            }else{
+                                elemento15.removeAttribute("hidden");
+                               labelElementS23.textContent = "Sin Termico";
+                               labelElementS23.style.whiteSpace = "nowrap";
+                                
+                            }
+
+                    var labelElementS24 = document.getElementById("idTermicoS55");
+                            if (result.data[4].termico != 0 &&  (result.data[4].estado == "EN USO" || result.data[4].estado == "DISPONIBLE" || result.data[4].estado == "EMERGENCIA") ) {
+                            labelElementS24.textContent = result.data[4].termico;
+                        
+                                elemento16.removeAttribute("hidden");
+                            //    elemento40.removeAttribute("disabled");
+                            }else{
+                                elemento16.removeAttribute("hidden");
+                               labelElementS24.textContent = "Sin Termico";
+                               labelElementS24.style.whiteSpace = "nowrap";
+                                
+                            }
+
+                    var labelElementS25 = document.getElementById("idTermicoS66");
+                            if (result.data[5].termico != 0 &&  (result.data[5].estado == "EN USO" || result.data[5].estado == "DISPONIBLE" || result.data[5].estado == "EMERGENCIA") ) {
+                            labelElementS25.textContent = result.data[5].termico;
+                              elemento17.removeAttribute("hidden");
+                          
+                            //    elemento41.removeAttribute("disabled");
+                            }else{
+
+                                elemento17.removeAttribute("hidden");
+                               labelElementS25.textContent = "Sin Termico";
+                               labelElementS25.style.whiteSpace = "nowrap";
+                                
+                            }
+
+                    var labelElementS26 = document.getElementById("idTermicoS77");
+                            if (result.data[6].termico != 0 &&  (result.data[6].estado == "EN USO" || result.data[6].estado == "DISPONIBLE" || result.data[6].estado == "EMERGENCIA") ) {
+                            labelElementS26.textContent = result.data[6].termico;
+                        
+                                 elemento18.removeAttribute("hidden");
+                           //     elemento42.removeAttribute("disabled");
+
+                            }else{
+                                elemento18.removeAttribute("hidden");
+                               labelElementS26.textContent = "Sin Termico";
+                               labelElementS26.style.whiteSpace = "nowrap";
+                                
+                            }
+                    var labelElementS27 = document.getElementById("idTermicoS88");
+                            if (result.data[7].termico != 0  &&  (result.data[7].estado == "EN USO" || result.data[7].estado == "DISPONIBLE" || result.data[7].estado == "EMERGENCIA")  ) {
+                            labelElementS27.textContent = result.data[7].termico;
+                          elemento19.removeAttribute("hidden");
+         
+                        //        elemento43.removeAttribute("disabled");
+                            }else{
+                                elemento19.removeAttribute("hidden");
+                               labelElementS27.textContent = "Sin Termico";
+                               labelElementS27.style.whiteSpace = "nowrap";
+                                
+                            }
+
+
+
+                      
+ 
+                      
+                    
+                }
+
+
+                    console.log(result.data.length);
+
+
+
+                },
+                error: function (errormessage) {
+                    console.log("no hay");
+                }
+            });
+
+
+
+        }
+
+        function tipoVehiculoIdentificador() {
+            var elementoPlaca = document.getElementById('PlacaElement');
+            var chasisPlaca = document.getElementById('ChasisElement');
+            // console.log(elementoPlaca);
+            
+            var dropdown = document.getElementById("TipoVehiculoId");
+            var descripcion = dropdown.options[dropdown.selectedIndex].text.toUpperCase();
+            const listaCabezalId = document.getElementById('ListaCabezalesId');
+            const descripcionCabezal = document.getElementById('descripcionCabezalId');
+
+            const marcaChasisId = document.getElementById('descipcionChasisId');
+
+            const marcaChasisPlaca = document.getElementById('ListaMarcaChasisId');
+
+            if (descripcion === "CHASIS")
+            {
+                chasisPlaca.removeAttribute("hidden");
+                elementoPlaca.setAttribute("hidden", true)
+                $("#descripcionCabezalId").val("");
+                $("#NumeroLlantas").val("");
+                $("#NumeroLlantasfinal").val("");
+                $("#TipoEstructura").val(0);
+                marcaChasisId.setAttribute("required","required");
+                marcaChasisPlaca.setAttribute("required", "required");
+                
+                listaCabezalId.removeAttribute("required");
+                descripcionCabezal.removeAttribute("required");              
+            }
+            
+            if(descripcion === "CABEZAL")
+            {
+                var colores = document.getElementById('colorData');
+                var selectElement = document.getElementById("colorData");
+                var selectedTextV2 = selectElement.options[selectElement.selectedIndex];
+                if(!selectedTextV2)
+                {
+                    alert("No hay color de vehiculo registrado")
+                }
+                var selectedText = selectedTextV2.text
+                colores.style.backgroundColor = selectedText;
+                colores.style.color = selectedText;
+
+                marcaChasisId.removeAttribute("required");
+                elementoPlaca.removeAttribute("hidden");              
+                chasisPlaca.setAttribute("hidden", true);
+
+                marcaChasisPlaca.removeAttribute("required");
+                listaCabezalId.setAttribute("required","required");
+                descripcionCabezal.setAttribute("required","required");
+
+                $("#idPlacaGenerador").val("");
+                $("#descipcionChasisId").val("");
+                $("#NumeroLlantasfinal").val("");
+                $("#NumeroLlantas").val("");
+                $("#TipoEstructura").val(0);
+            }     
+        }
+    
+        function nuevos(){
+            var elementoPlaca = document.getElementById('PlacaElement');
+            var chasisPlaca = document.getElementById('ChasisElement');
+         
+            chasisPlaca.setAttribute("hidden", true);
+            elementoPlaca.setAttribute("hidden", true);
+       
+            obtenerColores();
+            $("#ListaMarcaChasisId").val(0);
+            $("#idVehiculo").val("0");
+            $("#ListaCabezalesId").val(0);
+            $("#descripcionCabezalId").val("");
+            $("#descipcionChasisId").val("");
+            $("#idPlacaGenerador").val("");
+            $("#colorData").val(0);
+            $("#ModeloCabezal").val(0);
+            $("#TipoMarcaCabezal").val(0);
+            $("#AnioTipo").val(0);
+            $("#TipoMarcass").val(0);
+            $("#TipoEstructura").val(0);
+            $("#Modelo").val(0);
+            $("#Marca").val(0);
+            $("#TipoVehiculo").val(0);
+            $("#NumeroLlantas").val(0);
+            $("#NumeroLlantasfinal").val(0);
+            $("#NumeroLlantasHabilitado").val(0);
+            $("#TipoVehiculoId").val(0);
+            var elementochasis = document.getElementById("ChasisElement");
+            var elementoPlaca = document.getElementById('PlacaElement');
+            elementoPlaca.setAttribute("hidden", true);
+            elementochasis.setAttribute("hidden", true);
+        }
+
+        function obtenerColores(){
+            $.ajax({
+                url: '@Url.Action("FindColor","Vehiculo")',
+                type: "POST",
+                dataType: 'json',
+                success: function (result) {          
+                    const selectElement = document.getElementById('colorData');
+                    // Limpiar todas las opciones existentes
+                    selectElement.innerHTML = '';
+                    for (var i = 0; i < result.data.length; i++) {
+                        $("#colorData").append('"<option  id="' + result.data[i].descripcion + '"value ="' + result.data[i].idColor + '"  style="background-color:' + result.data[i].descripcion + ' ; color:' + result.data[i].descripcion + '">' + result.data[i].descripcion + '</option>"');    
+                    }
+                },
+                error: function (errormessage) {
+                 //   alertify.warning("Chofer no encontrado. Intente de nuevo");
+                }
+            });
+        }
+
+        function tiposEstructuras(){
+            var arregloRuta = [];
+            var id =    $("#TipoEstructura").val();
+            var tipoEstructura = {
+                "TipoEstructuraId": id,
+            };
+            arregloRuta.push(tipoEstructura);
+            var json = JSON.stringify(arregloRuta);
+            //   alert(id);
+            $.ajax({
+                url: '@Url.Action("FindTipoEstructura","Vehiculo")',
+                type: "POST",
+                dataType: 'json',
+                data: { json: json },
+                success: function (result) {
+                    /*console.log(result.results);*/                 
+               //     console.log(result.data);
+                    $("#NumeroLlantas").val(result.data);
+                    $("#NumeroLlantasfinal").val(result.data);
+                },
+                error: function (errormessage) {
+                   
+                }
+            });
+        }
+
+        function tiposEstructurasEditar() {
+            var arregloRuta = [];
+            var id = $("#TipoEstructura1").val();
+            var tipoEstructura = {
+                "TipoEstructuraId": id,
+            };
+            arregloRuta.push(tipoEstructura);
+            var json = JSON.stringify(arregloRuta);
+            //   alert(id);
+            $.ajax({
+                url: '@Url.Action("FindTipoEstructura","Vehiculo")',
+                type: "POST",
+                dataType: 'json',
+                data: { json: json },
+                success: function (result) {
+                    /*console.log(result.results);*/
+                    //     console.log(result.data);
+                    $("#NumeroLlantas12").val(result.data);
+                    $("#NumeroLlantasfinal").val(result.data);
+                },
+                error: function (errormessage) {
+                  
+                }
+            });
+        }
+
+        function obtenerColores1(dato){
+            $.ajax({
+                url: '@Url.Action("FindColor","Vehiculo")',
+                type: "POST",
+                dataType: 'json',
+                success: function (result) {
+                    const selectElement = document.getElementById('colorData1');
+                    // Limpiar todas las opciones existentes
+                    selectElement.innerHTML = '';
+                    for (var i = 0; i < result.data.length; i++) {
+                        if(result.data[i].idColor != dato)
+                        {
+                            $("#colorData1").append('"<option  id="' + result.data[i].descripcion + '"value ="' + result.data[i].idColor + '"   style="background-color:' + result.data[i].descripcion + ' ; color:' + result.data[i].descripcion + '">' + result.data[i].descripcion + '</option>"');                       
+                        }
+                        else
+                        {
+                            $("#colorData1").append('"<option  id="' + result.data[i].descripcion + '"value ="' + result.data[i].idColor + '" selected  style="background-color:' + result.data[i].descripcion + ' ; color:' + result.data[i].descripcion + '">' + result.data[i].descripcion + '</option>"');                      
+                        }
+                    }
+                    var colores = document.getElementById('colorData1');
+                    var selectElements = document.getElementById("colorData1");
+                    var selectedText = selectElements.options[selectElements.selectedIndex].text;
+                    colores.style.backgroundColor = selectedText;
+                    colores.style.color = selectedText;
+                    //for (var i = 0; i < result.data.length; i++) {
+                    //    $("#colorData1").append('"<option  id="' + result.data[i].descripcion + '"value ="' + result.data[i].idColor + '"  style="background-color:' + result.data[i].descripcion + ' ; color:' + result.data[i].descripcion + '">' + result.data[i].descripcion + '</option>"');
+                    //}
+
+                    //      const selectElement50 = document.getElementById('colorData1');
+                    //     selectElement50.innerHTML = '';
+                    // var colores = document.getElementById('colorData1');
+                    //// var colores = document.getElementById("colorData1");
+                    // var selectedText = colores.options[colores.selectedIndex].text;
+                    // colores.style.backgroundColor = selectedText;
+                    // colores.style.color = selectedText;
+                },
+                error: function (errormessage) {
+                 //   alertify.warning("Chofer no encontrado. Intente de nuevo");
+                }
+            });          
+        }
+
+        function editarDatos(vehiculo) {
+            var valor ;
+            console.log(vehiculo);
+            if (vehiculo.color == 0 || vehiculo.color == NaN)
+            {
+                valor = 0;
+            }
+            else
+            {
+                valor = vehiculo.color;
+            }
+            var elementoPlaca = document.getElementById('PlacaElement1');
+            var chasisPlaca = document.getElementById('ChasisElement1');
+     
+            if (vehiculo.descripcionTipoVehiculo == "Cabezal" || vehiculo.descripcionTipoVehiculo == "CABEZAL" )
+            {
+                obtenerColores1(valor);
+                //   var colores = document.getElementById('colorData1');
+                //var selectElements = document.getElementById("colorData1");
+                                          
+                elementoPlaca.removeAttribute("hidden");
+                chasisPlaca.setAttribute("hidden", true);
+                $("#AnioTipo2").val(vehiculo.anio);
+                $("#idCabezalVin1").val(vehiculo.vinCabezal);
+                $("#descripcionCabezalId1").val(vehiculo.descripcionCabezal);
+                $("#descripcionCabezalId2").val(vehiculo.descripcionCabezal);  
+                $("#ListaCabezalesId1").val(vehiculo.marcaCabezal);
+                $("#ModeloCabezal1").val(vehiculo.modeloCabezal);
+                $("#cabezalIdEditar").val(vehiculo.cabezalIds);
+                $("#idVehiculo1").val(vehiculo.idVehiculo);
+                $("#colorData1").val(vehiculo.color);
+                // cambiarColor1();
+                $('#idTipoVehiculo1').val(vehiculo.tipoVehiculoId);
+                $('#idTipoVehiculo25').val(vehiculo.tipoVehiculoId);
+                $('#idTipoVehiculo1').val(vehiculo.tipoVehiculoId);
+                $('#TipoVehiculo1').val(vehiculo.tipoVehiculoId);
+                $("#NumeroLlantasfinal").val(vehiculo.numeroLlantas);
+                $("#NumeroLlantas12").val(vehiculo.numeroLlantas);
+                $('#TipoEstructura1').val(vehiculo.tipoEstructura);
+              
+                estadoLlantaEditar
+                //obtenerColores1();   
+                tiposEstructurasEditar();
+            }
+            if (vehiculo.descripcionTipoVehiculo == "Chasis" || vehiculo.descripcionTipoVehiculo == "CHASIS" )
+            {                
+                chasisPlaca.removeAttribute("hidden");
+                elementoPlaca.setAttribute("hidden", true);
+                $("#idVehiculo1").val(vehiculo.idVehiculo);
+                $('#idTipoVehiculo25').val(vehiculo.tipoVehiculoId);
+                $('#idTipoVehiculo1').val(vehiculo.tipoVehiculoId);
+                $("#chasisIdEditar").val(vehiculo.chasisIds);
+                $("#AnioTipo2").val(vehiculo.anio);
+                //   $('#TipoVehiculoId').val(vehiculo.tipoVehiculoId);
+                $("#NumeroLlantasfinal").val(vehiculo.numeroLlantas);
+
+                $("#NumeroLlantas12").val(vehiculo.numeroLlantas);
+                $('#TipoEstructura1').val(vehiculo.tipoEstructura);
+                $("#descripcionChasisId2").val(vehiculo.descripcionChasisId2);
+                $("#descripcionChasisId").val(vehiculo.descripcionChasisId2);
+                $("#vinChasisId1").val(vehiculo.vin);
+                $("#tamanioId1").val(vehiculo.tamanio);
+                $("#placaAntiguaid1").val(vehiculo.placaAntigua);
+                $("#ListaMarcaChasisId1").val(vehiculo.marcaChasis);
+            }
+        }
+
+        function eliminarVehiculo(vehiculo) {
+            console.log(vehiculo);
+            $("#idVehiculoEliminar").val(vehiculo.idVehiculo);
+        }
+
+        function cambiarColor(){
+            var colores = document.getElementById('colorData');
+            var selectElement = document.getElementById("colorData");
+            var selectedText = selectElement.options[selectElement.selectedIndex].text;
+            colores.style.backgroundColor = selectedText;
+            colores.style.color = selectedText;
+        }
+       
+        function cambiarColor1(){
+            var colores = document.getElementById('colorData1');
+            var selectElement = document.getElementById("colorData1");
+            var selectedText = selectElement.options[selectElement.selectedIndex].text;
+            colores.style.backgroundColor = selectedText;
+            colores.style.color = selectedText;
+        }
+    </script>
+}

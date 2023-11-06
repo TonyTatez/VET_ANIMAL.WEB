@@ -1,0 +1,334 @@
+﻿@*@{
+    ViewBag.UserName = Session["UserName"] != null ? Session["UserName"].ToString() : "";
+    ViewBag.RoleName = Session["RoleName"] != null ? Session["RoleName"].ToString() : "";
+}
+*@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> ANIMAL PLACE </title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/TMSStyle.css" />
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light " >
+            @* <div class="">
+            <div class="position-absolute top-0 end-0">
+            <i class="bi bi-person"></i>
+            <a class="fa fa-user small" style="color: #127C8C;width: 14rem;" href="/Account/Index">Cerrar Sesion </a>
+            </div>
+            </div>*@
+            <div class="container-fluid" >
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    @* <img src="/imagenes/ATCOTRANS2.png" alt="" width="100">*@
+                    Clinica Veterinaria Animal Place
+                </a>
+
+                @if (TempData["menu"] != null)
+                {
+                    <button id="btnVehi" class="btn float-start" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"  role="button">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+
+
+                }
+
+
+
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel" data-bs-keyboard="false" data-bs-backdrop="true">
+        <div class="d-flex align-items-end flex-column" style="height: 30px;background-color: honeydew;">
+            <button type="button" style="background-color: honeydew; border:none" class="justify-content-end" data-bs-dismiss="offcanvas" aria-label="Cerrar">X</button>
+            @* <i class="bi bi-box-arrow-left" style="height: 50px;" ></i>*@
+        </div>
+        <div class="d-flex justify-content-center" style="background-color: honeydew">
+            <img src="/imagenes/ATCOTRANS2.png" alt="" width="80px" height="60px" class="rounded-circle border border-light">
+        </div>
+        <div class="d-flex justify-content-center" style="background-color:honeydew">
+            <p class="d-none d-sm-inline mx-1 h6">  </p>
+
+        </div>
+        <div class="d-flex justify-content-center" style="background-color: honeydew">
+            <p class="d-none d-sm-inline mx-1 small " style="color:black ;">TMS Mantenimiento</p>
+        </div> 
+
+
+
+
+
+        <div class="offcanvas-body" >
+            <h6 class="offcanvas-title d-none d-sm-block" id="offcanvas">  </h6>
+
+
+
+
+           <h6 class="offcanvas-title d-none d-sm-block " id="offcanvas"> </h6>
+            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start small" id="menu">
+                <li class="nav-item">
+                    <a href="/Home/Index" class="nav-link text-truncate">
+                        <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">  Inicio</span>
+                    </a>
+                </li>
+                <li class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-list-columns-reverse"></i><span class="ms-1 d-none d-sm-inline">  Catálogos Llantas</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style=" width:100%;" aria-labelledby="dropdown">
+
+                        <li><a class="dropdown-item" href="/Marcas/IndexMarcasLlantas">Marcas Llantas</a></li>
+                        <li><a class="dropdown-item" href="/Medidas/IndexMedidasLlantas">Medidas de Llantas</a></li>
+                        <li><a class="dropdown-item" href="/Disenios/IndexDiseniosLlantas">Diseños de Llantas</a></li>
+                        <li><a class="dropdown-item" href="/Tipos/IndexTiposLlantas">Tipos de Llantas</a></li>
+                        <li><a class="dropdown-item" href="/Ejes/IndexEjesLlantas">Eje de Llantas</a></li>
+                        <li><a class="dropdown-item" href="/Estados/IndexEstadosLlantas">Estados de Llantas</a></li>
+
+                    </ul>
+
+
+                </li>
+
+                <li class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-list-columns-reverse"></i><span class="ms-1 d-none d-sm-inline">  Catálogos Vehiculos</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
+
+
+                        <li><a class="dropdown-item" href="/Marcas/IndexMarcasCabezales">Marcas Cabezales</a></li>
+                        <li><a class="dropdown-item" href="/Cabezal/Index">Cabezal</a></li>
+                        <li><a class="dropdown-item" href="/Modelos/IndexModelosCabezales">Modelos de Cabezales</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/Marcas/IndexMarcasChasis">Marcas Chasis</a></li>
+                        <li><a class="dropdown-item" href="/Chasis/Index">Chasis</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                       
+                     
+                        <li><a class="dropdown-item" href="/Estados/IndexEstadosVehiculos">Estados de Vehiculos</a></li>
+                        <li><a class="dropdown-item" href="/Tipos/IndexTiposVehiculos">Tipo de Vehículo</a></li>
+                        <li><a class="dropdown-item" href="/TipoEstructura/Index">Tipo de Estructura</a></li>
+
+                        <li><a class="dropdown-item" href="/Color/Index">Colores</a></li>
+                        <li><a class="dropdown-item" href="/Anio/Index">Año</a></li>
+                    </ul>
+
+                </li>
+
+                <li class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-list-columns-reverse"></i><span class="ms-1 d-none d-sm-inline">  Catálogos Generadores</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
+                        <li><a class="dropdown-item" href="/Marcas/IndexMarcasGeneradores">Marcas Generadores</a></li>
+                        <li><a class="dropdown-item" href="/Generador/Index">Generador</a></li>
+
+                    </ul>
+
+
+                </li>
+
+                <li class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-list-columns-reverse"></i><span class="ms-1 d-none d-sm-inline">  Catálogos</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
+                        <li><a class="dropdown-item" href="/Estados/IndexEstadosInspecciones">Estados de Inspecciones</a></li>
+                    </ul>
+
+
+                </li>
+
+                <li class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-truck-flatbed"></i><span class="ms-1 d-none d-sm-inline">  Vehículo</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
+                        <li><a class="dropdown-item" href="/Vehiculo/Index">Vehículo</a></li>
+
+
+                    </ul>
+                </li>
+
+                <li  class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-truck-flatbed"></i><span class="ms-1 d-none d-sm-inline"> Paises</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
+                        <li><a class="dropdown-item" href="/Pais/Index">Pais</a></li>
+
+
+                    </ul>
+                </li>
+
+                <li class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-truck-flatbed"></i><span class="ms-1 d-none d-sm-inline"> Ciudades</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
+                        <li><a class="dropdown-item" href="/Ciudad/Index">Ciudad</a></li>
+
+
+                    </ul>
+                </li>
+
+                <li class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-truck-flatbed"></i><span class="ms-1 d-none d-sm-inline"> Clientes</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
+                        <li><a class="dropdown-item" href="/Clientes/Index">Clientes</a></li>
+
+
+                    </ul>
+                </li>
+
+                <li class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-truck-flatbed"></i><span class="ms-1 d-none d-sm-inline"> Provincias</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
+                        <li><a class="dropdown-item" href="/Provincia/Index">Provincias</a></li>
+
+
+                    </ul>
+                </li>
+              
+                <li class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-gear"></i><span class="ms-1 d-none d-sm-inline">  Llantas</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
+                        <li><a class="dropdown-item" href="/Llanta/Index">Registro de Llanta</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="">Reporte de Llanta</a></li>
+                        <li><a class="dropdown-item" href="/Llanta/MontajeLlanta">Montaje de Llantas</a></li>
+                        <li><a class="dropdown-item" href="/Llanta/ReporteInspeccionLlantas">Reporte Inspección de Llantas</a></li>
+                        <li><a class="dropdown-item" href="/Llanta/CargaMasiva">Carga Masiva Histórico Llantas</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-truck-flatbed"></i><span class="ms-1 d-none d-sm-inline">  Recepción de Vehículos</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
+                        <li><a class="dropdown-item" href="/Recepcion/Index">Recepción</a></li>
+                        <li><a class="dropdown-item" href="#">Configuración de Items por Inspección</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-journal-check"></i><span class="ms-1 d-none d-sm-inline">  Órdenes de trabajo</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
+                        <li><a class="dropdown-item" href="#">OT</a></li>
+                        <li><a class="dropdown-item" href="#">Acciones de Trabajo</a></li>
+                        <li><a class="dropdown-item" href="#">Artículos</a></li>
+                        <li><a class="dropdown-item" href="#">Autorizaciones</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Bitácora de Ordenes de Trabajo</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" style="width:100%;">
+                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-lock-fill"></i><span class="ms-1 d-none d-sm-inline">  Seguridad</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
+                        <li><a class="dropdown-item" href="#">Usuarios</a></li>
+                        <li><a class="dropdown-item" href="#">Roles</a></li>
+                        <li><a class="dropdown-item" href="/ConfiguracionParametro/Index">Configuraciones</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item" style="width:100%;">
+                    <a href="/Account/CerrarSession" class="nav-link text-truncate">
+                    <i class="bi bi-box-arrow-left"></i> <span class="ms-1 d-none d-sm-inline">  Cerrar Sesion</span>
+                    </a>
+                </li>
+            </ul>
+
+        
+        </div>
+
+      
+    
+
+     
+
+
+    </div>
+
+
+
+    <main id="app-main" class="app-main">
+        <div class="wrap">
+
+
+            @if (TempData["MensajeExito"] != null)
+            {
+
+                <div class="alert alert-success" role="alert">
+                    @Html.Raw(TempData["MensajeExito"])
+                </div>
+
+            }
+            @if (TempData["MensajeAdvertencia"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @Html.Raw(TempData["MensajeAdvertencia"])
+                </div>
+
+            }
+            @if (TempData["MensajeError"] != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @Html.Raw(TempData["MensajeError"])
+                </div>
+
+            }
+            @if (TempData["MensajeInformacion"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @TempData["MensajeInformacion"]
+                </div>
+
+            }
+
+            <div class="container-fluid">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+
+        </div>
+      
+    </main>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,496 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.css" />
+<link rel="stylesheet" href="~/Theme/js/bootstrap-filestyle/bootstrap-filestyle.js" />
+
+<link rel="stylesheet" href="~/Content/bootstrap.css" />
+<link rel="stylesheet" href="~/Content/Site.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
+
+@model TMS_MANTENIMIENTO.WEB.Models.CabezalViewModel
+@{
+    ViewData["Title"] = "Cabezal";
+}
+
+
+
+<!-- Modal Guardar-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content " style="width:100%">
+            <div class="modal-header TMSHeaderModal">
+                <h5 class="modal-title TMSTituloModal">Cabezal</h5>
+                <div class="d-flex align-items-end flex-column">
+                    <button type="button" class="justify-content-end rounded-circle" data-bs-dismiss="modal" aria-label="Cerrar">X</button>
+                </div>
+            </div>
+            <form asp-action="GuardaryEditarInfo">
+
+                <div class="modal-body ">
+                    @* <div class="form-outline mb-4">
+                    <label class="form-label btn-color-info TMSlabelText" for="ruc">Id</label>
+                    <input type="text" asp-for="@Model.idPlaca" class="form-control form-control-lg  TMSTextBoxValores"
+                    disabled />
+                    </div>*@
+                    <div class="form-outline mb-4">
+                        <label class="form-label btn-color-info TMSlabelText" for="ruc">Placa</label>
+                        <input type="text" asp-for="@Model.placa" class="form-control form-control-lg  TMSTextBoxValores"
+                               placeholder="Ingrese la Descripcion" />
+                    </div>
+
+
+                    <div class="form-outline mb-4">
+
+                        <div>
+                            <label class="input-group-text TMSlabelComboValores" for="ModeloLabel" style="margin-bottom:3%" id="ModeloLabel">Modelo</label>
+                        </div>
+
+                        @if (Model.ListaModelos != null)
+                        {
+                            @Html.DropDownListFor(m => m.idModelo,
+                            new SelectList(Model.ListaModelos, "idModelo", "descripcion", Model.idModelo),
+                            new { @class = "form-control", placeholder = "Filtar" , id="Modelo" ,style="width:100%"})
+                        }
+                        else
+                        {
+                            <select class="custom-select" id="Modelo" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                            </select>
+                        }
+                        
+
+
+                    </div>
+
+                    <div class="form-outline mb-4">
+
+                        <div>
+                            <label class="input-group-text TMSlabelComboValores" for="MarcaLabel" style="margin-bottom:3%" id="MarcaLabel">Marca</label>
+                        </div>
+
+                        @if (Model.ListaMarcas != null)
+                        {
+                            @Html.DropDownListFor(m => m.idMarca,
+                            new SelectList(Model.ListaMarcas, "idMarca", "descripcion", Model.idMarca),
+                            new { @class = "form-control", placeholder = "Filtar" , id="Marca" ,style="width:100%"})
+                        }
+                        else
+                        {
+                            <select class="custom-select" id="Marca" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                            </select>
+                        }                       
+
+
+
+                    </div>
+
+                    @*  <div class="form-outline mb-4">
+                    <label class="form-label btn-color-info TMSlabelText" for="ruc">Tipo Placa</label>
+                    <input type="text" id="TipoPlaca1" class="form-control form-control-lg  TMSTextBoxValores"
+                    placeholder="Ingrese el tipo de la Placa" />
+                    </div>*@
+                </div>
+                <div class="modal-footer">
+                    <button id="guardarInformacion" type="submit" class="bi bi-save btn btn-primary  btn-sm"> Guardar </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar -->
+<div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content " style="width:100%">
+            <div class="modal-header TMSHeaderModal">
+                <h5 class="modal-title TMSTituloModal">Cabezal</h5>
+                <div class="d-flex align-items-end flex-column">
+                    <button type="button" class="justify-content-end rounded-circle" data-bs-dismiss="modal" aria-label="Cerrar">X</button>
+                </div>
+            </div>
+            <form asp-action="GuardaryEditarInfo">
+
+
+                <div class="modal-body ">
+                    <div hidden class="form-outline mb-4">
+                        <label class="form-label btn-color-info TMSlabelText">Id</label>
+                        <input type="text" asp-for="@Model.idCabezal" id="idPlaca" class="form-control form-control-lg  TMSTextBoxValores" />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <label class="form-label btn-color-info TMSlabelText" for="desc">Placa</label>
+                        <input id="descripcion2" type="text" asp-for="@Model.placa" class="form-control form-control-lg  TMSTextBoxValores" />
+                    </div>
+                </div>
+
+                <div class="form-outline mb-4">
+
+                    <div>
+                        <label class="input-group-text TMSlabelComboValores" for="ModeloLabel" style="margin-bottom:3%" id="ModeloLabel">Modelo</label>
+                    </div>
+
+
+                    
+                    @if (Model.ListaModelos != null)
+                    {
+                        @Html.DropDownListFor(m => m.idModelo,
+                    new SelectList(Model.ListaModelos, "idModelo", "descripcion", Model.idModelo),
+                    new { @class = "form-control", placeholder = "Filtar" , id="ModeloEditar" ,style="width:100%"})                                            
+                    }
+                    else
+                    {
+                        <select class="custom-select" id="ModeloEditar" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                        </select>
+                    }
+                </div>
+
+                <div class="form-outline mb-4">
+
+                    <div>
+                        <label class="input-group-text TMSlabelComboValores" for="MarcaLabel" style="margin-bottom:3%" id="MarcaLabel">Marca</label>
+                    </div>
+
+                    @if (Model.ListaMarcas != null)
+                    {
+                        @Html.DropDownListFor(m => m.idMarca,
+                        new SelectList(Model.ListaMarcas, "idMarca", "descripcion", Model.idMarca),
+                        new { @class = "form-control", placeholder = "Filtar" , id="MarcaEditar" ,style="width:100%"})
+                    }
+                    else
+                    {
+                        <select class="custom-select" id="MarcaEditar" style=" margin-left:2%;text-align:center;  color:blue; width:100%">
+                        </select>
+                    }
+                    
+
+                </div>
+
+
+
+                <div class="modal-footer">
+                    <button id="guardarInfo2" type="submit" class="bi bi-pen btn btn-primary  btn-sm"> Editar </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal Eliminar -->
+<div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content " style="width:100%">
+            <div class="modal-header TMSHeaderModal">
+                <h5 class="modal-title TMSTituloModal">TMS Mantenimiento</h5>
+                <div class="d-flex align-items-end flex-column">
+                    <button type="button" class="justify-content-end  cross" data-bs-dismiss="modal" aria-label="Cerrar">X</button>
+                </div>
+            </div>
+            <form asp-action="DeleteInformacion">
+
+
+                <div class="modal-body ">
+                    <div hidden class="form-outline mb-4">
+                        <label class="form-label btn-color-info TMSlabelText">Id</label>
+                        <input type="text" asp-for="@Model.idCabezal" id="idPlacaEliminar" class="form-control form-control-lg  TMSTextBoxValores" />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <label class="form-label btn-color-info TMSlabelText" style="margin-top:28px; font-size:13px">¿Está seguro de querer eliminar esta Placa?</label>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="eliminarInfoData" style="padding:10px; width:50px;" type="submit" class=" btn btn-success  btn-sm">Sí </button>
+                    <button id="eliminarInfoDatos" style="padding:10px; width:50px;" data-bs-dismiss="modal" aria-label="Cerrar" type="button" class=" btn btn-danger  btn-sm">No </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="font-size: 13px !important;">
+    <div class="col-md-12">
+        <div class="widget">
+            <header class="widget-header" style="padding-bottom: 5px !important;">
+                <div class="row">
+                    <h4 class="widget-title col-md-12" style="font-weight:400 !important;font-size: 21px; color:#333333; font-family: Calibri, Helvetica Neue, Helvetica, Arial, sans-serif;">Cabezal</h4>
+                </div>
+            </header>
+            <hr class="widget-separator" style="margin-top:2px !important">
+            <div class="widget-body">
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example" style="margin-bottom:5px !important;">
+                    <button id="btnNuevo" type="button" class="btn btn-success btn-sm bi bi-clipboard-plus" data-bs-toggle="modal" data-bs-target="#exampleModal">   Nuevo </button>
+
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm  dataTable" id="tablaLlantas">
+
+                        <thead>
+                            <tr>
+                                <th>
+                                    Id
+                                </th>
+                                @*  <th >
+                                Tipo Placa
+                                </th>*@
+                                <th>
+                                    Placa
+                                </th>
+                                <th>
+                                    Marca
+                                </th>
+                                <th>
+                                    Modelo
+                                </th>
+
+                                <th>
+                                    Acciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (Model.ItemCabezal != null)
+                            {
+
+                                @foreach (var item in Model.ItemCabezal)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(model => item.idCabezal)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(model => item.placa)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(model => item.descripcionMarca)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(model => item.descripcionModelo)
+                                        </td>
+
+                                        <td>
+                                            <button title="Editar Placa" class="btn p-v-sm btn-success btn-sm" id="btnEditar" data-bs-toggle="modal" data-bs-target="#editarModal" onclick="editar({idPlaca:@item.idCabezal ,descripcion:'@item.placa', idModelo:@item.idModelo, idMarca: @item.idMarca});">
+                                                <i class="bi bi-pen"></i>
+                                            </button>
+
+                                            <button title="Eliminar Placa" class="btn p-v-sm btn-danger btn-sm" id="btnEliminar" data-bs-toggle="modal" data-bs-target="#eliminarModal" onclick="eliminarPlaca({idPlaca:@item.idCabezal});">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>No hay Datos que Mostrar</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>
+                                    Id
+                                </th>
+                                <th>
+                                    Placa
+                                </th>
+                                <th>
+                                    Marca
+                                </th>
+                                <th>
+                                    Modelo
+                                </th>
+                                <th>
+                                    Acciones
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+    <script src="~/Content/jquery-2.2.4.js"></script>
+    <script src="~/Content/bootstrap.js"></script>
+    <script src="~/Content/modernizr-2.8.3.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript">
+        var table;
+        // var inputElement = document.getElementById("Descripcion1");
+        //var inputElement2 = document.getElementById("TipoPlaca1");
+
+
+        $(document).ready(function () {
+            $('#tablaLlantas').DataTable();
+        });
+
+        function editar(Placa) {
+            console.log(Placa);
+            $('#idPlaca').val(Placa.idPlaca);
+            $('#descripcion2').val(Placa.descripcion);
+            $('#ModeloEditar').val(Placa.idModelo);
+            $('#MarcaEditar').val(Placa.idMarca);
+            console.log($('#descripcion').val());
+        }
+        function eliminar(Placa) {
+            console.log(Placa);
+            $('#idPlaca').val(Placa.idPlaca);
+
+
+        }
+
+        $("#btnNuevo").click(function () {
+            inputElement.style.border = "1px solid #ced4da";
+            //inputElement2.style.border = "1px solid #ced4da";
+            //    inputElement.style.border = "0px solid black";
+
+
+        });
+
+
+        //$("#guardarInformacion").click(function () {
+        //    var dato1 = $('#IdPlaca1').val();
+        //    var dato2 = $('#Descripcion1').val();
+        //    var dato3 = "Llanta";
+        //    var data4 = 0;
+
+
+        //    if (dato1 == "") {
+        //        dato4 = 0;
+
+        //    } else {
+        //        dato4 = $('#IdPlaca1').val();
+
+        //    }
+
+        //    //alert("erro");
+        //    if (dato2 == "") {
+
+        //        inputElement.style.border = "1px solid red";
+        //        inputElement.style.border = "1px solid red";
+        //        inputElement.style.borderRadius = "5px";
+
+
+
+        //    } else {
+
+        //        inputElement.style.border = "1px solid #ced4da";
+
+
+
+        //    }
+
+
+
+        //    //if (dato3 == "") {
+        //    //    inputElement2.style.border = "1px solid red";
+        //    //    inputElement2.style.border = "1px solid red";
+        //    //    inputElement2.style.borderRadius = "5px";
+
+
+        //    //}else{
+
+
+        //    //    inputElement2.style.border = "1px solid #ced4da";
+
+        //    //}
+
+        //    // alert($('#Descripcion1').val());
+        //    //alert($('#TipoPlaca1').val());
+
+
+
+
+
+        //    //            alert(datos);
+
+        //    //          alert(JSON.stringify(datos));
+
+
+
+        //    if (dato2 != "") {
+        //        var arregloInfo = [];
+        //        var datosInfo = {
+        //            "descripcion": dato2,
+        //            "idPlaca": dato1,
+        //            "tipoPlaca": "Llanta"
+
+        //        };
+
+        //        datosInfo.descripcion = $('#Descripcion1').val();
+        //        datosInfo.idPlaca = dato4;
+        //        datosInfo.tipoPlaca = "Llanta";
+        //        arregloInfo.push(datosInfo);
+        //        var json = JSON.stringify(arregloInfo);
+
+        //        $.ajax({
+        //            url: '@Url.Action("GuardaryEditarInfo","Placa")',
+        //            data: { json: json },
+        //            type: "POST",
+        //            dataType: "json",
+        //            success: function (result) {
+        //                $('#ClienteModal').modal('hide');
+        //                if (result.data == "ok") {
+        //                    alertify.success("Se Guardo la Placa correctamente.");
+        //                    table._fnAjaxUpdate(null, false);
+        //                } else {
+        //                    alert.error(result.msg);
+        //                }
+        //            },
+        //            error: function (errormessage) {
+        //                aler.error("Error al guardar la Placa. Intente de nuevo.");
+        //            }
+        //        });
+
+        //    }
+
+
+
+
+        //    //alert("HOLA");
+
+        //});
+
+        function eliminarPlaca(guia) {
+            console.log(guia);
+
+            $("#idPlacaEliminar").val(guia.idPlaca);
+
+
+            //   $("#eliminarModal").modal({ backdrop: 'static', keyboard: false });
+
+
+        }
+
+
+
+
+    </script>
+
+}

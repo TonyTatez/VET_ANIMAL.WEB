@@ -1,0 +1,1621 @@
+﻿<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
+@model TMS_MANTENIMIENTO.WEB.Models.RecepcionVehiculo
+@{
+    //ViewData["Title"] = "Llanta";
+}
+
+
+
+
+
+<!-- Modal Guardar-->
+<div class="modal fade" id="AgregaLlantaModal" tabindex="-1" aria-labelledby="AgregaLlantaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width:100%">
+            <div class="modal-header TMSHeaderModal ">
+                <h5 class="modal-title TMSTituloModal p-2">Registro de Preguntas  </h5>
+                <div class="d-flex align-items-end flex-column">
+                    <button type="button" style="color: black" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+            </div>
+
+
+            <form asp-action="GuardaryEditarInfo">
+
+
+                <div class="modal-body">
+
+                    <div hidden>
+                        <input type="text" id="termicoGuardar" class="form-control form-control-lg TMSTextBoxValores" />
+                    </div>
+
+
+                 
+
+                </div>
+
+
+                <div class="modal-footer TMSHeaderModal">
+                    <button id="guardarInformacion" type="submit" class="btn btn-success bi bi-save btn-grad btn-sm"> Guardar </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="row" style="font-size: 13px !important;">
+    <div class="col-md-12">
+        <div class="widget">
+            <header class="widget-header" style="padding-bottom: 5px !important;">
+                <div class="row">
+                    <h4 class="widget-title col-md-12" style="font-weight:400 !important;font-size: 21px; color:#333333; font-family: Calibri, Helvetica Neue, Helvetica, Arial, sans-serif;">Recepcion de Vehiculos</h4>
+                </div>
+            </header>
+            <hr class="widget-separator" style="margin-top:2px !important">
+            <div class="widget-body">
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example" style="margin-bottom:5px !important;">
+                    <button id="btnNuevo" type="button" class="btn btn-success btn-sm bi bi-clipboard-plus" data-bs-toggle="modal" data-bs-target="#AgregaLlantaModal">   Nuevo </button>
+
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm  dataTable" id="tablaLlantas">
+
+                        <thead>
+                            <tr>
+                            <tr>
+                                <th>
+                                    Id
+                                </th>
+                                <th>
+                                    Nomnbre del Formulario
+                                </th>
+                                <th>
+                                    Fecha de Creacion del formulario
+                                </th>
+                             
+                                <th>
+                                    Acciones
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (Model.listFormulario != null)
+                            {
+
+                                @foreach (var item in Model.listFormulario)
+                                {
+                                    @Html.HiddenFor(model => item.IdForm)
+                                    @Html.HiddenFor(model => item.FormName)
+
+
+                                    @Html.HiddenFor(model => item.FechaRegistro)
+                                  
+
+
+
+                                    
+                                    <tr>
+
+
+                                        <td>
+                                            @Html.DisplayFor(model => item.IdForm)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.FormName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => item.FechaRegistro)
+                                        </td>
+
+                                       
+
+                                        <td>
+                                            <button title="Editar  Formulario" class="btn p-v-sm btn-success btn-sm" style="margin-right: 2px !important;" data-bs-toggle="modal" data-bs-target="#AgregaLlantaModal" onclick="editar({IdForm:parseInt(@item.IdForm) , nameForm:'@item.FormName')  });">
+                                                <i class="bi bi-clipboard-data-fill"></i>
+                                            </button>
+
+                                          
+
+                                        </td>
+                                    </tr>
+                                }
+
+
+
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>No hay Datos que Mostrar</td>
+                                    <td></td>
+                                   
+                                </tr>
+                            }
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>
+                                    Id
+                                </th>
+                                <th>
+                                    Termico
+                                </th>
+                                <th>
+                                    Diseno
+                                </th>
+                                <th>
+                                    Medida Llanta
+                                </th>
+                                <th>
+                                    MM Original
+                                </th>
+                                <th>
+                                    Marca
+                                </th>
+                                <th>
+                                    Eje
+                                </th>
+                                <th>
+                                    Estado
+                                </th>
+                                <th>
+                                    Tipo Llanta
+                                </th>
+                                <th>
+                                    Ultima Inspeccion
+                                </th>
+                                <th>
+                                    Vehiculo Asignado
+                                </th>
+                                <th>
+                                    Posicion Llanta
+                                </th>
+                                <th>
+                                    Acciones
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+    </div>
+</div>
+
+
+
+<!-- Modal Eliminar -->
+<div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content " style="width:100%">
+            <div class="modal-header TMSHeaderModal">
+                <h5 class="modal-title TMSTituloModal">TMS Mantenimiento</h5>
+                <div class="d-flex align-items-end flex-column">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+            </div>
+            <form asp-action="DeleteInformacion">
+
+
+                <div class="modal-body ">
+                  
+                    <div class="form-outline mb-4">
+                        <label class="form-label btn-color-info TMSlabelText" style="margin-top:28px; font-size:13px">¿Está seguro de querer eliminar este Vehiculo?</label>
+                    </div>
+                </div>
+
+                <div class="modal-footer TMSHeaderModal">
+                    <button id="eliminarInfoData" style="padding:10px; width:50px;" type="submit" class=" btn btn-success  btn-sm btn-grad">Sí </button>
+                    <button id="eliminarInfoDatos" style="padding:10px; width:50px;" data-bs-dismiss="modal" aria-label="Cerrar" type="button" class=" btn btn-danger  btn-sm btn-grad">No </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Modal OK -->
+<div class="modal fade" id="AgregaInspeccionLlantaModal" aria-labelledby="AgregaInspeccionLlantaModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header TMSHeaderModal">
+                <h5 id="termicosIds" class="modal-title TMSTituloModal">Inspeccion de Llanta  <span style="color:red; font-size:24px; margin-left:120px;">Termico:<span id="obtenerTermicoFinalTer" style="font-size:24px;font-family:Arial "></span></span></h5>
+                <div class="d-flex align-items-end flex-column">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+            </div>
+            <div style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif  ; margin-top:3%; color:black; font-size:17px; text-align:center">
+                Ultima Inspeccion
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal OK -->
+<div class="modal fade" id="AgregarReencauche" aria-labelledby="AgregaInspeccionLlantaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header TMSHeaderModal">
+                <h5 class="modal-title TMSTituloModal">Reencauche de Llanta</h5>
+                <div class="d-flex align-items-end flex-column">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+            </div>
+            <form asp-action="GuardaryEditarReencaucheLlantas">
+
+                <div class="modal-body ">
+                    <div hidden>
+                      
+                    </div>
+
+
+                    <div class="form-row" style="display:flex ;margin-left:50px; justify-content: center;">
+
+
+                        <div class="form-group col-md-6">
+                            <label style="display: block; text-align: start" for="inputGroupSelect01">Termico  </label>
+
+                            <input type="text" id="numeroPosicionReen" autocomplete="off" step="any" style="width:100%; padding:5px; border:0.5px dotted gray ; color: blue; text-align:center" disabled />
+
+
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label style="display: block; text-align: start" for="inputGroupSelect01">Posicion  </label>
+
+                            <input type="text" id="posicionTextoId" autocomplete="off" step="any" style="width:100%; padding:5px; border:0.5px dotted gray ; color: blue; text-align:center" disabled />
+
+
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="form-row" style="display:flex ;margin-left:50px; justify-content: center;">
+                        <div class="form-group col-md-6">
+                            <label style="display: block; text-align: start" for="inputGroupSelect01">Marca Anterior</label>
+
+                          
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label style="display: block; text-align: start" for="inputGroupSelect01">Marca Nueva</label>
+
+                          
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-row" style="display:flex ;margin-left:50px; justify-content: center;">
+                        <div class="form-group col-md-6">
+                            <label style="display: block; text-align: start" for="inputGroupSelect01">Diseño Anterior     </label>
+
+                      
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label style="display: block; text-align: start" for="inputGroupSelect01">Diseño Nuevo     </label>
+
+                          
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+                    <div class="form-row" style="display:flex ;margin-left:50px; justify-content: center;">
+
+                        <div class="form-group col-md-6">
+                            <label style="display: block; text-align: start" for="inputGroupSelect01">Medida Llanta</label>
+
+
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label style="display: block; text-align: start" for="inputGroupSelect01">Fecha Reencauche</label>
+                          
+                        </div>
+
+
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+                <div class="modal-footer TMSHeaderModal">
+                    <button type="submit" class="bi bi-save  btn btn-primary btn-ml btn-grad">  Guardar Reencauche </button>
+                    @*                    <button type="button" id="reencaucheIdsVer" class="bi bi-eye  btn btn-success  btn-ml btn-grad">  Ver Reencauches </button>
+                    *@
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div id="myModal" class="modales">
+    <div class="modal-contents">
+        <div class="row" style="width:100%  !important; " hidden>
+            <div class="form-outline mb-4">
+                <label class="form-label TMSlabelText" for="ruc">Id Llanta</label>
+              
+            </div>
+            <div class="form-outline mb-4">
+                <label class="form-label TMSlabelText" for="ruc">IdVehiculo</label>
+               
+            </div>
+
+            <div class="form-outline mb-4">
+                <label class="form-label TMSlabelText" for="ruc">termico llanta </label>
+               
+            </div>
+
+        </div>
+        <div class="row" style="width:100%  !important; ">
+            <div class="input-group col-md-3">
+                <label class="form-label" for="desde" style="font-size:16px; margin-right: 3px; font-weight: bold;">Desde:</label>
+            </div>
+            <div class="input-group col-md-3">
+                <label class="form-label" for="hasta" style="font-size:16px; margin-right: 5px; font-weight: bold;">Hasta:</label>
+             </div>
+            <div class="input-group col-md-3">
+                <button id="Filtrar" type="submit" class="col-md-3 btn p-v-sm btn-primary" style="padding-right:10px; max-height: 40px;  margin-right:50px; "> Filtrar </button>
+                <button id="cancelarTablaHisotricoVehiculo" type="submit" onclick="cancelarInspecciones();" class="col-md-4 btn p-v-sm btn-danger"> Cancelar </button>
+
+            </div>
+
+        </div>
+
+        <div>
+
+
+            <table class="table  table-bordered   dataTables_scrollBody  display nowrap" style="width:100%;  text-align:center ;font-size:12px;" id="tblReporteConsolidado2">
+                <thead>
+                    <tr style="text-align:center">
+
+
+                        <th style="text-align:center">Placa</th>
+                        <th style=" margin-right:80px;  margin-left:80px"><span>Tipo de Vehiculo</span></th>
+                        <th style="text-align:center">Diseño</th>
+                        <th style="text-align:center">Medida</th>
+                        <th style="text-align:center">Marca</th>
+                        <th style="text-align:center">MM1</th>
+                        <th style="text-align:center">MM2</th>
+                        <th style="text-align:center">MM3</th>
+                        <th style="text-align:center">MM4</th>
+                        <th style="text-align:center">MMorgiginal</th>
+                        <th style="text-align:center">MMRetiro</th>
+                        <th style="">% Desgastes</th>
+                        <th style="">Estado Inspeccion</th>
+                        <th style="">Fecha Inspeccion</th>
+                        <th style="">Observacion</th>
+
+
+                    </tr>
+                </thead>
+                <tbody id="tbodyInspeccionTable">
+                </tbody>
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Content/jquery-2.2.4.js"></script>
+    <scripst src="~/Content/bootstrap.js"></scripst>
+    <script src="~/Content/modernizr-2.8.3.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript">
+        var table;
+
+
+
+
+
+        $(document).ready(function () {
+            $('#tablaLlantas').dataTable();
+
+
+            var mm1 = parseFloat($("#m1Medida").val());
+            var mm2 = parseFloat($("#m2Medida").val());
+            var mm3 = parseFloat($("#m3Medida").val());
+            var mm4 = parseFloat($("#m4Medida").val());
+            var mmoriginales = parseFloat($("#OriginalMedida").val());
+            var mmMinimos = parseFloat($("#mmMinimoMedida").val());
+            var mmretiros = parseFloat($("#mmRetiroMedida").val());
+            var dato = parseInt(Math.round((1 - (mmMinimos - mmretiros) / mm1) * 100));
+
+            $("#mmPorcDesgaste").val(dato);
+
+        });
+
+
+        // var inputElement = document.getElementById("Descripcion1");
+        //var inputElement2 = document.getElementById("TipoMarca1");
+
+
+
+
+
+
+
+
+        function cambiosEstadoInspeccion() {
+            var dropdown = document.getElementById("estadoIdInspeccionLlantas");
+            var descripcion = dropdown.options[dropdown.selectedIndex].text.toUpperCase();
+            $("#estadollantainspeccion").val(descripcion);
+
+
+
+        }
+
+
+
+
+
+
+        function cancelarInspecciones() {
+            const selectElement = document.getElementById('tbodyInspeccionTable');
+            selectElement.innerHTML = '';
+            var insp = document.getElementById("AgregaInspeccionLlantaModal");
+
+            $("#AgregaInspeccionLlantaModal").modal('show');
+            const modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+
+
+
+            var modalContent = $("#AgregaInspeccionLlantaModal .modal-content");
+
+            // Aplicar un estilo para limitar la altura y agregar desplazamiento
+            modalContent.css({
+                "max-height": "95vh", // Altura máxima del contenido
+                "overflow-y": "auto" // Agregar desplazamiento vertical si es necesario
+            });
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+        function inspeccionLineal(dato) {
+
+
+
+
+            //alert(dato.ultimaInspeccion);
+            //alert(dato.idLlanta); idTipoVehulo
+            $("#Idvehiculos").val(dato.idVehiculo);
+            $("#idLlantas").val(dato.idLlantas);
+            $("#idtipollantas").val(dato.tipoLlanta);
+            $("#TipoVehiculoIdInspeccion").val(dato.tipoVehiculo);
+            $("#marcachasisids").val(dato.idmarcachasis);
+            $("#marcacabezalids").val(dato.idmarcacabezal);
+            $("#termicoInspeccion").val(dato.termico);
+            $("#placainspeccionvehiculo").val(dato.placa);
+            $("#estadoIdInspeccionLlantas").val(dato.idestado);
+            $("#estadollantainspeccion").val(dato.estadoLlanta);
+            $("#posicionActualId").val(0);
+            const obtenerTer = document.getElementById('obtenerTermicoFinalTer');
+
+            obtenerTer.innerHTML = dato.termico;
+
+            console.log(dato);
+            $("#m1Medida").val(0);
+            $("#m2Medida").val(0);
+            $("#m3Medida").val(0);
+            $("#m4Medida").val(0);
+            $("#OriginalMedida").val(0);
+            $("#mmRetiroMedida").val(0);
+            $("#mmMinimoMedida").val(0);
+            $("#mmPorcDesgaste").val(0);
+            $("#MarcaIns").val(dato.marca);
+            $("#idVehiculoInspeccion").val(dato.placa);
+            $("#TipoLlantaIdInsp").val(dato.tipoLlanta);
+            $("#disenioIdIns").val(dato.disenio);
+            $("#MedidaInspeccion").val(dato.medida);
+
+            $("#OriginalMedida").val(dato.original);
+            $("#mmorigi").val(dato.original);
+
+            //     $("#posicionActualId").val(dato.posicion);
+            $("#EjeInspeccion").val(dato.eje);
+            //  $("#estadoIdLlanta").val();
+            const selectElement = document.getElementById('posicionActualId');
+            selectElement.innerHTML = '';
+            $("#posicionActualId").append('"<option  id="num' + dato.posicion + '" value ="' + dato.posicion + '" >' + dato.posicion + '</option>"');
+            var elementochasis = document.getElementById("marcaChasisDiv");
+            var elementoPlaca = document.getElementById('marcaCabezalDiv');
+            var dropdown = document.getElementById("TipoVehiculoIdInspeccion");
+            var descripcion = dropdown.options[dropdown.selectedIndex].text.toUpperCase();
+
+
+            var dropdown1 = document.getElementById("TipoLlantaIdInsp");
+            var descripcionTipo = dropdown1.options[dropdown1.selectedIndex].text.toUpperCase();
+
+            if (descripcionTipo == "REENCAUCHE") {
+
+                var tipollantades = document.getElementById("TipoLlantaIdInsp");
+                tipollantades.setAttribute("disabled", "disabled");
+            }
+
+            if (descripcionTipo == "NUEVA") {
+
+                var tipollantades = document.getElementById("TipoLlantaIdInsp");
+                tipollantades.removeAttribute("disabled");
+            }
+
+
+            //  alert(descripcion);
+            if (descripcion == "CABEZAL") {
+
+                elementoPlaca.removeAttribute("hidden");
+                elementochasis.setAttribute("hidden", true);
+
+            }
+
+            if (descripcion == "CHASIS") {
+
+                elementochasis.removeAttribute("hidden");
+                elementoPlaca.setAttribute("hidden", true);
+
+            }
+
+
+
+            var dropdown6 = document.getElementById("TipoVehiculoIdInspeccion");
+            var descripcion10 = dropdown6.options[dropdown6.selectedIndex].text.toUpperCase();
+            $("#tipovehiculoDescripcion").val(descripcion10);
+
+            var dropdown7 = document.getElementById("MarcaIns");
+            var descripcion11 = dropdown7.options[dropdown7.selectedIndex].text.toUpperCase();
+            $("#marcaLlantaInsp").val(descripcion11);
+
+            var dropdown15 = document.getElementById("disenioIdIns");
+            var descripcion20 = dropdown15.options[dropdown15.selectedIndex].text.toUpperCase();
+            $("#disenioLlantaInsp").val(descripcion20);
+
+            var dropdown17 = document.getElementById("MedidaInspeccion");
+            var descripcion22 = dropdown17.options[dropdown17.selectedIndex].text.toUpperCase();
+            $("#madidaLlantaInsp").val(descripcion22);
+
+
+
+
+            var elementochasis = document.getElementById("ChasisElement2");
+            var elementoPlaca = document.getElementById('PlacaElement2');
+            var cabezal = document.getElementById("CabezalIdFinal2");
+
+            //     var chasis = document.getElementById('ChasisIdFinal2');
+
+            //var tipoVehiculos = document.getElementById('tipoVehiculoReencauche');
+
+
+            var dropdownfinald = document.getElementById("TipoVehiculoIdInspeccion");
+            var descripcionfinalReen = dropdownfinald.options[dropdownfinald.selectedIndex].text.toUpperCase();
+
+
+            if (descripcionfinalReen === "CABEZAL") {
+
+                elementoPlaca.removeAttribute("hidden");
+                $("#CabezalIdFinal2").val(dato.idCabezales);
+                $("#ChasisIdFinal2").val(0);
+                //       cabezal.setAttribute("disabled", true);
+                //chasis.removeAttribute("required");
+                elementochasis.setAttribute("hidden", true);
+                //$("#CabezalIdFinal2").val(marca.idCabezal);
+
+
+                //$("#ChasisIdFinal2").val(0);
+
+
+            }
+
+            if (descripcionfinalReen === "CHASIS") {
+                //chasis.setAttribute("disabled", true);
+                //cabezal.removeAttribute("required");
+                $("#CabezalIdFinal2").val(0);
+                $("#ChasisIdFinal2").val(dato.idChasis);
+                elementochasis.removeAttribute("hidden");
+                elementoPlaca.setAttribute("hidden", true);
+                //$("#ChasisIdFinal2").val(marca.idChasis);
+                //$("#CabezalIdFinal2").val(0);
+
+
+            }
+
+
+
+
+            var arregloRuta = [];
+            var idverhiculo = dato.idVehiculo;
+            var idllanta = dato.idLlantas;
+            var termico = dato.termico;
+            //  alert(id);
+
+
+
+            var vehiculo = {
+                "vehiculoId": idverhiculo,
+                "llantaId": idllanta,
+                "termico": termico,
+
+            };
+
+
+
+            arregloRuta.push(vehiculo);
+            var json = JSON.stringify(arregloRuta);
+            //   alert(id);
+            $.ajax({
+                url: '@Url.Action("BuscarUltimaInspeccion","Llanta")',
+                type: "POST",
+                dataType: 'json',
+                data: { json: json },
+                success: function (result) {
+                    //   var listaPlaca = result.data;
+                    console.log(result.data);
+
+                    var tbodys = document.querySelector("#tbodyInspeccionLlanta");
+                    tbodys.innerHTML = null;
+
+                    for (var i = 0; i < result.data.length; i++) {
+                        $("#tbodyInspeccionLlanta").append(
+                            "<tr><td>" + result.data[i].mM1 + "</td>" +
+                            "<td>" + result.data[i].mM2 + "</td>" +
+                            "<td>" + result.data[i].mM3 + "</td>" +
+                            "<td>" + result.data[i].mM4 + "</td>" +
+                            "<td>" + result.data[i].mmOriginal + "</td>" +
+                            "<td>" + result.data[i].mmRetiro + "</td>" +
+                            "<td>" + result.data[i].porcDesgaste + "</td>" +
+                            "<td>" + result.data[i].fechaInspeccion + "</td>" +
+                            "<td>" + result.data[i].observaciones + "</td>" +
+                            "</tr>");
+                    }
+
+
+                },
+                error: function (errormessage) {
+                    //  alert("error");
+                }
+            });
+
+
+
+
+            $("#posicionActualId").val(0);
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+        function editar(marca) {
+            console.log(marca);
+            $('#obtenerValor1').val(marca.termico);
+            $("#termicoGuardar").val(marca.termico);
+            $('#idLlanta').val(marca.IdLlanta);
+            $('#ultimoGuardar').val(marca.vehiculoId);
+            $('#ultimoEditar').val(marca.ultima);
+            $('#obtenerValor4').val(marca.ultima);
+            $('#TipoLlantaId').val(marca.tipoLlanta);
+
+
+            $('#disenioId').val(marca.disenoId);
+            $('#Medida').val(marca.medidaId);
+            $('#Marca').val(marca.marcasId);
+            $('#Eje').val(marca.ejeId);
+            $('#Estado').val(marca.idEstado);
+            //$('#colorData1').val(marca.descripcion);
+            $('#inspeccio').val(parseFloat(marca.original));
+            //     //idTipoVehulo
+            $('#TipoVehiculo').val(marca.idTipoVehulo);
+
+
+            var elementochasis = document.getElementById("ChasisElement1");
+            var elementoPlaca = document.getElementById('PlacaElement1');
+
+            var cabezal = document.getElementById("CabezalIdFinal");
+
+            var chasis = document.getElementById('ChasisIdFinal');
+
+            var tipoVehiculos = document.getElementById('TipoVehiculo');
+
+
+            var dropdown = document.getElementById("TipoVehiculo");
+            var descripcion = dropdown.options[dropdown.selectedIndex].text.toUpperCase();
+
+            tipoVehiculos.setAttribute("disabled", true);
+
+            if (descripcion === "CABEZAL") {
+
+                elementoPlaca.removeAttribute("hidden");
+                cabezal.setAttribute("disabled", true);
+                chasis.removeAttribute("required");
+                elementochasis.setAttribute("hidden", true);
+
+
+                $("#CabezalIdFinal").val(marca.idCabezal);
+                $("#tipoCabezal").val(marca.idCabezal);
+                $("#ChasisIdFinal").val(0);
+
+
+            }
+
+            if (descripcion === "CHASIS") {
+                chasis.setAttribute("disabled", true);
+                cabezal.removeAttribute("required");
+                elementochasis.removeAttribute("hidden");
+                elementoPlaca.setAttribute("hidden", true);
+                $("#ChasisIdFinal").val(marca.idChasis);
+                $("#CabezalIdFinal").val(0);
+                $("#tipoChasis").val(marca.idChasis);
+
+
+            }
+
+
+            const selectElement = document.getElementById('colorData1');
+            selectElement.innerHTML = '';
+            $("#colorData1").append('"<option  id="num' + marca.posLlante + '" value ="' + marca.posLlante + '" >' + marca.posLlante + '</option>"');
+
+            //var valortermico = $('#obtenerValor1').val();
+            //var valorultimo = $('#obtenerValor2').val();
+            //console.log(valortermico);
+            //console.log(valorultimo);
+
+            //$('#termicoGuardar').val(valortermico);
+            //$('#ultimoGuardar').val(valorultimo);
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+        function eliminar(llanta) {
+            console.log(llanta);
+            $('#idLlantaEliminar').val(llanta.idLlantas);
+
+
+        }
+
+
+
+
+        //function nuevos() {
+        //    $("#TipoEstructura").val(0);
+        //    $("#Modelo").val(0);
+        //    $("#Marca").val(0);
+        //    $("#TipoVehiculo").val(0);
+        //    $("#NumeroLlantas").val(0);
+        //    $("#NumeroLlantasHabilitado").val(0);
+
+
+
+
+        //}
+
+
+
+
+
+
+
+
+        function tipoVehiculos() {
+
+
+
+
+
+            var elementochasis = document.getElementById("ChasisElement1");
+            var elementoPlaca = document.getElementById('PlacaElement1');
+
+            var cabezal = document.getElementById("CabezalIdFinal");
+
+            var chasis = document.getElementById('ChasisIdFinal');
+
+            var dropdown = document.getElementById("TipoVehiculo");
+            var descripcion = dropdown.options[dropdown.selectedIndex].text.toUpperCase();
+
+
+
+            if (descripcion === "CABEZAL") {
+
+                elementoPlaca.removeAttribute("hidden");
+                cabezal.setAttribute("required", true);
+                chasis.removeAttribute("required");
+                elementochasis.setAttribute("hidden", true);
+                $("#ChasisIdFinal").val(0);
+
+
+            }
+
+            if (descripcion === "CHASIS") {
+                chasis.setAttribute("required", true);
+                cabezal.removeAttribute("required");
+                elementochasis.removeAttribute("hidden");
+                elementoPlaca.setAttribute("hidden", true);
+                $("#CabezalIdFinal").val(0);
+
+
+
+            }
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+        function tipoVehiculoIdentificador() {
+
+
+
+
+            var elementochasis = document.getElementById("ChasisElement2");
+            var elementoPlaca = document.getElementById('PlacaElement2');
+
+            var cabezal = document.getElementById("CabezalIdFinal2");
+
+            var chasis = document.getElementById('ChasisIdFinal2');
+
+            var dropdown = document.getElementById("TipoVehiculoIdInspeccion");
+            var descripcion = dropdown.options[dropdown.selectedIndex].text.toUpperCase();
+
+
+            if (descripcion === "CABEZAL") {
+
+                elementoPlaca.removeAttribute("hidden");
+                cabezal.setAttribute("required", true);
+                chasis.removeAttribute("required");
+                elementochasis.setAttribute("hidden", true);
+                $("#ChasisIdFinal2").val(0);
+
+
+            }
+
+            if (descripcion === "CHASIS") {
+                chasis.setAttribute("required", true);
+                cabezal.removeAttribute("required");
+                elementochasis.removeAttribute("hidden");
+                elementoPlaca.setAttribute("hidden", true);
+                $("#CabezalIdFinal2").val(0);
+
+
+
+            }
+
+
+
+
+
+        }
+
+
+        const m1Medicion = document.getElementById('m1Medida');
+        const m2Medicion = document.getElementById('m2Medida');
+        const m3Medicion = document.getElementById('m3Medida');
+        const m4Medicion = document.getElementById('m4Medida');
+        const mmRetiros = document.getElementById('mmRetiroMedida');
+
+
+
+
+
+
+        mmRetiros.addEventListener('input', () => {
+
+            var mm1 = parseFloat($("#m1Medida").val());
+            var mmMinimos = $("#mmMinimoMedida").val();
+
+            var mmretiros = parseFloat($("#mmRetiroMedida").val());
+            var dato = parseInt(Math.round((1 - (mmMinimos - mmretiros) / mm1) * 100));
+
+
+            $("#mmPorcDesgaste").val(dato);
+            $("#mmdesgaste").val(dato);
+
+        });
+
+
+
+
+        m1Medicion.addEventListener('input', () => {
+
+            var mm1 = parseFloat($("#m1Medida").val());
+            var mm2 = parseFloat($("#m2Medida").val());
+            var mm3 = parseFloat($("#m3Medida").val());
+            var mm4 = parseFloat($("#m4Medida").val());
+
+            var minimo = Math.min(mm1, mm2, mm3, mm4);
+
+            $("#mmMinimoMedida").val(minimo);
+            $("#mmmini").val(minimo);
+            var mmMinimos = $("#mmMinimoMedida").val();
+            var mmretiros = parseFloat($("#mmRetiroMedida").val());
+            var dato = parseInt(Math.round((1 - (mmMinimos - mmretiros) / mm1) * 100));
+
+
+            $("#mmPorcDesgaste").val(dato);
+            $("#mmdesgaste").val(dato);
+        }
+
+        );
+
+
+
+
+
+
+
+        m2Medicion.addEventListener('input', () => {
+
+
+            var mm1 = parseFloat($("#m1Medida").val());
+            var mm2 = parseFloat($("#m2Medida").val());
+            var mm3 = parseFloat($("#m3Medida").val());
+            var mm4 = parseFloat($("#m4Medida").val());
+
+            var minimo = Math.min(mm1, mm2, mm3, mm4);
+
+            $("#mmMinimoMedida").val(minimo);
+            $("#mmmini").val(minimo);
+            var mmMinimos = $("#mmMinimoMedida").val();
+            var mmretiros = parseFloat($("#mmRetiroMedida").val());
+            var dato = parseInt(Math.round((1 - (mmMinimos - mmretiros) / mm1) * 100));
+
+
+            $("#mmPorcDesgaste").val(dato);
+            $("#mmdesgaste").val(dato);
+
+        });
+
+
+
+
+
+
+
+        m3Medicion.addEventListener('input', () => {
+
+
+            var mm1 = parseFloat($("#m1Medida").val());
+            var mm2 = parseFloat($("#m2Medida").val());
+            var mm3 = parseFloat($("#m3Medida").val());
+            var mm4 = parseFloat($("#m4Medida").val());
+
+            var minimo = Math.min(mm1, mm2, mm3, mm4);
+
+            $("#mmMinimoMedida").val(minimo);
+            $("#mmmini").val(minimo);
+            var mmMinimos = $("#mmMinimoMedida").val();
+            var mmretiros = parseFloat($("#mmRetiroMedida").val());
+            var dato = parseInt(Math.round((1 - (mmMinimos - mmretiros) / mm1) * 100));
+
+
+            $("#mmPorcDesgaste").val(dato);
+            $("#mmdesgaste").val(dato);
+
+
+        });
+
+
+
+
+
+        m4Medicion.addEventListener('input', () => {
+
+            var mm1 = parseFloat($("#m1Medida").val());
+            var mm2 = parseFloat($("#m2Medida").val());
+            var mm3 = parseFloat($("#m3Medida").val());
+            var mm4 = parseFloat($("#m4Medida").val());
+
+            var minimo = Math.min(mm1, mm2, mm3, mm4);
+
+            $("#mmMinimoMedida").val(minimo);
+            $("#mmmini").val(minimo);
+            var mmMinimos = $("#mmMinimoMedida").val();
+            var mmretiros = parseFloat($("#mmRetiroMedida").val());
+            var dato = parseInt(Math.round((1 - (mmMinimos - mmretiros) / mm1) * 100));
+
+            $("#mmPorcDesgaste").val(dato);
+            $("#mmdesgaste").val(dato);
+
+
+        });
+
+
+
+
+
+
+        $("#guardarInformacion").click(function () {
+            //   alert("hola");
+            var cabezal = document.getElementById("CabezalIdFinal");
+
+            var chasis = document.getElementById('ChasisIdFinal');
+
+            var tipoVehiculos = document.getElementById('TipoVehiculo');
+            tipoVehiculos.removeAttribute("disabled");
+            chasis.removeAttribute("disabled");
+            cabezal.removeAttribute("disabled");
+
+
+
+
+        });
+
+
+
+
+
+
+
+        $("#Filtrar").click(function () {
+            var arregloRuta = [];
+            var idllanta = $("#idLlantasInspecBuscar").val();
+            var idvehiculo = $("#IdvehiculosInspecBuscar").val();
+            var idTermico = $("#termicoLlantaInsBuscar").val();
+
+
+            //  alert(id);
+            const fechadesde = document.getElementById("desde");
+            const fechaHasta = document.getElementById("hasta");
+            const fechaSeleccionada1 = fechadesde.value;
+            const fechaSeleccionada2 = fechaHasta.value;
+            var vehiculo = {
+                "vehiculoId": idllanta,
+                "llantaId": idvehiculo,
+                "termico": idTermico,
+                "fechaDesde": fechaSeleccionada1,
+                "fechaHasta": fechaSeleccionada2
+            };
+            arregloRuta.push(vehiculo);
+
+            console.log(vehiculo);
+
+            var json = JSON.stringify(arregloRuta);
+            //   alert(id);
+            $.ajax({
+                url: '@Url.Action("BusquedaHistoricoInspecciones","Llanta")',
+                type: "POST",
+                dataType: 'json',
+                data: { json: json },
+                success: function (result) {
+                    //   var listaPlaca = result.data;
+                    console.log(result.data);
+                    const selectElement = document.getElementById('tbodyInspeccionTable');
+                    selectElement.innerHTML = ''
+                    for (var i = 0; i < result.data.length; i++) {
+                        $("#tbodyInspeccionTable").append(
+                            "<tr><td>" + result.data[i].placa + "</td>" +
+                            "<td>" + result.data[i].tipoVehiculo + "</td>" +
+                            "<td>" + result.data[i].disenio + "</td>" +
+                            "<td>" + result.data[i].medida + "</td>" +
+                            "<td>" + result.data[i].marca + "</td>" +
+                            "<td>" + result.data[i].mM1 + "</td>" +
+                            "<td>" + result.data[i].mM2 + "</td>" +
+                            "<td>" + result.data[i].mM3 + "</td>" +
+                            "<td>" + result.data[i].mM4 + "</td>" +
+                            "<td>" + result.data[i].mmOriginal + "</td>" +
+                            "<td>" + result.data[i].mmRetiro + "</td>" +
+                            "<td>" + result.data[i].porcDesgaste + "</td>" +
+                            "<td>" + result.data[i].estadoInspeccion + "</td>" +
+                            "<td>" + result.data[i].fechaInspeccion + "</td>" +
+                            "<td>" + result.data[i].observaciones + "</td>" +
+                            "</tr>");
+
+
+                    }
+
+                    //   $('#tblReporteConsolidado2').dataTable();
+                    //   $("#posicionActualId").val(0);
+
+
+                },
+                error: function (errormessage) {
+                    alert("error");
+                }
+            });
+
+
+
+        });
+
+
+
+        $("#inspeccionIds").click(function () {
+            //    alert("hola");
+            var hastaInput = document.getElementById('hasta');
+            var desdeInput = document.getElementById('desde');
+            // Obtén la fecha actual
+            var fechaActual = new Date();
+
+            // Formatea la fecha para que sea compatible con el input tipo 'date'
+            var formattedDate = fechaActual.toISOString().substr(0, 10);
+            hastaInput.value = formattedDate;
+
+            var dia = "01";
+            var mes = fechaActual.getMonth() + 1; // Sumamos 1 porque los meses son base 0
+            var año = fechaActual.getFullYear();
+
+            // Formatea el mes y el día con ceros a la izquierda si son menores que 10
+            if (mes < 10) {
+                mes = "0" + mes;
+            }
+
+            // Crea el valor en formato "yyyy-mm-dd"
+            var formattedDates = año + "-" + mes + "-" + dia;
+            desdeInput.value = formattedDates;
+
+            //  agregar data
+            var idLlanta = $("#idLlantas").val();
+            var Idvehiculos = $("#Idvehiculos").val();
+            var termicoInspeccion = $("#termicoInspeccion").val();
+
+            $("#idLlantasInspecBuscar").val(idLlanta);
+            $("#IdvehiculosInspecBuscar").val(Idvehiculos);
+            $("#termicoLlantaInsBuscar").val(termicoInspeccion);
+
+
+            //   $("#ProductoModal3").modal('show');
+            $("#AgregaInspeccionLlantaModal").modal('hide');
+            //     $("#AgregaInspeccionLlantaModal").hide(); // Ocultar el modal
+
+        });
+
+
+
+
+
+
+        $("#btnNuevo").click(function () {
+
+            var tipoVehiculos = document.getElementById('TipoVehiculo');
+            tipoVehiculos.removeAttribute("disabled");
+            var cabezal = document.getElementById("CabezalIdFinal");
+            var chasis = document.getElementById('ChasisIdFinal');
+            cabezal.removeAttribute("disabled");
+            chasis.removeAttribute("disabled");
+
+            //   inputElement.style.border = "1px solid #ced4da";
+            var valortermico = $('#obtenerValor1').val();
+            var valorultimo = $('#obtenerValor2').val();
+            $("#TipoLlantaId").val(0);
+            $("#TipoVehiculoNuevo").val(0);
+            //  console.log(valortermico);
+            //  console.log(valorultimo);
+            var elementochasis = document.getElementById("ChasisElement1");
+            var elementoPlaca = document.getElementById('PlacaElement1');
+            elementoPlaca.setAttribute("hidden", true);
+            elementochasis.setAttribute("hidden", true);
+            $('#inspeccio').val("");
+            $('#idLlanta').val(0);
+            $('#ultimoGuardar').val("");
+            $('#ultimoEditar').val("");
+            $('#obtenerValor4').val("");
+            $("#Placa").val(0);
+            $("#Chasis").val(0);
+            $("#Marca").val(0);
+            $("#Eje").val(0);
+            $("#Diseno").val(0);
+            $("#Medida").val(0);
+            $("#TipoVehiculo").val(0);
+            $("#CabezalId").val(0);
+            $("#ChasisId").val(0);
+            $("#disenioId").val(0);
+            $("#Estado").val(0);
+            $("#CabezalIdFinal").val(0);
+            $("#ChasisIdFinal").val(0);
+            const selectElement = document.getElementById('colorData1');
+            selectElement.innerHTML = '';
+
+            $('#termicoGuardar').val(valortermico);
+            $('#ultimoGuardar').val(valorultimo);
+
+
+            $.ajax({
+                url: '@Url.Action("BuscarTermico","Llanta")',
+                type: "POST",
+                dataType: "json",
+                success: function (result) {
+
+                    //    console.log("aquyi estoy jejeje");
+                    console.log(result.data);
+                    var dato;
+
+                    dato = parseInt(result.data) + 1;
+                    if (dato != null) {
+                        dato = parseInt(result.data) + 1;
+
+                    }
+                    $("#termicoGuardar").val(dato);
+                    $("#obtenerValor1").val(dato);
+
+
+                    //  console.log(result);
+
+                },
+                error: function (errormessage) {
+
+                }
+            });
+
+            //inputElement2.style.border = "1px solid #ced4da";
+            //    inputElement.style.border = "0px solid black";
+
+
+        });
+
+
+
+
+
+
+        function medidasCambios() {
+
+            var miDropdown3 = document.getElementById("medidaReenId");
+            var textoSeleccionado3 = miDropdown3.options[miDropdown3.selectedIndex].text;
+            $("#medidareencaucheLlanta").val(textoSeleccionado3);
+        }
+
+
+
+
+
+
+
+        function reencaucheInspeccion(datos) {
+            console.log(datos);
+            $("#tipoVehiculoReencauche").val(datos.idTipoVehiculo);
+            $("#tipoLlantaReencaucheLlanta").val("REENCAUCHE");
+
+            $("#numeroPosicionReen").val(datos.termico);
+
+            $("#posicionReencaucheLlanta").val(datos.numeroPosicion);
+
+            $("#originalReencauche").val(datos.original);
+            $("#idEjeeReencauche").val(datos.idEje);
+            $("#fechaInspeccionReenca").val(datos.fechaInspeccion);
+            $("#tipoLlantaIdReencauche").val(datos.tipoLlantaId);
+            $("#porcentajeDesgasteReencauche").val(datos.porcentajedes);
+
+            $("#estadoReencaucheLlanta").val(datos.estadoLlanta);
+
+
+            $("#IdvehiculosReen").val(datos.idVehiculo);
+            $("#idLlantasReen").val(datos.idLlanta);
+            $("#marcarAnteriorRenn").val(datos.marcasId);
+            $("#posicionReenTexto").val(datos.posicion);
+            $("#disenioAnteriorReen").val(datos.disenio);
+            $("#posicionTextoId").val(datos.posicion);
+            $("#MarcaAnteriorId").val(datos.marcasId);
+            $("#disenioAnteriorId").val(datos.disenio);
+
+            $("#medidaReenId").val(datos.medida);
+            $("#MarcaNuevaId").val(0);
+            $("#disenioIdNuevo").val(0);
+            $("#termicoLlantaReen").val(datos.termico);
+            var fechaInput = document.getElementById("fecha");
+
+            // Obtener la fecha actual
+            var fechaActual = new Date();
+
+            // Formatear la fecha en el formato YYYY-MM-DD
+            var yyyy = fechaActual.getFullYear();
+            var mm = String(fechaActual.getMonth() + 1).padStart(2, '0');
+            var dd = String(fechaActual.getDate()).padStart(2, '0');
+            var fechaFormateada = yyyy + '-' + mm + '-' + dd;
+
+            // Establecer la fecha en el campo de entrada
+            fechaInput.value = fechaFormateada;
+
+            var miDropdown = document.getElementById("MarcaAnteriorId");
+            var textoSeleccionado = miDropdown.options[miDropdown.selectedIndex].text;
+            console.log(textoSeleccionado);
+            var miDropdown2 = document.getElementById("disenioAnteriorId");
+            var textoSeleccionado2 = miDropdown2.options[miDropdown2.selectedIndex].text;
+            console.log(textoSeleccionado2);
+            var miDropdown3 = document.getElementById("medidaReenId");
+            var textoSeleccionado3 = miDropdown3.options[miDropdown3.selectedIndex].text;
+            $("#disenioNombreAnterior").val(textoSeleccionado2);
+            $("#marcaNombreAnterior").val(textoSeleccionado);
+            $("#medidareencaucheLlanta").val(textoSeleccionado3);
+        }
+
+
+
+
+
+
+
+        function eliminarLlanta(llanta) {
+            console.log(llanta);
+
+            $("#idLlantaEliminar").val(guia.idLlanta);
+
+
+            //   $("#eliminarModal").modal({ backdrop: 'static', keyboard: false });
+
+
+        }
+
+
+
+
+
+
+
+
+        function cabezalCambio() {
+
+            var arregloRuta = [];
+            var id = $("#CabezalIdFinal").val();
+            var tipo = $("#TipoVehiculo").val();
+            //  alert(id);
+
+            var vehiculo = {
+                "vehiculoId": id,
+                "tipoId": tipo,
+            };
+            arregloRuta.push(vehiculo);
+            var json = JSON.stringify(arregloRuta);
+            //   alert(id);
+            $.ajax({
+                url: '@Url.Action("BuscarTipoVehiculoId","Llanta")',
+                type: "POST",
+                dataType: 'json',
+                data: { json: json },
+                success: function (result) {
+                    //   var listaPlaca = result.data;
+                    console.log(result.data);
+                    const selectElement = document.getElementById('colorData1');
+                    selectElement.innerHTML = ''
+                    for (var i = 0; i < result.data.length; i++) {
+                        $("#colorData1").append('"<option  id="num' + result.data[i] + '" value ="' + result.data[i] + '" >' + result.data[i] + '</option>"');
+                        // alert("hola");
+                    }
+
+
+                },
+                error: function (errormessage) {
+                    alert("error");
+                }
+            });
+
+
+        }
+
+
+
+
+
+
+        function chasisCambio() {
+            var arregloRuta = [];
+            var id = $("#ChasisIdFinal").val();
+            var tipo = $("#TipoVehiculo").val();
+            //  alert(id);
+
+            var vehiculo = {
+                "vehiculoId": id,
+                "tipoId": tipo,
+            };
+            arregloRuta.push(vehiculo);
+            var json = JSON.stringify(arregloRuta);
+            //   alert(id);
+            $.ajax({
+                url: '@Url.Action("BuscarTipoVehiculoId","Llanta")',
+                type: "POST",
+                dataType: 'json',
+                data: { json: json },
+                success: function (result) {
+                    //   var listaPlaca = result.data;
+                    console.log(result.data);
+                    const selectElement = document.getElementById('colorData1');
+                    selectElement.innerHTML = ''
+                    for (var i = 0; i < result.data.length; i++) {
+                        $("#colorData1").append('"<option  id="num' + result.data[i] + '" value ="' + result.data[i] + '" >' + result.data[i] + '</option>"');
+                        // alert("hola");
+                    }
+
+
+                },
+                error: function (errormessage) {
+                    alert("error");
+                }
+            });
+
+        }
+
+
+
+
+
+
+
+
+        function cabezalCambioInspeccion() {
+
+            var arregloRuta = [];
+            var id = $("#CabezalIdFinal2").val();
+            var tipo = $("#TipoVehiculoIdInspeccion").val();
+            //  alert(id);
+
+            var vehiculo = {
+                "vehiculoId": id,
+                "tipoId": tipo,
+            };
+            arregloRuta.push(vehiculo);
+            var json = JSON.stringify(arregloRuta);
+            //   alert(id);
+            $.ajax({
+                url: '@Url.Action("PosicionesLlantasParaInspeccion","Llanta")',
+                type: "POST",
+                dataType: 'json',
+                data: { json: json },
+                success: function (result) {
+                    //   var listaPlaca = result.data;
+                    console.log(result.data);
+                    const selectElement = document.getElementById('posicionActualId');
+                    selectElement.innerHTML = ''
+                    for (var i = 0; i < result.data.length; i++) {
+                        $("#posicionActualId").append('"<option  id="num' + result.data[i] + '" value ="' + result.data[i] + '" >' + result.data[i] + '</option>"');
+                        // alert("hola");
+                    }
+                    $("#posicionActualId").val(0);
+
+
+                },
+                error: function (errormessage) {
+                    alert("error");
+                }
+            });
+
+
+        }
+
+
+
+
+
+
+
+
+        function chasisCambioInspeccion() {
+            var arregloRuta = [];
+            var id = $("#ChasisIdFinal2").val();
+            var tipo = $("#TipoVehiculoIdInspeccion").val();
+            //  alert(id);
+
+            var vehiculo = {
+                "vehiculoId": id,
+                "tipoId": tipo,
+            };
+            arregloRuta.push(vehiculo);
+            var json = JSON.stringify(arregloRuta);
+            //   alert(id);
+            $.ajax({
+                url: '@Url.Action("PosicionesLlantasParaInspeccion","Llanta")',
+                type: "POST",
+                dataType: 'json',
+                data: { json: json },
+                success: function (result) {
+                    //   var listaPlaca = result.data;
+                    console.log(result.data);
+                    const selectElement = document.getElementById('posicionActualId');
+                    selectElement.innerHTML = ''
+                    for (var i = 0; i < result.data.length; i++) {
+                        $("#posicionActualId").append('"<option  id="num' + result.data[i] + '" value ="' + result.data[i] + '" >' + result.data[i] + '</option>"');
+                        // alert("hola");
+                    }
+                    $("#posicionActualId").val(0);
+
+
+                },
+                error: function (errormessage) {
+                    alert("error");
+                }
+            });
+
+        }
+
+
+
+
+
+        const openModalBtn = document.getElementById('inspeccionIds');
+        const modal = document.getElementById('myModal');
+        //const closeModal = document.querySelector('.closes');
+
+
+
+
+        openModalBtn.addEventListener('click', () => {
+            modal.style.display = 'block';
+        });
+
+
+                //closeModal.addEventListener('click', () => {
+                //    modal.style.display = 'none';
+                //});
+
+    </script>
+
+     }
+

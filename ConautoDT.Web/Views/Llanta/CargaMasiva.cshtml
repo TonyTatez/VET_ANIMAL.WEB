@@ -1,0 +1,97 @@
+﻿<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.css" />
+<link rel="stylesheet" href="~/Content/bootstrap.css" />
+<link rel="stylesheet" href="~/Content/Site.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
+@{
+    ViewBag.Title = "Registro de Inspecciones Llantas - Carga Masiva";
+}
+<style>
+    .form-inline .form-control {
+        min-width: 50px !important;
+    }
+
+    div.dataTables_wrapper div.dataTables_info {
+        font-size: 10px !important;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <header class="widget-header" style="padding-bottom: 5px !important;">
+                <div class="row">
+                    <h4 class="widget-title col-md-12" style="font-weight:400 !important;font-size: 21px; color:#333333; font-family: Calibri, Helvetica Neue, Helvetica, Arial, sans-serif;">@ViewBag.Title</h4>
+                </div>
+            </header>
+            <hr class="widget-separator">
+            <div class="widget-body" style="font-size: 14px !important;">
+
+                @using (Html.BeginForm("CargaMasiva", "Llanta", FormMethod.Post, new { @class = "ui form", @enctype = "multipart/form-data" }))
+                {
+                        <div class="alert alert-info" role="alert">
+                            <ul>
+                                <li>
+                                    Esta pantalla le permitirá subir el archivo de Excel para la carga masiva de inspecciones de llantas.
+                                </li>
+                                <li>Formato de archivo válido es <b>".XLSX"</b></li>
+                            </ul>
+                        </div>
+
+
+                        <div class="panel panel-info text-left">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12" role="group" aria-label="Basic mixed styles example">
+                                        <a href="~/plantillas/PlantillaInspecciones.xlsx" class="btn btn-success btn-sm">
+                                                <i class="zmdi zmdi-download"></i> Descargar Plantilla Excel
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="col-md-4">
+                                    @* @Html.Label("Seleccione Archivo", htmlAttributes: new { @class = "control-label" })*@
+                                        <input type="file" name="fileUploader" />
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-primary" name="SubirLote" value="SubirLote">
+                                            Registrar
+                                        </button>
+                                        <a href="\Home" class="btn btn-primary">
+                                            Regresar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                }
+                @if (ViewBag.Registros != null)
+                {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-sm  dataTable">
+                            @Html.Raw(ViewBag.Registros)
+                            </table>
+                        </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Content/jquery-2.2.4.js"></script>
+    <script src="~/Content/bootstrap.js"></script>
+    <script src="~/Content/modernizr-2.8.3.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            //$('#tblRutas').DataTable();
+        });
+    </script>
+}
