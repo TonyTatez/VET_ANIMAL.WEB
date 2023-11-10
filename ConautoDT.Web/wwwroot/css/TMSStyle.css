@@ -121,3 +121,35 @@ TMSDivButtomSelected {
     display: block;
     color: white
 }
+/* Estilo para el menú desplegable */
+.offcanvas {
+    /* Agrega estilos personalizados según tus preferencias */
+    background-color: #f8f9fa;
+    color: #212529;
+    /* Agrega más estilos según sea necesario */
+}
+
+
+/* Aplicar la fuente Quicksand a tu menú desplegable y elementos del menú */
+body, .offcanvas, .offcanvas-body ul.dropdown-menu li a {
+    font-family: 'Quicksand', sans-serif;
+}
+/* Agregar efectos de transición al menú desplegable */
+/* Estilo para el menú desplegable */
+.offcanvas {
+    background-color: #f8f9fa; /* Color de fondo del menú */
+    color: #212529; /* Color del texto del menú */
+    transition: transform 0.3s ease-in-out; /* Transición suave en la propiedad transform */
+}
+
+/* Estilo para los elementos del menú */
+.offcanvas-body ul.dropdown-menu li a {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    transition: color 0.3s ease-in-out; /* Transición suave en el color del texto */
+}
+
+    /* Cambio de color al pasar el ratón sobre los elementos del menú */
+.offcanvas-body ul.dropdown-menu li a:hover {
+        color: #007bff; /* Cambia a un color diferente al pasar el ratón */
+    }

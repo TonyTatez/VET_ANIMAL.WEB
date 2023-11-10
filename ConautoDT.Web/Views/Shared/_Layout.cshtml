@@ -14,20 +14,14 @@
     <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/TMSStyle.css" />
-
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light " >
-            @* <div class="">
-            <div class="position-absolute top-0 end-0">
-            <i class="bi bi-person"></i>
-            <a class="fa fa-user small" style="color: #127C8C;width: 14rem;" href="/Account/Index">Cerrar Sesion </a>
-            </div>
-            </div>*@
+            
             <div class="container-fluid" >
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    @* <img src="/imagenes/ATCOTRANS2.png" alt="" width="100">*@
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="font-family: 'Alfa Slab One', cursive; font-size: 28px; font-weight: bold;color: black;">
                     Clinica Veterinaria Animal Place
                 </a>
 
@@ -57,14 +51,14 @@
             @* <i class="bi bi-box-arrow-left" style="height: 50px;" ></i>*@
         </div>
         <div class="d-flex justify-content-center" style="background-color: honeydew">
-            <img src="/imagenes/ATCOTRANS2.png" alt="" width="80px" height="60px" class="rounded-circle border border-light">
+            <img src="/imagenes/icono.jpeg" alt="" width="80px" height="60px" class="rounded-circle border border-light">
         </div>
         <div class="d-flex justify-content-center" style="background-color:honeydew">
             <p class="d-none d-sm-inline mx-1 h6">  </p>
 
         </div>
         <div class="d-flex justify-content-center" style="background-color: honeydew">
-            <p class="d-none d-sm-inline mx-1 small " style="color:black ;">TMS Mantenimiento</p>
+            <p class="d-none d-sm-inline mx-1 small " style="color:black ;">ANIMAL PLACE</p>
         </div> 
 
 
@@ -84,114 +78,10 @@
                         <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">  Inicio</span>
                     </a>
                 </li>
-                <li class="dropdown" style="width:100%;">
-                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-list-columns-reverse"></i><span class="ms-1 d-none d-sm-inline">  Catálogos Llantas</span>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" style=" width:100%;" aria-labelledby="dropdown">
-
-                        <li><a class="dropdown-item" href="/Marcas/IndexMarcasLlantas">Marcas Llantas</a></li>
-                        <li><a class="dropdown-item" href="/Medidas/IndexMedidasLlantas">Medidas de Llantas</a></li>
-                        <li><a class="dropdown-item" href="/Disenios/IndexDiseniosLlantas">Diseños de Llantas</a></li>
-                        <li><a class="dropdown-item" href="/Tipos/IndexTiposLlantas">Tipos de Llantas</a></li>
-                        <li><a class="dropdown-item" href="/Ejes/IndexEjesLlantas">Eje de Llantas</a></li>
-                        <li><a class="dropdown-item" href="/Estados/IndexEstadosLlantas">Estados de Llantas</a></li>
-
-                    </ul>
-
-
-                </li>
 
                 <li class="dropdown" style="width:100%;">
                     <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-list-columns-reverse"></i><span class="ms-1 d-none d-sm-inline">  Catálogos Vehiculos</span>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
-
-
-                        <li><a class="dropdown-item" href="/Marcas/IndexMarcasCabezales">Marcas Cabezales</a></li>
-                        <li><a class="dropdown-item" href="/Cabezal/Index">Cabezal</a></li>
-                        <li><a class="dropdown-item" href="/Modelos/IndexModelosCabezales">Modelos de Cabezales</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="/Marcas/IndexMarcasChasis">Marcas Chasis</a></li>
-                        <li><a class="dropdown-item" href="/Chasis/Index">Chasis</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                       
-                     
-                        <li><a class="dropdown-item" href="/Estados/IndexEstadosVehiculos">Estados de Vehiculos</a></li>
-                        <li><a class="dropdown-item" href="/Tipos/IndexTiposVehiculos">Tipo de Vehículo</a></li>
-                        <li><a class="dropdown-item" href="/TipoEstructura/Index">Tipo de Estructura</a></li>
-
-                        <li><a class="dropdown-item" href="/Color/Index">Colores</a></li>
-                        <li><a class="dropdown-item" href="/Anio/Index">Año</a></li>
-                    </ul>
-
-                </li>
-
-                <li class="dropdown" style="width:100%;">
-                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-list-columns-reverse"></i><span class="ms-1 d-none d-sm-inline">  Catálogos Generadores</span>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
-                        <li><a class="dropdown-item" href="/Marcas/IndexMarcasGeneradores">Marcas Generadores</a></li>
-                        <li><a class="dropdown-item" href="/Generador/Index">Generador</a></li>
-
-                    </ul>
-
-
-                </li>
-
-                <li class="dropdown" style="width:100%;">
-                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-list-columns-reverse"></i><span class="ms-1 d-none d-sm-inline">  Catálogos</span>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
-                        <li><a class="dropdown-item" href="/Estados/IndexEstadosInspecciones">Estados de Inspecciones</a></li>
-                    </ul>
-
-
-                </li>
-
-                <li class="dropdown" style="width:100%;">
-                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-truck-flatbed"></i><span class="ms-1 d-none d-sm-inline">  Vehículo</span>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
-                        <li><a class="dropdown-item" href="/Vehiculo/Index">Vehículo</a></li>
-
-
-                    </ul>
-                </li>
-
-                <li  class="dropdown" style="width:100%;">
-                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-truck-flatbed"></i><span class="ms-1 d-none d-sm-inline"> Paises</span>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
-                        <li><a class="dropdown-item" href="/Pais/Index">Pais</a></li>
-
-
-                    </ul>
-                </li>
-
-                <li class="dropdown" style="width:100%;">
-                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-truck-flatbed"></i><span class="ms-1 d-none d-sm-inline"> Ciudades</span>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
-                        <li><a class="dropdown-item" href="/Ciudad/Index">Ciudad</a></li>
-
-
-                    </ul>
-                </li>
-
-                <li class="dropdown" style="width:100%;">
-                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-truck-flatbed"></i><span class="ms-1 d-none d-sm-inline"> Clientes</span>
+                        <i class="bi bi-person-fill"></i><span class="ms-1 d-none d-sm-inline"> Clientes</span>
                     </a>
                     <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
                         <li><a class="dropdown-item" href="/Clientes/Index">Clientes</a></li>
@@ -202,56 +92,15 @@
 
                 <li class="dropdown" style="width:100%;">
                     <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-truck-flatbed"></i><span class="ms-1 d-none d-sm-inline"> Provincias</span>
+                        <i class="bi bi-github"></i><span class="ms-1 d-none d-sm-inline"> Mascotas</span>
                     </a>
                     <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
-                        <li><a class="dropdown-item" href="/Provincia/Index">Provincias</a></li>
+                        <li><a class="dropdown-item" href="/Mascotas/Index">Mascotas</a></li>
 
 
                     </ul>
                 </li>
-              
-                <li class="dropdown" style="width:100%;">
-                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-gear"></i><span class="ms-1 d-none d-sm-inline">  Llantas</span>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
-                        <li><a class="dropdown-item" href="/Llanta/Index">Registro de Llanta</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="">Reporte de Llanta</a></li>
-                        <li><a class="dropdown-item" href="/Llanta/MontajeLlanta">Montaje de Llantas</a></li>
-                        <li><a class="dropdown-item" href="/Llanta/ReporteInspeccionLlantas">Reporte Inspección de Llantas</a></li>
-                        <li><a class="dropdown-item" href="/Llanta/CargaMasiva">Carga Masiva Histórico Llantas</a></li>
-                    </ul>
-                </li>
-
-                <li class="dropdown" style="width:100%;">
-                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-truck-flatbed"></i><span class="ms-1 d-none d-sm-inline">  Recepción de Vehículos</span>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
-                        <li><a class="dropdown-item" href="/Recepcion/Index">Recepción</a></li>
-                        <li><a class="dropdown-item" href="#">Configuración de Items por Inspección</a></li>
-                    </ul>
-                </li>
-
-                <li class="dropdown" style="width:100%;">
-                    <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-journal-check"></i><span class="ms-1 d-none d-sm-inline">  Órdenes de trabajo</span>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" style="width:100%;" aria-labelledby="dropdown">
-                        <li><a class="dropdown-item" href="#">OT</a></li>
-                        <li><a class="dropdown-item" href="#">Acciones de Trabajo</a></li>
-                        <li><a class="dropdown-item" href="#">Artículos</a></li>
-                        <li><a class="dropdown-item" href="#">Autorizaciones</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Bitácora de Ordenes de Trabajo</a></li>
-                    </ul>
-                </li>
+             
                 <li class="dropdown" style="width:100%;">
                     <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-lock-fill"></i><span class="ms-1 d-none d-sm-inline">  Seguridad</span>

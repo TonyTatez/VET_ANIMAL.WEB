@@ -483,11 +483,16 @@ input[type=password] {
 }
 
  /*Establece la imagen de fondo */
-body .login {
-    background: linear-gradient(rgba(20,20,20, .5),rgba(20,20,20, .5)),url(../imagenes/bg-1.jpeg);
+/*body .login {
+    background: linear-gradient(rgba(20,20,20, .5),rgba(20,20,20, .5)),url(../imagenes/bg-1.jpeg);*/
    /* -webkit-clip-path: polygon(0 0, 100% 0, 100% 89%, 51% 100%, 0 89%);
     clip-path: polygon(0 0, 100% 0, 100% 89%, 51% 100%, 0 89%);*/
-}
+/*}
+footer .login {
+    background: linear-gradient(rgba(20,20,20, .5),rgba(20,20,20, .5)),url(../imagenes/bg-1.jpeg);*/
+    /* -webkit-clip-path: polygon(0 0, 100% 0, 100% 89%, 51% 100%, 0 89%);
+    clip-path: polygon(0 0, 100% 0, 100% 89%, 51% 100%, 0 89%);*/
+/*}*/
 
 /* Estilo para el contenido del formulario */
 /*.wrapper {

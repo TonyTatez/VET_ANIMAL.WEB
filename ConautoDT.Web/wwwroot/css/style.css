@@ -6,8 +6,14 @@
 .navbar-light {
     padding-top: 1rem;
     padding-bottom: 1rem;
-    background-color: rgba(0,0,0,.7);
+    background-color: #ffffff;
     
+}
+.navbar-brand {
+    font-family: 'Alfa Slab One' !important;
+    font-size: 24px; /* Tamaño de fuente según tus preferencias */
+    color: #ffffff; /* Color del texto */
+    /* Puedes agregar más estilos según tus preferencias */
 }
 
 .navbar-light .container a, .navbar-light .container .collapse .navbar-nav .nav-item .nav-link{

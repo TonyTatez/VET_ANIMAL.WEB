@@ -22,24 +22,26 @@
 
 <!-- Modal Guardar-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-ml">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content " style="width:100%">
-            <div class="modal-header TMSHeaderModal">
-                <h5 class="modal-title TMSTituloModal">Cliente</h5>
+            <div class="modal-header TMSHeaderModal" style="background: #FAEFF3">
+                <h5 class="modal-title" style="font-family: 'Young Serif', sans-serif; font-weight: bold;">Cliente</h5>
                 <div class="d-flex align-items-end flex-column">
                     <button type="button" style="color: black" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
             </div>
-            <div class="col-md-8 float-left container-fluid h-custom" style="margin-top: 30%; margin-left: 5%; position:absolute">
+            <div class="col-md-4 float-left container-fluid h-custom" style="margin-top: 15%; margin-left: 5%; position:absolute">
                 <div class="row">
                     <!-- Gallery -->
                     <div class="row">
                         <div class="col-lg-6 col-md-6 mb-4">
                             <img src="~/imagenes/dueño1.jpg"
+                                 style="width: 150px!important;"
                                  class="w-100 shadow-1-strong rounded mb-4"
                                  alt="Boat on Calm Water" />
 
                             <img src="~/imagenes/icono.jpeg"
+                                 style="width: 150px!important;"
                                  class="w-100 shadow-1-strong rounded mb-4"
                                  alt="Wintry Mountain Landscape" />
                         </div>
@@ -58,37 +60,41 @@
 
             <form asp-action="GuardaryEditarInfo">
 
-                <div class="row col-md-12" style="margin-left: 30%;margin-top: 2%">
+                <div class="row col-md-8" style="margin-left: 40%;margin-top: 2%;font-family: 'Young Serif', sans-serif; ">
 
                     <div class="form-group col-md-12">
+                        <label for="nombreCliente">Codigo</label>
+                        <input type="text" asp-for="@Model.identificacion" style="color: blue; font-size: 14px; width:30%!important" id="codigo" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-12">
                         <label for="nombreCliente">Nombres</label>
-                        <input type="text" asp-for="@Model.nombres" style="color: blue;" id="nombreCliente" class="form-control" placeholder="Ingrese nombres del cliente" />
+                        <input type="text" asp-for="@Model.nombres" style="color: blue;font-size: 14px;" id="nombreCliente" class="form-control" placeholder="Ingrese nombres del cliente" />
                     </div>
 
                     
 
                     <div class="form-group col-md-12">
                         <label for="cedCliente">Cédula</label>
-                        <input type="text" asp-for="@Model.identificacion" style="color: blue;" id="cedCliente" class="form-control" placeholder="Ingrese cédula del cliente" required />
+                        <input type="text" asp-for="@Model.identificacion" style="color: blue;font-size: 14px;" id="cedCliente" class="form-control" placeholder="Ingrese cédula del cliente" required />
                     </div>
 
                     <div class="form-group col-md-12">
                         <label for="dirCliente">Dirección</label>
-                        <input type="text" asp-for="@Model.direccion" style="color: blue;"id="dirCliente" class="form-control" placeholder="Ingrese dirección del cliente" />
+                        <input type="text" asp-for="@Model.direccion" style="color: blue;font-size: 14px;" id="dirCliente" class="form-control" placeholder="Ingrese dirección del cliente" />
                     </div>
 
                     <div class="form-group col-md-12">
                         <label for="correoCliente">Correo</label>
-                        <input type="text" asp-for="@Model.correo" style="color: blue;" id="correoCliente" class="form-control" placeholder="Ingrese correo del cliente" required />
+                        <input type="text" asp-for="@Model.correo" style="color: blue;font-size: 14px;" id="correoCliente" class="form-control" placeholder="Ingrese correo del cliente" required />
                     </div>
 
                     <div class="form-group col-md-12">
                         <label for="telefono">Teléfono</label>
-                        <input type="text" asp-for="@Model.telefono" style="color: blue;" id="telefono" class="form-control" placeholder="Ingrese teléfono del cliente" />
+                        <input type="text" asp-for="@Model.telefono" style="color: blue;font-size: 14px;" id="telefono" class="form-control" placeholder="Ingrese teléfono del cliente" />
                     </div>
 
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="background: #FAEFF3">
                     <button id="guardarInformacion" type="submit" class="btn btn-success btn-grad btn-sm">
                         Guardar
                     </button>
@@ -100,73 +106,68 @@
 
 <!-- Modal Editar -->
 <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-ml">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content " style="width:100%">
-            <div class="modal-header TMSHeaderModal">
-                <h5 class="modal-title TMSTituloModal">Cliente</h5>
+            <div class="modal-header TMSHeaderModal" style="background: #FAEFF3">
+                <h5 class="modal-title TMSTituloModal" style=";font-family: 'Young Serif', sans-serif; ">Cliente</h5>
                 <div class="d-flex align-items-end flex-column">
                     <button type="button" style="color: black" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
             </div>
-            <div class="col-md-8 float-left container-fluid h-custom" style="margin-top: 35%; margin-left: 5%; position:absolute">
+            <div class="col-md-4 float-left container-fluid h-custom" style="margin-top: 15%; margin-left: 5%; position:absolute">
                 <div class="row">
                     <!-- Gallery -->
                     <div class="row">
                         <div class="col-lg-6 col-md-6 mb-4">
                             <img src="~/imagenes/dueño1.jpg"
+                                 style="width: 150px!important;"
                                  class="w-100 shadow-1-strong rounded mb-4"
                                  alt="Boat on Calm Water" />
 
                             <img src="~/imagenes/icono.jpeg"
+                                 style="width: 150px!important;"
                                  class="w-100 shadow-1-strong rounded mb-4"
                                  alt="Wintry Mountain Landscape" />
                         </div>
 
-                        @*<div class="col-lg-4 col-md-6 mb-4">
-                            <img src="~/imagenes/dueño2.jpg"
-                                 class="w-100 shadow-1-strong rounded mb-4"
-                                 alt="Boat on Calm Water" />
-                            <img src="~/imagenes/dueño2.jpg"
-                                 class="w-100 shadow-1-strong rounded mb-4"
-                                 alt="Boat on Calm Water" />
-                        </div>*@
+                       
                     </div>
                 </div>
             </div>
             <form asp-action="GuardaryEditarInfo">
 
-                <div class="row col-md-12" style=" margin-left: 35%;margin-top:2%;margin-top: 2%">
+                <div class="row col-md-8" style=" margin-left: 40%;margin-top:2%;margin-top: 2%;font-family: 'Young Serif', sans-serif; ">
 
                     <div class="form-group col-md-12">
                         <label for="nombreCliente">Nombres</label>
-                        <input type="text" asp-for="@Model.nombres" style="color: blue;" id="nombreCliente2" class="form-control" placeholder="Ingrese nombres del cliente" />
+                        <input type="text" asp-for="@Model.nombres" style="color: blue;font-size: 14px;" id="nombreCliente2" class="form-control" placeholder="Ingrese nombres del cliente" />
                     </div>
 
 
 
                     <div class="form-group col-md-12">
                         <label for="cedCliente">Cédula</label>
-                        <input type="text" asp-for="@Model.identificacion" style="color: blue;" id="cedCliente2" class="form-control" placeholder="Ingrese cédula del cliente" required />
+                        <input type="text" asp-for="@Model.identificacion" style="color: blue;font-size: 14px;" id="cedCliente2" class="form-control" placeholder="Ingrese cédula del cliente" required />
                     </div>
 
                     <div class="form-group col-md-12">
                         <label for="dirCliente">Dirección</label>
-                        <input type="text" asp-for="@Model.direccion" style="color: blue;"id="dirCliente2" class="form-control" placeholder="Ingrese dirección del cliente" />
+                        <input type="text" asp-for="@Model.direccion" style="color: blue;font-size: 14px;" id="dirCliente2" class="form-control" placeholder="Ingrese dirección del cliente" />
                     </div>
 
                     <div class="form-group col-md-12">
                         <label for="correoCliente">Correo</label>
-                        <input type="text" asp-for="@Model.correo" style="color: blue;" id="correoCliente2" class="form-control" placeholder="Ingrese correo del cliente" required />
+                        <input type="text" asp-for="@Model.correo" style="color: blue;font-size: 14px;" id="correoCliente2" class="form-control" placeholder="Ingrese correo del cliente" required />
                     </div>
 
                     <div class="form-group col-md-12">
                         <label for="telefono">Teléfono</label>
-                        <input type="text" asp-for="@Model.telefono" style="color: blue;" id="telfCliente2" class="form-control" placeholder="Ingrese teléfono del cliente" />
+                        <input type="text" asp-for="@Model.telefono" style="color: blue;font-size: 14px;" id="telfCliente2" class="form-control" placeholder="Ingrese teléfono del cliente" />
                     </div>
 
                 </div>
-                <div class="modal-footer">
-                    <button id="guardarInformacion" type="submit" class="btn btn-success btn-grad btn-sm">
+                <div class="modal-footer" style="background: #FAEFF3">
+                    <button id="guardarInformacion2" type="submit" class="btn btn-success btn-grad btn-sm">
                         Guardar
                     </button>
                 </div>
@@ -215,7 +216,7 @@
         <div class="widget">
             <header class="widget-header" style="padding-bottom: 5px !important;">
                 <div class="row">
-                    <h4 class="widget-title col-md-12" style="font-weight:400 !important;font-size: 21px; color:#333333; font-family: Calibri, Helvetica Neue, Helvetica, Arial, sans-serif;">Clientes</h4>
+                    <h4 class="widget-title col-md-12" style="font-weight:400 !important;font-size: 21px; color:#333333; ;font-family: 'Young Serif', sans-serif; ">Clientes</h4>
                 </div>
             </header>
             <hr class="widget-separator" style="margin-top:2px !important">
@@ -224,7 +225,7 @@
                     <button id="btnNuevo" type="button" class="btn btn-success btn-sm bi bi-clipboard-plus" data-bs-toggle="modal" onclick="nuevo();" data-bs-target="#exampleModal">   Nuevo </button>
 
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive" style=";font-family: 'Young Serif', sans-serif; ">
                     <table class="table table-bordered table-sm  dataTable table-striped" id="tablaLlantas">
 
                         <thead >
