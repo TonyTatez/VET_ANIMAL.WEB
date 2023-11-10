@@ -168,6 +168,66 @@ namespace VET_ANIMAL.WEB.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<ActionResult> EditarInfo(ItemClientes model)
+        {
+            string tokenValue = Request.Cookies["token"];
+
+            var editarClienteViewModel = new ItemClientes
+            {
+                idCliente = model.idCliente,
+                codigo = model.codigo,
+                identificacion = model.identificacion,
+                nombres = model.nombres,
+                telefono = model.telefono,
+                correo = model.correo,
+                direccion = model.direccion
+            };
+
+            var request = new RestRequest("/api/Cliente/EditarCliente", Method.Put);
+            request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
+
+            request.AddJsonBody(editarClienteViewModel);
+
+            if (model.nombres == null)
+            {
+                TempData["MensajeError"] = "Rellene todos los campos";
+                return Redirect("Index");
+            }
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _log.Info("Accediendo al API");
+                    var response = await _apiClient.ExecuteAsync(request, Method.Put);
+                    _log.Info("Editando Cliente");
+                    if (response.IsSuccessful)
+                    {
+                        TempData["MensajeExito"] = "Edición Exitosa";
+                        return RedirectToAction("Index", "Clientes");
+                    }
+                    TempData["MensajeError"] = response.Content;
+                    return View(model);
+                }
+                TempData["MensajeError"] = "Rellene todos los campos";
+                return View(model);
+            }
+            catch (JsonParsingException e)
+            {
+                _log.Error(e, "Error Obteniendo Token");
+                _log.Error(e.GetUnderlyingStringUnsafe());
+                TempData["MensajeError"] = e.Message.ToString();
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                _log.Error(e, "Error al editar el cliente");
+                TempData["MensajeError"] = e.Message;
+                return Redirect("Index");
+            }
+        }
+
 
         // POST: CiudadController/Edit/5
         [HttpPost]
@@ -190,7 +250,7 @@ namespace VET_ANIMAL.WEB.Controllers
         {
             string tokenValue = Request.Cookies["token"];
             long id = model.idCliente;
-            var request = new RestRequest("/api/Cliente/EliminaCliente", Method.Post/*, DataFormat.Json*/);
+            var request = new RestRequest("/api/Cliente/EliminaCliente", Method.Delete/*, DataFormat.Json*/);
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
             request.AddQueryParameter("IdCliente", id);
             //   request.AddJsonBody(model);
@@ -202,7 +262,7 @@ namespace VET_ANIMAL.WEB.Controllers
                     if (ModelState.IsValid)
                     {
                         _log.Info("Accediendo al API");
-                        var response = await _apiClient.ExecuteAsync(request, Method.Post);
+                        var response = await _apiClient.ExecuteAsync(request, Method.Delete);
                         // _log.Info("Registrando Tipo de" + Tipo);
                         //responseContent = ;
                         if (response.IsSuccessful)
