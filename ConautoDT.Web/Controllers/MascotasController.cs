@@ -48,12 +48,13 @@ namespace VET_ANIMAL.WEB.Controllers
             if (response.Content.Length > 2)
             {
                 var content = response.Content;
+                List<ItemMascota> ListaMascota = System.Text.Json.JsonSerializer.Deserialize<List<ItemMascota>>(content);
+                model.ListaMascota = ListaMascota;
 
-               
             }
             else
             {
-                model.ListaMascotas = null;
+                model.ListaMascota = null;
             }
 
             request = new RestRequest("/api/Cliente/ListarCliente", Method.Get);
@@ -66,13 +67,12 @@ namespace VET_ANIMAL.WEB.Controllers
             {
                 var content = response.Content;
 
-                List<ItemMascotas> ListaMascotas = System.Text.Json.JsonSerializer.Deserialize<List<ItemMascotas>>(content);
-
-                model.ListaMascotas = ListaMascotas;
+                List<ItemCliente> ListaClientes = System.Text.Json.JsonSerializer.Deserialize<List<ItemCliente>>(content);
+                model.ListaClientes = ListaClientes;
             }
             else
             {
-                model.ListaMascotas = null;
+                model.ListaClientes = null;
             }
 
             // model.tipoColor = Tipo;

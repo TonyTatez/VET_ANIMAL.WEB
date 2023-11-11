@@ -136,8 +136,12 @@
                 </div>
             </div>
             <form asp-action="EditarInfo">
-                <input type="hidden" asp-for="idCliente" />
+                
                 <div class="row col-md-8" style=" margin-left: 40%;margin-top:2%;margin-top: 2%;font-family: 'Young Serif', sans-serif; ">
+                    <div class="form-group col-md-12" hidden>
+                        <label for="nombreCliente">Nombres</label>
+                        <input type="text" asp-for="@Model.idCliente" style="color: blue;font-size: 14px;" id="idCliente2" class="form-control" placeholder="Ingrese nombres del cliente" />
+                    </div>
 
                     <div class="form-group col-md-12">
                         <label for="nombreCliente">Nombres</label>
@@ -364,13 +368,13 @@
         });
 
         function editarCliente(Cliente) {
-            console.log("esditarrr",Cliente);
+            console.log("esditarrr", Cliente);
             $('#nombreCliente2').val(Cliente.nombres);
+            $('#idCliente2').val(Cliente.idCliente);
             $('#cedCliente2').val(Cliente.identificacion);
             $('#dirCliente2').val(Cliente.direccion);
-            $('#correoCliente2').val(Cliente.correo);
             $('#telfCliente2').val(Cliente.telefono);
-  
+            $('#correoCliente2').val(Cliente.correo);
         }
         $(document).ready(function () {
             $('#tablaCiudades').DataTable();

@@ -59,7 +59,7 @@ namespace VET_ANIMAL.WEB.Controllers
                 model.ListaClientes = null;
             }
 
-            request = new RestRequest("/api/Mascota/ListarMascota", Method.Get);
+            request = new RestRequest("/api/Mascota/Listar", Method.Get);
 
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
 
