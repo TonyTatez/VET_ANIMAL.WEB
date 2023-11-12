@@ -34,32 +34,7 @@ namespace VET_ANIMAL.WEB.Controllers
             _AccountService = new AccountService(configuration);
         }
 
-        [HttpGet("Cliente")]
-        public async Task<IActionResult> GetClienteced([FromQuery] string CI)
-        {
-            // Supongamos que la API está en la misma máquina y puerto diferente
-            string apiUrl = "https://localhost:7194/api/cat/Cliente"; // Reemplaza con la URL real de tu API
-
-            using (HttpClient client = new HttpClient())
-            {
-                // Agrega el parámetro CI a la URL de la API
-                string apiRequest = $"{apiUrl}?CI={CI}";
-
-                // Realiza la solicitud a la API
-                HttpResponseMessage response = await client.GetAsync(apiRequest);
-
-                // Maneja la respuesta de la API
-                if (response.IsSuccessStatusCode)
-                {
-                    string content = await response.Content.ReadAsStringAsync();
-                    return Ok(content);
-                }
-                else
-                {
-                    return BadRequest("Error al obtener datos del cliente desde la API.");
-                }
-            }
-        }
+        
         
 
 
@@ -72,21 +47,21 @@ namespace VET_ANIMAL.WEB.Controllers
                 var client = new RestClient(configuration["APIClient"]);
                 var request = new RestRequest("/api/cat/Cliente", Method.Get);
                 request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
+                request.AddQueryParameter("CI", CI);
 
                 var response = client.Execute(request);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var content = response.Content;
-                    var listaClientes = System.Text.Json.JsonSerializer.Deserialize<List<ClientesViewModel>>(content);
+                    var Clientes = System.Text.Json.JsonSerializer.Deserialize<ClientesViewModel>(content);
 
                     // Buscar el cliente por cédula en la lista
-                    var clienteEncontrado = listaClientes.FirstOrDefault(c => c.identificacion == CI);
 
-                    if (clienteEncontrado != null)
+                    if (Clientes != null)
                     {
                         // Puedes devolver el IdCliente y la Cedula como un objeto JSON
-                        return Json(new { IdCliente = clienteEncontrado.idCliente, Cedula = clienteEncontrado.identificacion });
+                        return Json(new { IdCliente = Clientes.idCliente, Cedula = Clientes.identificacion });
                     }
                     else
                     {

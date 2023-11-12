@@ -103,6 +103,7 @@ namespace VET_ANIMAL.WEB.Controllers
             var guardarMascotaViewModel = new ItemMascota
             {
                 idMascota = model.idMascota,
+                idCliente = model.idCliente,
                 codigo = model.codigo,
                 raza = model.raza,
                 nombreMascota = model.nombreMascota,
@@ -112,10 +113,11 @@ namespace VET_ANIMAL.WEB.Controllers
                 fechaNacimiento = model.fechaNacimiento,
             };
 
-            var request = new RestRequest("/api/cat/Mascotas", Method.Post);
+            var request = new RestRequest("/api/cat/Mascota", Method.Post);
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
 
             request.AddJsonBody(guardarMascotaViewModel);
+
 
             if (model.nombreMascota == null)
             {
@@ -166,6 +168,78 @@ namespace VET_ANIMAL.WEB.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<ActionResult> EditarInfo(ItemMascota model)
+        {
+            string tokenValue = Request.Cookies["token"];
+
+            var EditarMascotaViewModel = new ItemMascota
+            {
+                idMascota = model.idMascota,
+                idCliente = model.idCliente,
+                codigo = model.codigo,
+                raza = model.raza,
+                nombreMascota = model.nombreMascota,
+                sexo = model.sexo,
+                peso = model.peso,
+                cliente = model.cliente,
+                fechaNacimiento = model.fechaNacimiento,
+            };
+
+            var request = new RestRequest("/api/cat/Mascota", Method.Put);
+            request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
+
+            request.AddJsonBody(EditarMascotaViewModel);
+
+
+            if (model.nombreMascota == null)
+            {
+                TempData["MensajeError"] = "Rellene todos los campos";
+                return Redirect("Index");
+            }
+
+            try
+            {
+                if (model.nombreMascota != null)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        _log.Info("Accediendo al API");
+                        var response = await _apiClient.ExecuteAsync(request, Method.Post);
+                        _log.Info("Registrando Mascota");
+                        if (response.IsSuccessful)
+                        {
+                            if (model.idMascota == 0)
+                            {
+                                TempData["MensajeExito"] = "Registro Exitoso";
+                            }
+                            else
+                            {
+                                TempData["MensajeExito"] = "Se edito correctamente";
+                            }
+                            return RedirectToAction("Index", "Mascotas");
+                        }
+                        TempData["MensajeError"] = response.Content;
+                        return View(model);
+                    }
+                    TempData["MensajeError"] = "Rellene todos los campos";
+                }
+                return View(model);
+            }
+            catch (JsonParsingException e)
+            {
+                _log.Error(e, "Error Obteniendo Token");
+                _log.Error(e.GetUnderlyingStringUnsafe());
+                TempData["MensajeError"] = e.Message.ToString();
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                _log.Error(e, "Error al iniciar sesión");
+                TempData["MensajeError"] = e.Message;
+                return Redirect("Index");
+            }
+        }
 
         // POST: CiudadController/Edit/5
         [HttpPost]
@@ -184,23 +258,23 @@ namespace VET_ANIMAL.WEB.Controllers
 
         // GET: CiudadController/Delete/5
         [HttpPost]
-        public async Task<ActionResult> DeleteInformacionC(ItemClientes model)
+        public async Task<ActionResult> DeleteInformacionM(ItemMascota model)
         {
             string tokenValue = Request.Cookies["token"];
-            long id = model.idCliente;
-            var request = new RestRequest("/api/Cliente/EliminaCliente", Method.Post/*, DataFormat.Json*/);
+            long id = model.idMascota;
+            var request = new RestRequest("/api/cat/Mascota", Method.Delete/*, DataFormat.Json*/);
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
-            request.AddQueryParameter("IdCliente", id);
+            request.AddQueryParameter("IdMascota", id);
             //   request.AddJsonBody(model);
 
             try
             {
-                if (model.idCliente != 0)
+                if (model.idMascota != 0)
                 {
                     if (ModelState.IsValid)
                     {
                         _log.Info("Accediendo al API");
-                        var response = await _apiClient.ExecuteAsync(request, Method.Post);
+                        var response = await _apiClient.ExecuteAsync(request, Method.Delete);
                         // _log.Info("Registrando Tipo de" + Tipo);
                         //responseContent = ;
                         if (response.IsSuccessful)
@@ -214,12 +288,12 @@ namespace VET_ANIMAL.WEB.Controllers
 
                             TempData["MensajeExito"] = "Eliminacion Exitosa";
 
-                            return RedirectToAction("Index", "Clientes");
+                            return RedirectToAction("Index", "Mascotas");
                         }
                         TempData["MensajeError"] = response.Content;
                         return View(model);
                     }
-                    TempData["MensajeError"] = "No se pudo eliminar la Ciudad";
+                    TempData["MensajeError"] = "No se pudo eliminar la Mascota";
                 }
                 return View(model);
             }
