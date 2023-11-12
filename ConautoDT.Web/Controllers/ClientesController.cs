@@ -61,7 +61,7 @@ namespace VET_ANIMAL.WEB.Controllers
                     if (Clientes != null)
                     {
                         // Puedes devolver el IdCliente y la Cedula como un objeto JSON
-                        return Json(new { IdCliente = Clientes.idCliente, Cedula = Clientes.identificacion });
+                        return Json(new { IdCliente = Clientes.idCliente, Cedula = Clientes.identificacion, nombres= Clientes.nombres });
                     }
                     else
                     {

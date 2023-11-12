@@ -55,6 +55,11 @@
                             <input type="text" asp-for="@Model.nombreMascota" class="form-control" id="" placeholder="Ingrese Nombre Mascota">
                         </div>
                         <div class="form-group col-md-6">
+                            <label for="">Dueño</label>
+                            <input id="editdueño"  type="text" class="form-control mb-3" readonly style="width:100%!important; color: red">
+                        </div>
+
+                        <div class="form-group col-md-6" hidden>
                             <label for="">Id Cliente</label>
                             <input id="idcliente2" asp-for="@Model.IdCliente" type="text" class="form-control mb-3" readonly style="width:50%!important; color: red">
                         </div>
@@ -147,6 +152,11 @@
                             <input type="text" asp-for="@Model.nombreMascota" class="form-control" id="editNombre" placeholder="Ingrese Nombre Mascota">
                         </div>
                         <div class="form-group col-md-6">
+                            <label for="">Dueño</label>
+                            <input id="editdueño2"  type="text" class="form-control mb-3" readonly style="width:100%!important; color: red">
+                        </div>
+
+                        <div class="form-group col-md-6" hidden >
                             <label for="">Id Cliente</label>
                             <input id="editIdCliente2" asp-for="@Model.IdCliente" type="text" class="form-control mb-3" readonly style="width:50%!important; color: red">
                         </div>
@@ -176,7 +186,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">Fecha de Nacimiento</label>
-                            <input class="form-control" asp-for="@Model.fechaNacimiento" name="fechaNacimiento" style="width: 89%;" max="2023-11-11" type="date"  id="editFecha">
+                            <input class="form-control" id="editFecha2" asp-for=" @Model.fechaNacimiento" name="fechaNacimiento" style="width: 89%;" max="2024-12-31" type="date">
                         </div>
                     </div>
 
@@ -300,7 +310,7 @@
                                             @Html.DisplayFor(model => item.fechaNacimiento)
                                         </td>
                                         <td>
-                                            <button title="Editar Mascota" class="btn p-v-sm btn-success btn-sm btn-editar" data-bs-toggle="modal" data-bs-target="#exampleModalEdit" onclick="editarMascota({idMascota:@item.idMascota ,nombreMascotas:'@item.nombreMascota',peso:'@item.peso',raza:'@item.raza',idCiente:'@item.idCliente',fecha:'@item.fechaNacimiento',sexo:'@item.sexo'});">
+                                            <button title="Editar Mascota" class="btn p-v-sm btn-success btn-sm btn-editar" data-bs-toggle="modal" data-bs-target="#exampleModalEdit" onclick="editarMascota({idMascota:@item.idMascota ,nombreMascotas:'@item.nombreMascota',peso:'@item.peso',raza:'@item.raza',idCliente:'@item.idCliente',fechaNacimiento:'@item.fechaNacimiento',sexo:'@item.sexo'});">
                                                 <i class="bi bi-pen"></i>
                                             </button>
                                             <button title="Eliminar Cliente" class="btn p-v-sm btn-danger btn-sm" id="btnEliminar" data-bs-toggle="modal" data-bs-target="#eliminarModal" onclick="eliminarMascota({idMascota:@item.idMascota});">
@@ -391,6 +401,7 @@
                     // Asegúrate de que los identificadores coincidan con los elementos HTML reales
                     $("#idCliente").val(data.idCliente);
                     $("#idcliente2").val(data.idCliente);
+                    $("#editdueño").val(data.nombres);
                     $("#cedCliente").val(data.cedula);  // Cambiado a data.cedula si es el nombre del cliente
                     
                 },
@@ -425,6 +436,7 @@
 
                     // Asegúrate de que los identificadores coincidan con los elementos HTML reales
                     $("#editidCliente").val(data.idCliente);
+                    $("#editdueño2").val(data.nombres);
                     $("#editIdCliente2").val(data.idCliente);
                     $("#editcedCliente").val(data.cedula);  // Cambiado a data.cedula si es el nombre del cliente
 
@@ -442,11 +454,15 @@
         function editarMascota(Mascota) {
             console.log("esditarrr", Mascota);
             $('#editNombre').val(Mascota.nombreMascotas);
-            $('#editIdCliente2').val(Mascota.idCiente);
+            $('#editIdCliente2').val(Mascota.idCliente);
+            $('#editdueño2').val(Mascota.idCliente);
             $('#editPeso').val(Mascota.peso);
             $('#editRaza').val(Mascota.raza);
             $('#editSexo').val(Mascota.sexo);
-            $('#editFecha').val(Mascota.fecha);
+            var fechaFormateada = new Date(Mascota.fechaNacimiento).toISOString().split('T')[0];
+            $("#editFecha2").val(fechaFormateada);
+            //$('#editFecha2').val(Mascota.fechaNacimiento);
+            console.log("Fecha de nacimiento en el modal:", Mascota.fechaNacimiento);
         }
 
         function nuevo() {
