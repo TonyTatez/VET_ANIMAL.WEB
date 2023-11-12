@@ -24,6 +24,7 @@ namespace VET_ANIMAL.WEB.Models
     public class ItemCliente
     {
         public long idCliente { get; set; }
+        public long identificacion { get; set; }
         public string codigo { get; set; }
         public string nombres { get; set; }
     }

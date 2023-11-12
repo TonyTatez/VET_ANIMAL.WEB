@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NLog;
+using NLog.Fluent;
 using RestSharp;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Policy;
 using TMS_MANTENIMIENTO.WEB.Models;
 using TMS_MANTENIMIENTO.WEB.Servicios;
 using Utf8Json;
@@ -31,14 +34,87 @@ namespace VET_ANIMAL.WEB.Controllers
             _AccountService = new AccountService(configuration);
         }
 
-        // GET: ClientesController
+        [HttpGet("Cliente")]
+        public async Task<IActionResult> GetClienteced([FromQuery] string CI)
+        {
+            // Supongamos que la API está en la misma máquina y puerto diferente
+            string apiUrl = "https://localhost:7194/api/cat/Cliente"; // Reemplaza con la URL real de tu API
+
+            using (HttpClient client = new HttpClient())
+            {
+                // Agrega el parámetro CI a la URL de la API
+                string apiRequest = $"{apiUrl}?CI={CI}";
+
+                // Realiza la solicitud a la API
+                HttpResponseMessage response = await client.GetAsync(apiRequest);
+
+                // Maneja la respuesta de la API
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    return Ok(content);
+                }
+                else
+                {
+                    return BadRequest("Error al obtener datos del cliente desde la API.");
+                }
+            }
+        }
+        
+
+
+        [HttpGet]
+        public ActionResult BuscarClientePorCI([FromQuery] string CI)
+        {
+            try
+            {
+                string tokenValue = Request.Cookies["token"];
+                var client = new RestClient(configuration["APIClient"]);
+                var request = new RestRequest("/api/cat/Cliente", Method.Get);
+                request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
+
+                var response = client.Execute(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var content = response.Content;
+                    var listaClientes = System.Text.Json.JsonSerializer.Deserialize<List<ClientesViewModel>>(content);
+
+                    // Buscar el cliente por cédula en la lista
+                    var clienteEncontrado = listaClientes.FirstOrDefault(c => c.identificacion == CI);
+
+                    if (clienteEncontrado != null)
+                    {
+                        // Puedes devolver el IdCliente y la Cedula como un objeto JSON
+                        return Json(new { IdCliente = clienteEncontrado.idCliente, Cedula = clienteEncontrado.identificacion });
+                    }
+                    else
+                    {
+                        return Json(new { Mensaje = "Cliente no encontrado" });
+                    }
+                }
+                else
+                {
+                    return Json(new { Mensaje = $"Error al obtener la lista de clientes. Código de estado: {response.StatusCode}" });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejar excepciones aquí y registrar información de depuración si es necesario
+                return Json(new { Mensaje = $"Error: {ex.Message}" });
+            }
+        }
+
+        
+
+
         public ActionResult Index()
         {
             ClientesViewModel model = new ClientesViewModel();
 
             string tokenValue = Request.Cookies["token"];
             var client = new RestClient(configuration["APIClient"]);
-            var request = new RestRequest("/api/Cliente/ListarClientes", Method.Get);
+            var request = new RestRequest("/api/cat/Clientes", Method.Get);
 
             //copiar y pegar en el resto de controladores
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
@@ -59,7 +135,7 @@ namespace VET_ANIMAL.WEB.Controllers
                 model.ListaClientes = null;
             }
 
-            request = new RestRequest("/api/Mascota/Listar", Method.Get);
+            request = new RestRequest("/api/cat/Mascotas", Method.Get);
 
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
 
@@ -114,7 +190,7 @@ namespace VET_ANIMAL.WEB.Controllers
                 direccion = model.direccion
             };
 
-            var request = new RestRequest("/api/Cliente/NuevoCliente", Method.Post);
+            var request = new RestRequest("/api/cat/Cliente", Method.Post);
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
 
             request.AddJsonBody(guardarClienteViewModel);
@@ -184,7 +260,7 @@ namespace VET_ANIMAL.WEB.Controllers
                 direccion = model.direccion
             };
 
-            var request = new RestRequest("/api/Cliente/EditarCliente", Method.Put);
+            var request = new RestRequest("/api/cat/Cliente", Method.Put);
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
 
             request.AddJsonBody(editarClienteViewModel);
@@ -250,7 +326,7 @@ namespace VET_ANIMAL.WEB.Controllers
         {
             string tokenValue = Request.Cookies["token"];
             long id = model.idCliente;
-            var request = new RestRequest("/api/Cliente/EliminaCliente", Method.Delete/*, DataFormat.Json*/);
+            var request = new RestRequest("/api/cat/Cliente", Method.Delete/*, DataFormat.Json*/);
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
             request.AddQueryParameter("IdCliente", id);
             //   request.AddJsonBody(model);
@@ -303,7 +379,7 @@ namespace VET_ANIMAL.WEB.Controllers
             {
                 string json = Request.Form["json"];
 
-                
+
                 List<ClientesViewModel> listaObj = JsonConvert.DeserializeObject<List<ClientesViewModel>>(json);
                 ListaClientes model2 = new ListaClientes();
                 string tokenValue = Request.Cookies["token"];
@@ -329,7 +405,7 @@ namespace VET_ANIMAL.WEB.Controllers
                 return Json(new { data = "" });
             }
         }
-
+        
 
 
         // POST: CiudadController/Delete/5

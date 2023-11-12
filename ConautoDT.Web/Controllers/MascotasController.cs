@@ -36,7 +36,7 @@ namespace VET_ANIMAL.WEB.Controllers
 
             string tokenValue = Request.Cookies["token"];
             var client = new RestClient(configuration["APIClient"]);
-            var request = new RestRequest("/api/Mascota/Listar", Method.Get);
+            var request = new RestRequest("/api/cat/Mascotas", Method.Get);
 
             //copiar y pegar en el resto de controladores
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
@@ -96,27 +96,28 @@ namespace VET_ANIMAL.WEB.Controllers
 
         // POST: CiudadController/Create
         [HttpPost]
-        public async Task<ActionResult> GuardaryEditarInfo(ItemClientes model)
+        public async Task<ActionResult> GuardaryEditarInfo(ItemMascota model)
         {
             string tokenValue = Request.Cookies["token"];
 
-            var guardarClienteViewModel = new ItemClientes
+            var guardarMascotaViewModel = new ItemMascota
             {
-                idCliente = model.idCliente,
+                idMascota = model.idMascota,
                 codigo = model.codigo,
-                identificacion = model.identificacion,
-                nombres = model.nombres,
-                telefono = model.telefono,
-                correo = model.correo,
-                direccion = model.direccion
+                raza = model.raza,
+                nombreMascota = model.nombreMascota,
+                sexo = model.sexo,
+                peso = model.peso,
+                cliente = model.cliente,
+                fechaNacimiento = model.fechaNacimiento,
             };
 
-            var request = new RestRequest("/api/Cliente/NuevoCliente", Method.Post);
+            var request = new RestRequest("/api/cat/Mascotas", Method.Post);
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
 
-            request.AddJsonBody(guardarClienteViewModel);
+            request.AddJsonBody(guardarMascotaViewModel);
 
-            if (model.nombres == null)
+            if (model.nombreMascota == null)
             {
                 TempData["MensajeError"] = "Rellene todos los campos";
                 return Redirect("Index");
@@ -124,16 +125,16 @@ namespace VET_ANIMAL.WEB.Controllers
 
             try
             {
-                if (model.nombres != null)
+                if (model.nombreMascota != null)
                 {
                     if (ModelState.IsValid)
                     {
                         _log.Info("Accediendo al API");
                         var response = await _apiClient.ExecuteAsync(request, Method.Post);
-                        _log.Info("Registrando Ciudad");
+                        _log.Info("Registrando Mascota");
                         if (response.IsSuccessful)
                         {
-                            if (model.idCliente == 0)
+                            if (model.idMascota == 0)
                             {
                                 TempData["MensajeExito"] = "Registro Exitoso";
                             }
@@ -141,7 +142,7 @@ namespace VET_ANIMAL.WEB.Controllers
                             {
                                 TempData["MensajeExito"] = "Se edito correctamente";
                             }
-                            return RedirectToAction("Index", "Clientes");
+                            return RedirectToAction("Index", "Mascotas");
                         }
                         TempData["MensajeError"] = response.Content;
                         return View(model);
