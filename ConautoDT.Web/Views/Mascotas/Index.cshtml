@@ -14,7 +14,7 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content " style="width:100%">
-            <div class="modal-header TMSHeaderModal" style="background: #FAEFF3">
+            <div class="modal-header TMSHeaderModal" style="background: #DAE8FD">
                 <h5 class="modal-title" style="font-family: 'Young Serif', sans-serif; font-weight: bold;">Mascotas</h5>
                 <div class="d-flex align-items-end flex-column">
                     <button type="button" style="color: black" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -22,12 +22,26 @@
             </div>
 
             <form asp-action="GuardaryEditarInfo" style="font-family: 'Young Serif', sans-serif;">
+
+                <div class="col-md-4 float-left container-fluid h-custom" style="margin-top: 2%; margin-left: 55%; position:absolute">
+                    
+                            <div class="col-lg-6 col-md-6 mb-4">
+                                <img src="~/imagenes/dog.png"
+                                     style="width: 250px!important;"
+                                     class="w-100 shadow-1-strong rounded mb-4"
+                                     alt="Boat on Calm Water" />
+
+                                
+                            </div>
+
+                            
+                </div>
                 <div class="m-5">
                     <!-- Primer input y botón -->
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Ingrese Cedula del Cliente" id="CI" onkeypress="return soloNumeros(event)">
                         <div class="input-group-append">
-                            <button class="btn btn-success" type="button" onclick="buscarCliente2()"><i class="bi bi-search"></i></button>
+                            <button class="btn btn-primary" type="button" onclick="buscarCliente2()"><i class="bi bi-search"></i></button>
                         </div>
                     </div>
 
@@ -95,7 +109,7 @@
 
 
                 </div>
-                <div class="modal-footer" style="background: #FAEFF3">
+                <div class="modal-footer" style="background: #DAE8FD">
                     <button id="guardarInformacion2" type="submit" class="btn btn-success btn-grad btn-sm">
                         Guardar
                     </button>
@@ -112,7 +126,7 @@
 <div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content " style="width:100%">
-            <div class="modal-header TMSHeaderModal" style="background: #FAEFF3">
+            <div class="modal-header TMSHeaderModal" style="background: #DAE8FD">
                 <h5 class="modal-title" style="font-family: 'Young Serif', sans-serif; font-weight: bold;">Mascotas</h5>
                 <div class="d-flex align-items-end flex-column">
                     <button type="button" style="color: black" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -120,12 +134,26 @@
             </div>
 
             <form asp-action="EditarInfo" style="font-family: 'Young Serif', sans-serif;">
+
+                <div class="col-md-4 float-left container-fluid h-custom" style="margin-top: 2%; margin-left: 55%; position:absolute">
+
+                    <div class="col-lg-6 col-md-6 mb-4">
+                        <img src="~/imagenes/dog.png"
+                             style="width: 250px!important;"
+                             class="w-100 shadow-1-strong rounded mb-4"
+                             alt="Boat on Calm Water" />
+
+
+                    </div>
+
+
+                </div>
                 <div class="m-5">
                     <!-- Primer input y botón -->
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" style="color: blue;font-size: 16px;" placeholder="Ingrese Cedula del Cliente" id="cedulaedit" onkeypress="return soloNumeros(event)">
                         <div class="input-group-append">
-                            <button class="btn btn-success"  type="button" onclick="buscarCliente()"><i class="bi bi-search"></i></button>
+                            <button class="btn btn-primary"  type="button" onclick="buscarCliente()"><i class="bi bi-search"></i></button>
                         </div>
                     </div>
 
@@ -198,7 +226,7 @@
 
 
                 </div>
-                <div class="modal-footer" style="background: #FAEFF3">
+                <div class="modal-footer" style="background: #DAE8FD">
                     <button id="guardarInformacion" type="submit" class="btn btn-success btn-grad btn-sm">
                         Guardar
                     </button>
@@ -251,7 +279,7 @@
             <hr class="widget-separator" style="margin-top:2px !important">
             <div class="widget-body">
                 <div class="btn-group" role="group" aria-label="Basic mixed styles example" style="margin-bottom:5px !important;">
-                    <button id="btnNuevo" type="button" class="btn btn-success btn-sm bi bi-clipboard-plus" data-bs-toggle="modal" onclick="nuevo()" data-bs-target="#exampleModal">   Nuevo </button>
+                    <button id="btnNuevo" type="button" class="btn btn-primary btn-sm bi bi-clipboard-plus" data-bs-toggle="modal" onclick="nuevo()" data-bs-target="#exampleModal">   Nuevo </button>
                 </div>
                 <div class="table-responsive" style="font-family: 'Young Serif', sans-serif; ">
                     <table class="table table-bordered table-sm  dataTable table-striped" id="tablaMascotas">
@@ -314,7 +342,7 @@
                                             @Html.DisplayFor(model => item.fechaNacimiento)
                                         </td>
                                         <td>
-                                            <button title="Editar Mascota" class="btn p-v-sm btn-success btn-sm btn-editar" data-bs-toggle="modal" data-bs-target="#exampleModalEdit" onclick="editarMascota({idMascota:@item.idMascota ,nombreMascotas:'@item.nombreMascota',peso:'@item.peso',raza:'@item.raza',idCliente:'@item.idCliente',fechaNacimiento:'@item.fechaNacimiento',sexo:'@item.sexo'});">
+                                            <button title="Editar Mascota" class="btn p-v-sm btn-info btn-sm btn-editar" data-bs-toggle="modal" data-bs-target="#exampleModalEdit" onclick="editarMascota({idMascota:@item.idMascota ,nombreMascotas:'@item.nombreMascota',peso:'@item.peso',raza:'@item.raza',idCliente:'@item.idCliente',fechaNacimiento:'@item.fechaNacimiento',sexo:'@item.sexo'});">
                                                 <i class="bi bi-pen"></i>
                                             </button>
                                             <button title="Eliminar Cliente" class="btn p-v-sm btn-danger btn-sm" id="btnEliminar" data-bs-toggle="modal" data-bs-target="#eliminarModal" onclick="eliminarMascota({idMascota:@item.idMascota});">
@@ -381,7 +409,32 @@
     <script type="text/javascript">
         var table;
         $(document).ready(function () {
-            $('#tablaMascotas').DataTable();
+            $('#tablaMascotas').DataTable({
+                "language": {
+                    "decimal": "",
+                    "emptyTable": "No hay datos disponibles en la tabla",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 registros",
+                    "infoFiltered": "(filtrado de _MAX_ registros en total)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ registros",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "No se encontraron registros coincidentes",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "aria": {
+                        "sortAscending": ": activar para ordenar la columna en orden ascendente",
+                        "sortDescending": ": activar para ordenar la columna en orden descendente"
+                    }
+                }
+            });
         });
         function buscarCliente2() {
             console.log("Iniciando función buscarCliente2");
