@@ -508,3 +508,81 @@ footer .login {
     right: 10px;
     z-index: 9999; /* Asegura que el botón esté por encima de otros elementos */
 }
+#tablaMascotas {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px; /* Añadir espacio superior a la tabla */
+}
+
+    #tablaMascotas th,
+    #tablaMascotas td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    #tablaMascotas th {
+        background-color: #021D5D; /* Color de fondo para las celdas del encabezado */
+        color: white; /* Color del texto en el encabezado */
+    }
+    #tablaMascotas tbody tr:nth-child(odd) {
+        background-color: #ffffff; /* Fila impar amarilla */
+    }
+
+    #tablaMascotas tbody tr:nth-child(even) {
+        background-color: #ffffff; /* Fila par blanca */
+    }
+
+    #tablaMascotas tbody tr:hover {
+        background-color: #D4E2F9; /* Resalta la fila al pasar el ratón */
+    }
+
+    #tablaMascotas .btn {
+        margin-right: 5px;
+    }
+
+    #tablaMascotas tfoot {
+        background-color: #021D5D; /* Color de fondo para el pie de la tabla */
+        color: white; /* Color del texto en el pie de la tabla */
+    }
+
+#tablaLlantas {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px; /* Añadir espacio superior a la tabla */
+}
+
+    #tablaLlantas th,
+    #tablaLlantas td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    #tablaLlantas th {
+        background-color: #021D5D; /* Color de fondo para las celdas del encabezado */
+        color: white; /* Color del texto en el encabezado */
+    }
+
+    #tablaLlantas tbody tr:nth-child(odd) {
+        background-color: #ffffff; /* Fila impar amarilla */
+    }
+
+    #tablaLlantas tbody tr:nth-child(even) {
+        background-color: #ffffff; /* Fila par blanca */
+    }
+
+    #tablaLlantas tbody tr:hover {
+        background-color: #D4E2F9; /* Resalta la fila al pasar el ratón */
+    }
+
+    #tablaLlantas .btn {
+        margin-right: 5px;
+    }
+
+    #tablaLlantas tfoot {
+        background-color: #021D5D; /* Color de fondo para el pie de la tabla */
+        color: white; /* Color del texto en el pie de la tabla */
+    }
