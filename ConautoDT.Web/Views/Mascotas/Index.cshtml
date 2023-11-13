@@ -1,9 +1,7 @@
 ﻿<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.css" />
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.css" />
-<link rel="stylesheet" href="~/Theme/js/bootstrap-filestyle/bootstrap-filestyle.js" />
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <link rel="stylesheet" href="~/Content/bootstrap.css" />
-<link rel="stylesheet" href="~/Content/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="~/Content/Site.css" />
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
@@ -107,6 +105,7 @@
         </div>
     </div>
 </div>
+
 
 
 <!-- Modal Editar-->
@@ -377,6 +376,7 @@
     <script src="~/Content/jquery-2.2.4.js"></script>
     <script src="~/Content/bootstrap.js"></script>
     <script src="~/Content/modernizr-2.8.3.js"></script>
+    
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
     <script type="text/javascript">
         var table;
@@ -419,7 +419,17 @@
             console.log("Finalizando función buscarCliente2");
         }
 
+        function mostrarAlerta(mensaje, tipo) {
+            console.log('mostrarAlerta called with mensaje:', mensaje, 'tipo:', tipo);
+            Swal.fire({
 
+
+                icon: tipo,
+                title: mensaje,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
         function buscarCliente() {
 
             // Obtener el valor del input de cédula
@@ -454,7 +464,7 @@
 
             console.log("Finalizando función buscarCliente2");
         }
-
+         
 
         function editarMascota(Mascota) {
             console.log("esditarrr", Mascota);
@@ -490,4 +500,5 @@
 
 
     </script>
+
 }
