@@ -138,18 +138,22 @@ namespace VET_ANIMAL.WEB.Controllers
                         {
                             if (model.idMascota == 0)
                             {
+                                // SweetAlert para registro exitoso
                                 TempData["MensajeExito"] = "Registro Exitoso";
                             }
                             else
                             {
-                                TempData["MensajeExito"] = "Se edito correctamente";
+                                // SweetAlert para edición exitosa
+                                TempData["MensajeExito"] = "Se editó correctamente";
                             }
                             return RedirectToAction("Index", "Mascotas");
                         }
                         TempData["MensajeError"] = response.Content;
                         return View(model);
                     }
+                    // SweetAlert para campos no válidos
                     TempData["MensajeError"] = "Rellene todos los campos";
+                    return View(model);
                 }
                 return View(model);
             }
@@ -162,6 +166,7 @@ namespace VET_ANIMAL.WEB.Controllers
             }
             catch (Exception e)
             {
+                // SweetAlert para error general
                 _log.Error(e, "Error al iniciar sesión");
                 TempData["MensajeError"] = e.Message;
                 return Redirect("Index");

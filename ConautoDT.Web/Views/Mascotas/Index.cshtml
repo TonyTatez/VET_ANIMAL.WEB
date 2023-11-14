@@ -1,11 +1,8 @@
-﻿<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.css" />
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.css" />
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<link rel="stylesheet" href="~/Content/bootstrap.css" />
+﻿<link rel="stylesheet" href="~/Content/bootstrap.css" />
 <link rel="stylesheet" href="~/Content/Site.css" />
-
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @model VET_ANIMAL.WEB.Models.MascotasViewModel
 @{
     ViewData["Title"] = "Mascotas";
@@ -59,11 +56,11 @@
 
                         <div class="form-group col-md-6">
                             <label for="">Nombre</label>
-                            <input type="text" asp-for="@Model.nombreMascota" class="form-control" id="" placeholder="Ingrese Nombre Mascota" required>
+                            <input type="text" asp-for="@Model.nombreMascota" class="form-control" id="verificarname" placeholder="Ingrese Nombre Mascota" >
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">Dueño</label>
-                            <input id="editdueño" type="text" class="form-control mb-3" readonly style="width:100%!important;font-size: 13px; color: red" required>
+                            <input id="editdueño" type="text" class="form-control mb-3" readonly style="width:100%!important;font-size: 13px; color: red" >
                         </div>
 
                         <div class="form-group col-md-6" hidden>
@@ -74,11 +71,11 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="">Peso</label>
-                            <input type="text" asp-for="@Model.peso" class="form-control" id="" placeholder="Ingrese Peso Mascota" onkeypress="return soloNumeros(event)">
+                            <input type="text" asp-for="@Model.peso" class="form-control" id="verificarpeso" placeholder="Ingrese Peso Mascota" onkeypress="return soloNumeros(event)">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">Raza</label>
-                            <select asp-for="@Model.raza" class="form-control" required>
+                            <select asp-for="@Model.raza" class="form-control" id="verificarraza" >
                                 <option value="">Seleccione</option>
                                 <option value="Labrador">Labrador</option>
                                 <option value="Bulldog">Bulldog</option>
@@ -93,7 +90,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="">Sexo</label>
-                            <select asp-for="@Model.sexo" class="form-control" required>
+                            <select asp-for="@Model.sexo" class="form-control" id="verificarsexo">
                                 <option value="">Seleccione</option>
                                 <option value="Macho">Macho</option>
                                 <option value="Hembra">Hembra</option>
@@ -404,8 +401,9 @@
     <script src="~/Content/jquery-2.2.4.js"></script>
     <script src="~/Content/bootstrap.js"></script>
     <script src="~/Content/modernizr-2.8.3.js"></script>
-    
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <script type="text/javascript">
         var table;
         $(document).ready(function () {
@@ -567,6 +565,94 @@
         }
 
 
+        // Muestra el mensaje de éxito si existe
+        var mensajeExito = '@TempData["MensajeExito"]';
+        if (mensajeExito) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: mensajeExito,
+                showConfirmButton: false,  // No mostrará el botón de confirmación
+                timer: 2000,  // Desaparecerá después de 3000 milisegundos (3 segundos),
+                iconColor: '#0968DB',  // Color verde para el icono de éxito
+                border: '4px solid #196F3D',  // Borde verde para el cuadro de diálogo
+                background: '#FFF',  // Fondo blanco para el cuadro de diálogo
+                titleColor: '#000000',  // Color verde para el título
+                textColor: '#000000'  // Color del texto del contenido
+            });
+        }
+
+        // Muestra el mensaje de error si existe
+        var mensajeError = '@TempData["MensajeError"]';
+        if (mensajeError) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: mensajeError,
+                showConfirmButton: false,  // No mostrará el botón de confirmación
+                timer: 2000,  // Desaparecerá después de 3000 milisegundos (3 segundos),
+                iconColor: '#FF0000',  // Color rojo para el icono de error
+                border: '2px solid #FF0000',  // Borde rojo para el cuadro de diálogo
+                background: '#FFF',  // Fondo blanco para el cuadro de diálogo
+                titleColor: '#FF0000',  // Color rojo para el título
+                textColor: '#333'  // Color del texto del contenido
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('guardarInformacion2').addEventListener('click', function (event) {
+                event.preventDefault();  // Evita que el formulario se envíe automáticamente
+
+                // Verifica si los campos están llenos
+                if (verificarCampos()) {
+                    // Si todos los campos están llenos, envía el formulario
+                    document.forms[0].submit();
+                } else {
+                    // Si algún campo está vacío, muestra un SweetAlert y resalta los campos vacíos
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Por favor, complete todos los campos.',
+                        confirmButtonColor: '#d33',
+                        customClass: {
+                            popup: 'error-message'
+                        }
+                    });
+
+                    resaltarCamposVacios();
+                }
+            });
+
+            function verificarCampos() {
+                // Busca los campos específicos por ID
+                var nameCampo = document.getElementById('verificarname');
+                var nameCampo = document.getElementById('CI');
+                var pesoCampo = document.getElementById('verificarpeso');
+                var razaCampo = document.getElementById('verificarraza');
+                var sexoCampo = document.getElementById('verificarsexo');
+
+                // Verifica si todos los campos están llenos
+                return nameCampo.value.trim() !== '' &&
+                    pesoCampo.value.trim() !== '' &&
+                    razaCampo.value.trim() !== '' &&
+                    sexoCampo.value.trim() !== '';
+            }
+
+            function resaltarCamposVacios() {
+                // Resalta los campos vacíos con un borde rojo
+                var campos = ['verificarname', 'verificarpeso', 'verificarraza', 'verificarsexo', 'CI'];
+
+                campos.forEach(function (campoID) {
+                    var campo = document.getElementById(campoID);
+                    if (!campo.value.trim()) {
+                        campo.style.border = '2px solid red';
+                    } else {
+                        campo.style.border = '';  // Restablece el estilo si el campo está lleno
+                    }
+                });
+            }
+        });
     </script>
 
 }
