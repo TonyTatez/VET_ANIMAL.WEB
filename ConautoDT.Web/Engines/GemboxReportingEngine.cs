@@ -1,10 +1,10 @@
 ﻿using GemBox.Spreadsheet;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using TMS_MANTENIMIENTO.WEB.Helpers;
-using TMS_MANTENIMIENTO.WEB.Interfaces;
+using VET_ANIMAL.WEB.Helpers;
+using VET_ANIMAL.WEB.Interfaces;
 
-namespace TMS_MANTENIMIENTO.WEB.Engines
+namespace VET_ANIMAL.WEB.Engines
 {
     public class GemboxReportingEngine : IServerSideReportingEngine
     {

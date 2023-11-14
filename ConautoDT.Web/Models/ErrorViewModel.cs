@@ -1,4 +1,4 @@
-namespace TMS_MANTENIMIENTO.WEB.Models
+namespace VET_ANIMAL.WEB.Models
 {
     public class ErrorViewModel
     {

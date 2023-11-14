@@ -51,11 +51,11 @@ class Typewriter {
     if(container) {
       if(typeof container === 'string') {
         const containerElement = document.querySelector(container);
-  
+
         if(!containerElement) {
           throw new Error('Could not find container element');
         }
-  
+
         this.state.elements.container = containerElement;
       } else {
         this.state.elements.container = container;
@@ -688,7 +688,7 @@ class Typewriter {
           if(node) {
             node.parentNode.removeChild(node);
           }
-          
+
           // Remove extra node as current deleted one is just an empty wrapper node
           if(type === VISIBLE_NODE_TYPES.HTML_TAG && removingCharacterNode) {
             eventQueue.unshift({

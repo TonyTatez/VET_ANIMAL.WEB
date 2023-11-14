@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NLog;
 using RestSharp;
-using TMS_MANTENIMIENTO.WEB.Servicios;
 using Utf8Json;
 using VET_ANIMAL.WEB.Models;
+using VET_ANIMAL.WEB.Servicios;
 
 namespace VET_ANIMAL.WEB.Controllers
 {
@@ -50,7 +49,6 @@ namespace VET_ANIMAL.WEB.Controllers
                 var content = response.Content;
                 List<ItemMascota> ListaMascota = System.Text.Json.JsonSerializer.Deserialize<List<ItemMascota>>(content);
                 model.ListaMascota = ListaMascota;
-
             }
             else
             {
@@ -82,19 +80,6 @@ namespace VET_ANIMAL.WEB.Controllers
             return View(model);
         }
 
-        //// GET: CiudadController/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
-
-        //// GET: CiudadController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        // POST: CiudadController/Create
         [HttpPost]
         public async Task<ActionResult> GuardaryEditarInfo(ItemMascota model)
         {
@@ -117,7 +102,6 @@ namespace VET_ANIMAL.WEB.Controllers
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
 
             request.AddJsonBody(guardarMascotaViewModel);
-
 
             if (model.nombreMascota == null)
             {
@@ -195,7 +179,6 @@ namespace VET_ANIMAL.WEB.Controllers
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
 
             request.AddJsonBody(EditarMascotaViewModel);
-
 
             if (model.nombreMascota == null)
             {
@@ -320,7 +303,6 @@ namespace VET_ANIMAL.WEB.Controllers
             {
                 string json = Request.Form["json"];
 
-
                 List<ClientesViewModel> listaObj = JsonConvert.DeserializeObject<List<ClientesViewModel>>(json);
                 ListaClientes model2 = new ListaClientes();
                 string tokenValue = Request.Cookies["token"];
@@ -339,15 +321,12 @@ namespace VET_ANIMAL.WEB.Controllers
                 request.AddJsonBody(listaObj);
                 var response = client.Execute(request);
                 return Json(new { data = model2.ItemClientes });
-
             }
             catch (Exception e)
             {
                 return Json(new { data = "" });
             }
         }
-
-
 
         // POST: CiudadController/Delete/5
         [HttpPost]

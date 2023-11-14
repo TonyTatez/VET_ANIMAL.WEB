@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TMS_MANTENIMIENTO.WEB.Models;
 
 namespace VET_ANIMAL.WEB.Models
 {
@@ -11,8 +10,10 @@ namespace VET_ANIMAL.WEB.Models
         public string nombres { get; set; }
         public string telefono { get; set; }
         public string correo { get; set; }
+
         [MaxLength(350)]
         public string direccion { get; set; }
+
         public long idMascota { get; set; }
     }
 
@@ -21,6 +22,7 @@ namespace VET_ANIMAL.WEB.Models
         public long Id { get; set; }
         public Boolean Activo { get; set; }
     }
+
     public class ItemMascotas
     {
         public long idMascota { get; set; }
@@ -44,8 +46,10 @@ namespace VET_ANIMAL.WEB.Models
         public string nombres { get; set; }
         public string telefono { get; set; }
         public string correo { get; set; }
+
         [MaxLength(350)]
         public string direccion { get; set; }
+
         //   public string tipoCiudad { get; set; }
     }
 }

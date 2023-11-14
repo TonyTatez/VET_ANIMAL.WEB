@@ -10,7 +10,6 @@ jest.mock('./../../core', () => {
 });
 
 describe('Typewriter component', () => {
-
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -38,7 +37,7 @@ describe('Typewriter component', () => {
         const options = { strings: ['test-1', 'test-2' ]};
 
         let instance = null;
-        
+
         const { unmount } = render(<Typewriter
             options={options}
             onInit={i => instance = i}

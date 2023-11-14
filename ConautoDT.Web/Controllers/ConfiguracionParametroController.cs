@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NLog;
 using RestSharp;
-using TMS_MANTENIMIENTO.WEB.Models;
-using TMS_MANTENIMIENTO.WEB.Servicios;
 using Utf8Json;
+using VET_ANIMAL.WEB.Models;
+using VET_ANIMAL.WEB.Servicios;
 
-namespace TMS_MANTENIMIENTO.WEB.Controllers
+namespace VET_ANIMAL.WEB.Controllers
 {
     public class ConfiguracionParametroController : Controller
     {
@@ -15,7 +15,7 @@ namespace TMS_MANTENIMIENTO.WEB.Controllers
         private RestClient _apiClient;
         private RestClient _appAutogoClient;
         private static Logger _log = LogManager.GetLogger("Account");
-       
+
         private string responseContent { get; }
         private AccountService _AccountService;
         // GET: ConfiguracionController1

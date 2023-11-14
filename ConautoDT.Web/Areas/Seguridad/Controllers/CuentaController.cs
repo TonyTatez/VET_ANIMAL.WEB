@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace TMS_MANTENIMIENTO.WEB.Areas.Seguridad.Controllers
+namespace VET_ANIMAL.WEB.Areas.Seguridad.Controllers
 {
     public class CuentaController : Controller
     {

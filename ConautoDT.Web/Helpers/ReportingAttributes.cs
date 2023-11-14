@@ -1,4 +1,4 @@
-﻿namespace TMS_MANTENIMIENTO.WEB.Helpers
+﻿namespace VET_ANIMAL.WEB.Helpers
 {
     public class ReportingAttributes
     {

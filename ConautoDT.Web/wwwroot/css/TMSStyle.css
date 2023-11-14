@@ -129,7 +129,6 @@ TMSDivButtomSelected {
     /* Agrega más estilos según sea necesario */
 }
 
-
 /* Aplicar la fuente Quicksand a tu menú desplegable y elementos del menú */
 body, .offcanvas, .offcanvas-body ul.dropdown-menu li a {
     font-family: 'Quicksand', sans-serif;
@@ -150,6 +149,6 @@ body, .offcanvas, .offcanvas-body ul.dropdown-menu li a {
 }
 
     /* Cambio de color al pasar el ratón sobre los elementos del menú */
-.offcanvas-body ul.dropdown-menu li a:hover {
+    .offcanvas-body ul.dropdown-menu li a:hover {
         color: #007bff; /* Cambia a un color diferente al pasar el ratón */
     }

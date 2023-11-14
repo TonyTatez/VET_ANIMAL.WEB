@@ -7,9 +7,8 @@
 //using static SendGrid.BaseClient;
 using NLog;
 using RestSharp;
-using TMS_MANTENIMIENTO.WEB.Models;
 
-namespace TMS_MANTENIMIENTO.WEB.Servicios
+namespace VET_ANIMAL.WEB.Servicios
 {
     public class AccountService
     {
@@ -18,15 +17,14 @@ namespace TMS_MANTENIMIENTO.WEB.Servicios
         private RestClient _apiClient;
         private RestClient _appAutogoClient;
         private static Logger _log = LogManager.GetLogger("Account");
-       
 
         public AccountService(IConfiguration configuration)
         {
             this.configuration = configuration;
             _apiClient = new RestClient(configuration["APIClient"]);//RestClient(baseURL);
-                                                                   //    _apiClient.ThrowOnAnyError = true;
-                                                                   //    _apiClient.Timeout = 120000;
-                                                                   //    _apiClient.UseUtf8Json();
+                                                                    //    _apiClient.ThrowOnAnyError = true;
+                                                                    //    _apiClient.Timeout = 120000;
+                                                                    //    _apiClient.UseUtf8Json();
         }
 
         //public async Task<List<ItemRolesViewModel>> GetAllRolesAsync()

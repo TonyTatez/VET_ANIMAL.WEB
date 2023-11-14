@@ -1,6 +1,6 @@
 /**
  * Add styles to document head
- * 
+ *
  * @param {String} styles CSS styles to add
  * @returns {void}
  */

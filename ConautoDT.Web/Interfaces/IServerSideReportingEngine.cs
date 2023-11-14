@@ -1,4 +1,4 @@
-﻿namespace TMS_MANTENIMIENTO.WEB.Interfaces
+﻿namespace VET_ANIMAL.WEB.Interfaces
 {
     public interface IServerSideReportingEngine : IDisposable
     {

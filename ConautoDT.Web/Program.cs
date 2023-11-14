@@ -1,11 +1,7 @@
-using TMS_MANTENIMIENTO.WEB.Servicios;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-builder.Services.AddTransient<IRepositorioProyectos, RepositorioProyectos>();
-builder.Services.AddTransient<IServicioEmail, ServicioEmailSendGrid>();
 
 //builder.Services.AddAuthentication();
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>(opciones => {
