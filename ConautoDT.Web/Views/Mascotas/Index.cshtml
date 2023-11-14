@@ -39,7 +39,7 @@
                 <div class="m-5">
                     <!-- Primer input y botón -->
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Ingrese Cedula del Cliente" id="CI" onkeypress="return soloNumeros(event)">
+                        <input type="text" class="form-control" placeholder="Ingrese Cedula del Cliente" id="CI" onkeypress="return solo10Numeros(event)" required>
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="button" onclick="buscarCliente2()"><i class="bi bi-search"></i></button>
                         </div>
@@ -59,11 +59,11 @@
 
                         <div class="form-group col-md-6">
                             <label for="">Nombre</label>
-                            <input type="text" asp-for="@Model.nombreMascota" class="form-control" id="" placeholder="Ingrese Nombre Mascota">
+                            <input type="text" asp-for="@Model.nombreMascota" class="form-control" id="" placeholder="Ingrese Nombre Mascota" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">Dueño</label>
-                            <input id="editdueño"  type="text" class="form-control mb-3" readonly style="width:100%!important; color: red">
+                            <input id="editdueño" type="text" class="form-control mb-3" readonly style="width:100%!important;font-size: 13px; color: red" required>
                         </div>
 
                         <div class="form-group col-md-6" hidden>
@@ -78,7 +78,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">Raza</label>
-                            <select asp-for="@Model.raza" class="form-control">
+                            <select asp-for="@Model.raza" class="form-control" required>
                                 <option value="">Seleccione</option>
                                 <option value="Labrador">Labrador</option>
                                 <option value="Bulldog">Bulldog</option>
@@ -93,7 +93,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="">Sexo</label>
-                            <select asp-for="@Model.sexo" class="form-control">
+                            <select asp-for="@Model.sexo" class="form-control" required>
                                 <option value="">Seleccione</option>
                                 <option value="Macho">Macho</option>
                                 <option value="Hembra">Hembra</option>
@@ -101,7 +101,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">Fecha de Nacimiento</label>
-                            <input class="form-control" asp-for="@Model.fechaNacimiento" name="fechaNacimiento" style="width: 89%;" max="2023-11-11" type="date" required>
+                            <input class="form-control" asp-for="@Model.fechaNacimiento" name="fechaNacimiento" style="width: 89%;" max="2023-11-11" type="date" >
                         </div>
                     </div>
 
@@ -151,7 +151,7 @@
                 <div class="m-5">
                     <!-- Primer input y botón -->
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" style="color: blue;font-size: 16px;" placeholder="Ingrese Cedula del Cliente" id="cedulaedit" onkeypress="return soloNumeros(event)">
+                        <input type="text" class="form-control" style="color: blue;font-size: 16px;" placeholder="Ingrese Cedula del Cliente" id="cedulaedit" onkeypress="return solo10Numeros(event)">
                         <div class="input-group-append">
                             <button class="btn btn-primary"  type="button" onclick="buscarCliente()"><i class="bi bi-search"></i></button>
                         </div>
@@ -542,7 +542,22 @@
             console.log(guia);
             $("#idMascotaEliminar").val(guia.idMascota);
         }
+        function solo10Numeros(e) {
+            let tecla = (document.all) ? e.keyCode : e.which;
 
+            // Permitir la tecla de retroceso (backspace)
+            if (tecla == 8) return true;
+
+            let patron = /[0-9]/;
+            let te = String.fromCharCode(tecla);
+
+            // Verificar si es un número y la longitud es menor o igual a 10
+            if (patron.test(te) && e.target.value.length < 10) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         function soloNumeros(e) {
             let tecla = (document.all) ? e.keyCode : e.which; // 2
             if (tecla == 8) return true; // 3

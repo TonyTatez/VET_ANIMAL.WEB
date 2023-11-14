@@ -70,7 +70,7 @@
 
                     <div class="form-group col-md-12">
                         <label for="cedCliente">Cédula</label>
-                        <input type="text" asp-for="@Model.identificacion" style="color: blue;font-size: 14px;" id="cedCliente" class="form-control" placeholder="Ingrese cédula del cliente" required />
+                        <input type="text" asp-for="@Model.identificacion" style="color: blue;font-size: 14px;" onkeypress="return solo10Numeros(event)" id="cedCliente" class="form-control" placeholder="Ingrese cédula del cliente" required />
                     </div>
 
                     <div class="form-group col-md-12">
@@ -80,12 +80,12 @@
 
                     <div class="form-group col-md-12">
                         <label for="correoCliente">Correo</label>
-                        <input type="text" asp-for="@Model.correo" style="color: blue;font-size: 14px;" id="correoCliente" class="form-control" placeholder="Ingrese correo del cliente" required />
+                        <input type="text" asp-for="@Model.correo" onkeypress="return validarCorreoElectronico(event)" style="color: blue;font-size: 14px;" id="correoCliente" class="form-control" placeholder="Ingrese correo del cliente" required />
                     </div>
 
                     <div class="form-group col-md-12">
                         <label for="telefono">Teléfono</label>
-                        <input type="text" asp-for="@Model.telefono" style="color: blue;font-size: 14px;" id="telefono" class="form-control" placeholder="Ingrese teléfono del cliente" />
+                        <input type="text" asp-for="@Model.telefono" onkeypress="return solo10Numeros(event)" style="color: blue;font-size: 14px;" id="telefono" class="form-control" placeholder="Ingrese teléfono del cliente" />
                     </div>
 
                 </div>
@@ -146,7 +146,7 @@
 
                     <div class="form-group col-md-12">
                         <label for="cedCliente">Cédula</label>
-                        <input type="text" asp-for="@Model.identificacion" style="color: blue;font-size: 14px;" id="cedCliente2" class="form-control" placeholder="Ingrese cédula del cliente" required />
+                        <input type="text" asp-for="@Model.identificacion" onkeypress="return solo10Numeros(event)" style="color: blue;font-size: 14px;" onkeypress="return solo10Numeros(event)" id="cedCliente2" class="form-control" placeholder="Ingrese cédula del cliente" required />
                     </div>
 
                     <div class="form-group col-md-12">
@@ -161,7 +161,7 @@
 
                     <div class="form-group col-md-12">
                         <label for="telefono">Teléfono</label>
-                        <input type="text" asp-for="@Model.telefono" style="color: blue;font-size: 14px;" id="telfCliente2" class="form-control" placeholder="Ingrese teléfono del cliente" />
+                        <input type="text" asp-for="@Model.telefono" onkeypress="return solo10Numeros(event)" style="color: blue;font-size: 14px;" id="telfCliente2" class="form-control" placeholder="Ingrese teléfono del cliente" />
                     </div>
 
                 </div>
@@ -430,6 +430,41 @@
 
         }
 
+        function solo10Numeros(e) {
+            let tecla = (document.all) ? e.keyCode : e.which;
+
+            // Permitir la tecla de retroceso (backspace)
+            if (tecla == 8) return true;
+
+            let patron = /[0-9]/;
+            let te = String.fromCharCode(tecla);
+
+            // Verificar si es un número y la longitud es menor o igual a 10
+            if (patron.test(te) && e.target.value.length < 10) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        
+
+        function soloNumeros(e) {
+            let tecla = (document.all) ? e.keyCode : e.which;
+
+            // Permitir la tecla de retroceso (backspace)
+            if (tecla == 8) return true;
+
+            let patron = /[0-9]/;
+            let te = String.fromCharCode(tecla);
+
+            // Verificar si es un número y la longitud es menor o igual a 10
+            if (patron.test(te) && e.target.value.length < 10) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     </script>
 
 
