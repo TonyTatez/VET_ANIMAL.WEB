@@ -96,26 +96,6 @@ namespace VET_ANIMAL.WEB.Controllers
             {
                 model.ListaClientes = null;
             }
-
-            request = new RestRequest("/api/cat/Mascotas", Method.Get);
-
-            request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
-
-            response = client.Execute(request);
-
-            if (response.Content.Length > 2 && response.IsSuccessful == true)
-            {
-                var content = response.Content;
-
-                List<ItemMascotas> ListaMascotas = System.Text.Json.JsonSerializer.Deserialize<List<ItemMascotas>>(content);
-
-                model.ListaMascotas = ListaMascotas;
-            }
-            else
-            {
-                model.ListaMascotas = null;
-            }
-
             // model.tipoColor = Tipo;
 
             TempData["menu"] = "";
@@ -176,6 +156,7 @@ namespace VET_ANIMAL.WEB.Controllers
                         {
                             if (model.idCliente == 0)
                             {
+                                // SweetAlert para registro exitoso
                                 TempData["MensajeExito"] = "Registro Exitoso";
                             }
                             else
@@ -242,13 +223,16 @@ namespace VET_ANIMAL.WEB.Controllers
                     _log.Info("Editando Cliente");
                     if (response.IsSuccessful)
                     {
-                        TempData["MensajeExito"] = "Edición Exitosa";
+                        // SweetAlert para edición exitosa
+                        TempData["MensajeExito"] = "Registro editado correctamente";
                         return RedirectToAction("Index", "Clientes");
                     }
                     TempData["MensajeError"] = response.Content;
                     return View(model);
                 }
+                // SweetAlert para campos no válidos
                 TempData["MensajeError"] = "Rellene todos los campos";
+                
                 return View(model);
             }
             catch (JsonParsingException e)

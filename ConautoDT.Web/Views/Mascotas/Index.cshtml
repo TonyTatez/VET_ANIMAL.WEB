@@ -168,7 +168,7 @@
 
                         <div class="form-group col-md-12" hidden>
                             <label for="masct">masc</label>
-                            <input type="text" asp-for="@Model.idMascota" style="color: blue;font-size: 16px;" id="idCliente2" class="form-control" placeholder="Ingrese nombres del cliente" />
+                            <input type="text" asp-for="@Model.idMascota" style="color: blue;font-size: 16px;" id="idMascota2" class="form-control" placeholder="Ingrese nombres del cliente" />
                         </div>
 
                         <div class="form-group col-md-6">
@@ -188,11 +188,11 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="">Peso</label>
-                            <input type="text" asp-for="@Model.peso" style="color: blue;font-size: 16px;" class="form-control" id="editPeso" placeholder="Ingrese Peso Mascota" onkeypress="return soloNumeros(event)">
+                            <input type="text" asp-for="@Model.peso" style="color: blue;font-size: 16px;" class="form-control" id="editPeso" placeholder="Ingrese Peso Mascota" onkeypress="return soloNumeros(event)" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">Raza</label>
-                            <select asp-for="@Model.raza" class="form-control" id="editRaza" style="color: blue;font-size: 16px;">
+                            <select asp-for="@Model.raza" class="form-control" id="editRaza" style="color: blue;font-size: 16px;" required>
                                 <option value="">Seleccione</option>
                                 <option value="Labrador">Labrador</option>
                                 <option value="Bulldog">Bulldog</option>
@@ -207,7 +207,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="">Sexo</label>
-                            <select asp-for="@Model.sexo" class="form-control" id="editSexo" style="color: blue;font-size: 16px;">
+                            <select asp-for="@Model.sexo" class="form-control" id="editSexo" style="color: blue;font-size: 16px;" required>
                                 <option value="">Seleccione</option>
                                 <option value="Macho">Macho</option>
                                 <option value="Hembra">Hembra</option>
@@ -524,11 +524,28 @@
             $('#editdueño2').val(Mascota.idCliente);
             $('#editPeso').val(Mascota.peso);
             $('#editRaza').val(Mascota.raza);
+            $('#idMascota2').val(Mascota.idMascota);
             $('#editSexo').val(Mascota.sexo);
-            var fechaFormateada = new Date(Mascota.fechaNacimiento).toISOString().split('T')[0];
-            $("#editFecha2").val(fechaFormateada);
-            //$('#editFecha2').val(Mascota.fechaNacimiento);
-            console.log("Fecha de nacimiento en el modal:", Mascota.fechaNacimiento);
+            // Parsear la cadena de fecha y crear una instancia de Date
+            const partesFecha = Mascota.fechaNacimiento.split(/[\/ :]/);
+            const fechaNacimiento = new Date(
+                partesFecha[2],
+                partesFecha[1] - 1,
+                partesFecha[0],
+                partesFecha[3],
+                partesFecha[4],
+                partesFecha[5]
+            );
+
+            // Verificar si la fecha es válida
+            if (!isNaN(fechaNacimiento.getTime())) {
+                // Formatear la fecha a 'YYYY-MM-DD' para asignarla al input
+                const fechaFormateada = fechaNacimiento.toISOString().split('T')[0];
+                $("#editFecha2").val(fechaFormateada);
+                console.log("Fecha de nacimiento en el modal:", fechaFormateada);
+            } else {
+                console.error('Fecha de nacimiento no válida');
+            }
         }
 
         function nuevo() {
@@ -653,6 +670,54 @@
                 });
             }
         });
+
+
+        //document.addEventListener('DOMContentLoaded', function () {
+        //    document.getElementById('guardarInformacion').addEventListener('click', function (event) {
+        //        event.preventDefault();  // Evita que el formulario se envíe automáticamente
+        //        // Verifica si los campos están llenos
+        //        if (verificarCamposeditar()) {
+        //            // Si todos los campos están llenos, envía el formulario
+        //            document.forms[0].submit();
+        //        } else {
+        //            // Si algún campo está vacío, muestra un SweetAlert y resalta los campos vacíos
+        //            Swal.fire({
+        //                icon: 'error',
+        //                title: 'Error',
+        //                text: 'Por favor, complete todos los campos.',
+        //                confirmButtonColor: '#d33',
+        //                customClass: {
+        //                    popup: 'error-message'
+        //                }
+        //            });
+        //            resaltarCamposVacios();
+        //        }
+        //    });
+        //    function verificarCamposeditar() {
+        //        // Busca los campos específicos por ID
+        //        var nameCampo = document.getElementById('editNombre');
+        //        var pesoCampo = document.getElementById('editPeso');
+        //        var razaCampo = document.getElementById('editRaza');
+        //        var sexoCampo = document.getElementById('editSexo');
+        //        // Verifica si todos los campos están llenos
+        //        return nameCampo.value.trim() !== '' &&
+        //            pesoCampo.value.trim() !== '' &&
+        //            razaCampo.value.trim() !== '' &&
+        //            sexoCampo.value.trim() !== '';
+        //    }
+        //    function resaltarCamposVacios() {
+        //        // Resalta los campos vacíos con un borde rojo
+        //        var campos = ['editNombre', 'editPeso', 'editRaza', 'editSexo'];
+        //        campos.forEach(function (campoID) {
+        //            var campo = document.getElementById(campoID);
+        //            if (!campo.value.trim()) {
+        //                campo.style.border = '1px solid red';
+        //            } else {
+        //                campo.style.border = '';  // Restablece el estilo si el campo está lleno
+        //            }
+        //        });
+        //    }
+        //});
     </script>
 
 }

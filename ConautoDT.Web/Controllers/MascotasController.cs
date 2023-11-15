@@ -55,23 +55,6 @@ namespace VET_ANIMAL.WEB.Controllers
                 model.ListaMascota = null;
             }
 
-            request = new RestRequest("/api/Cliente/ListarCliente", Method.Get);
-
-            request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
-
-            response = client.Execute(request);
-
-            if (response.Content.Length > 2 && response.IsSuccessful == true)
-            {
-                var content = response.Content;
-
-                List<ItemCliente> ListaClientes = System.Text.Json.JsonSerializer.Deserialize<List<ItemCliente>>(content);
-                model.ListaClientes = ListaClientes;
-            }
-            else
-            {
-                model.ListaClientes = null;
-            }
 
             // model.tipoColor = Tipo;
 
@@ -133,7 +116,7 @@ namespace VET_ANIMAL.WEB.Controllers
                             return RedirectToAction("Index", "Mascotas");
                         }
                         TempData["MensajeError"] = response.Content;
-                        return View(model);
+                        return RedirectToAction("Index", "Mascotas");
                     }
                     // SweetAlert para campos no válidos
                     TempData["MensajeError"] = "Rellene todos los campos";
@@ -193,26 +176,29 @@ namespace VET_ANIMAL.WEB.Controllers
                     if (ModelState.IsValid)
                     {
                         _log.Info("Accediendo al API");
-                        var response = await _apiClient.ExecuteAsync(request, Method.Post);
+                        var response = await _apiClient.ExecuteAsync(request, Method.Put);
                         _log.Info("Registrando Mascota");
                         if (response.IsSuccessful)
                         {
                             if (model.idMascota == 0)
                             {
-                                TempData["MensajeExito"] = "Registro Exitoso";
+                                // SweetAlert para campos no válidos
+                                TempData["MensajeError"] = "Ocurrio un error, mascota no encontrada";
                             }
                             else
                             {
-                                TempData["MensajeExito"] = "Se edito correctamente";
+                                // SweetAlert para edición exitosa
+                                TempData["MensajeExito"] = "Registro editado correctamente";
                             }
                             return RedirectToAction("Index", "Mascotas");
                         }
                         TempData["MensajeError"] = response.Content;
-                        return View(model);
+                        return RedirectToAction("Index", "Mascotas");
                     }
                     TempData["MensajeError"] = "Rellene todos los campos";
                 }
-                return View(model);
+                TempData["MensajeError"] = "Cedula de Cliente incorrecta";
+                return RedirectToAction("Index", "Mascotas");
             }
             catch (JsonParsingException e)
             {
