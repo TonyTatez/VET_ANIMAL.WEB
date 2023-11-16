@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using RestSharp;
+using VET_ANIMAL.WEB.Models;
 using VET_ANIMAL.WEB.Servicios;
 
 namespace VET_ANIMAL.WEB.Controllers
@@ -32,10 +33,52 @@ namespace VET_ANIMAL.WEB.Controllers
             return View();
         }
 
-        
+        public async Task<IActionResult> MostrarNumeroClientes()
+        {
+            try
+            {
+                string tokenValue = Request.Cookies["token"];
 
-// GET: CargaMasivaController/Details/5
-public ActionResult Details(int id)
+                // Crear la solicitud a la API para obtener el número de clientes
+                var request = new RestRequest("/api/cat/NumeroClientes", Method.Get);
+                request.AddHeader("Authorization", $"Bearer {tokenValue}");
+
+                // Realizar la solicitud
+                var response = await _apiClient.ExecuteAsync<long>(request);
+
+                if (response.IsSuccessful)
+                {
+                    // Crea el modelo
+                    var viewModel = new CargaMasivaViewModel
+                    {
+                        numeroClientes = response.Data
+                    };
+
+                    // Devuelve la vista con el modelo
+                    return View("CargaMasiva", viewModel);
+                }
+                else
+                {
+                    // Manejar el caso en que la solicitud no fue exitosa
+                    _log.Error($"Error al obtener el número de clientes. Código de estado: {response.StatusCode}, Mensaje: {response.ErrorMessage}");
+                    return View("Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejar errores según tus necesidades
+                _log.Error(ex, "Error al obtener el número de clientes");
+                return View("Error");
+            }
+        }
+
+
+        // ... (otros métodos)
+
+
+
+        // GET: CargaMasivaController/Details/5
+        public ActionResult Details(int id)
         {
             return View();
         }
@@ -60,6 +103,8 @@ public ActionResult Details(int id)
                 return View();
             }
         }
+
+        
 
         // GET: CargaMasivaController/Edit/5
         public ActionResult Edit(int id)
@@ -102,6 +147,8 @@ public ActionResult Details(int id)
                 return View();
             }
         }
+
+
 
         [HttpPost]
         public async Task<JsonResult> Upload(IFormFile Excel)

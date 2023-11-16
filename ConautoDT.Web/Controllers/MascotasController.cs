@@ -94,6 +94,12 @@ namespace VET_ANIMAL.WEB.Controllers
 
             try
             {
+                // Validación del idCliente
+                if (model.idCliente <= 0)
+                {
+                    throw new ArgumentException("Cedula de Cliente no encontrada o invalida");
+                }
+
                 if (model.nombreMascota != null)
                 {
                     if (ModelState.IsValid)
@@ -122,7 +128,14 @@ namespace VET_ANIMAL.WEB.Controllers
                     TempData["MensajeError"] = "Rellene todos los campos";
                     return View(model);
                 }
-                return View(model);
+                TempData["MensajeError"] = "Cedula de Cliente incorrecta";
+                return RedirectToAction("Index", "Mascotas");
+            }
+            catch (ArgumentException ex)
+            {
+                // Manejo específico para ArgumentException
+                TempData["MensajeError"] = ex.Message;
+                return RedirectToAction("Index", "Mascotas");
             }
             catch (JsonParsingException e)
             {

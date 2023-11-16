@@ -168,9 +168,11 @@ namespace VET_ANIMAL.WEB.Controllers
                         TempData["MensajeError"] = response.Content;
                         return View(model);
                     }
-                    TempData["MensajeError"] = "Rellene todos los campos";
+                    TempData["MensajeError"] = "Cedula invalida";
+                    return RedirectToAction("Index", "Clientes");
                 }
-                return View(model);
+                TempData["MensajeError"] = "Cedula invalida";
+                return RedirectToAction("Index", "Clientes");
             }
             catch (JsonParsingException e)
             {
