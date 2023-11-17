@@ -319,6 +319,35 @@ namespace VET_ANIMAL.WEB.Controllers
             // return View(model);
         }
 
+        public ActionResult IndexMasivo()
+        {
+            ClientesViewModel model = new ClientesViewModel();
+
+            string tokenValue = Request.Cookies["token"];
+            var client = new RestClient(configuration["APIClient"]);
+            var request = new RestRequest("/api/cat/Clientes", Method.Get);
+
+            request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
+
+            var response = client.Execute(request);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var content = response.Content;
+
+                List<ItemClientes> ListaClientes = System.Text.Json.JsonSerializer.Deserialize<List<ItemClientes>>(content);
+                model.ListaClientes = ListaClientes;
+            }
+            else
+            {
+                // Manejar errores, podrías redirigir a una página de error o mostrar un mensaje adecuado.
+            }
+
+            TempData["menu"] = "";
+
+            return View(model);
+        }
+
         [HttpPost]
         public ActionResult GuardarClientes()
         {
