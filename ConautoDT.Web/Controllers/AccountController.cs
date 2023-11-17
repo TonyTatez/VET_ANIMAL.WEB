@@ -32,6 +32,13 @@ namespace VET_ANIMAL.WEB.Controllers
             _AccountService = new AccountService(configuration);
         }
 
+        public async Task<ActionResult> Index()
+        {
+            Login model = new Login();  
+                return View(model);
+            
+        }
+        [HttpPost]
         public async Task<ActionResult> Index(Login model)
         {
             var request = new RestRequest("/api/Security/login", Method.Post/*, DataFormat.Json*/);
@@ -60,8 +67,8 @@ namespace VET_ANIMAL.WEB.Controllers
                         TempData["MensajeError"] = response.Content;
                         return View(model);
                     }
-                    TempData["MensajeError"] = "Rellene todos los campos";
                 }
+                TempData["MensajeError"] = "Rellene todos los campos";
                 return View(model);
             }
             catch (JsonParsingException e)

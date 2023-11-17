@@ -458,41 +458,6 @@
                 return false;
             }
         }
-
-        // Muestra el mensaje de éxito si existe
-        var mensajeExito = '@TempData["MensajeExito"]';
-        if (mensajeExito) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Éxito',
-                text: mensajeExito,
-                showConfirmButton: false,  // No mostrará el botón de confirmación
-                timer: 2000,  // Desaparecerá después de 3000 milisegundos (3 segundos),
-                iconColor: '#0968DB',  // Color verde para el icono de éxito
-                border: '4px solid #196F3D',  // Borde verde para el cuadro de diálogo
-                background: '#FFF',  // Fondo blanco para el cuadro de diálogo
-                titleColor: '#000000',  // Color verde para el título
-                textColor: '#000000'  // Color del texto del contenido
-            });
-        }
-
-        // Muestra el mensaje de error si existe
-        var mensajeError = '@TempData["MensajeError"]';
-        if (mensajeError) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: mensajeError,
-                showConfirmButton: false,  // No mostrará el botón de confirmación
-                timer: 2000,  // Desaparecerá después de 3000 milisegundos (3 segundos),
-                iconColor: '#FF0000',  // Color rojo para el icono de error
-                border: '2px solid #FF0000',  // Borde rojo para el cuadro de diálogo
-                background: '#FFF',  // Fondo blanco para el cuadro de diálogo
-                titleColor: '#FF0000',  // Color rojo para el título
-                textColor: '#333'  // Color del texto del contenido
-            });
-        }
-
     </script>
 
 
