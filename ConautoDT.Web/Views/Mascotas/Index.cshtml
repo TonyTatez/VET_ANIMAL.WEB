@@ -327,7 +327,7 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="background: #DAE8FD">
-                    <button id="guardarInformacion3" type="submit" class="btn btn-success btn-grad btn-sm">
+                    <button id="guardarInformacion2" type="submit" class="btn btn-success btn-grad btn-sm">
                         Guardar
                     </button>
                 </div>
@@ -722,7 +722,7 @@
         }
 
         $(document).ready(function () {
-            $('form').submit(function (event) {
+            $('#GuardarFichaControl').submit(function (event) {
                 var emergenciaCheckbox = $("#checkboxEmergencia");
                 var observacionTextArea = $("#Observacion");
 
@@ -782,7 +782,7 @@
 
         function guardarYRedirigir() {
             // Coloca aquí el código para guardar y redirigir
-            $('form').unbind('submit').submit(); // Esto vuelve a enviar el formulario después de las validaciones
+            $('#GuardarFichaControl').unbind('submit').submit(); // Esto vuelve a enviar el formulario después de las validaciones
         }
 
 

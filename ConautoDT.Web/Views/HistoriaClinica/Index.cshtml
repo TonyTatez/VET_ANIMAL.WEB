@@ -5,7 +5,7 @@
 }
 
 <html lang="en">
-<head>
+<head >
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -15,12 +15,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Formulario de atención PreHospitalaria</title>
+    
 </head>
 
 <body>
-    <div class="container">
-        <h2 class="mb-3">HISTORIA CLINICA </h2>
+    <div class="container" >
+        <h2 class="mb-3" style="color: black; font-weight: bold; font-size: 2.2em;font-family: 'Young Serif', sans-serif;">HISTORIA CLINICA </h2>
 
         <div class="m-5">
             <!-- Primer input y botón -->
@@ -153,8 +153,8 @@
         <div class="row mt-2" id="formularioContainer3" style="display: none;font-family: 'Young Serif', sans-serif;">
 
             <div class="card text-center mt-5">
-                <div class="card-header">
-                    Fichas Control
+                <div class="card-header" style="background: aqua; color: black; font-weight: bold; font-size: 1.2em;font-family: 'Young Serif', sans-serif;">
+                    FICHAS CONTROL
                 </div>
                 <div class="card-body">
                     
@@ -181,85 +181,13 @@
                                         Fecha 
                                     </th>
 
-                                    <th>
-                                        Acciones
-                                    </th>
+                                    
                                 </tr>
                             </thead>
-                            @*<tbody>
-                                @if (Model.ListaFichas != null)
-                                {
-                                    @foreach (var item in Model.ListaFichas)
-                                    {
-                                        @Html.HiddenFor(model => item.idFichaControl)
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(model => item.codigoFichaControl)
-
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(model => item.idHistoriaClinica)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(model => item.motivo)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(model => item.peso)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(model => item.observacion)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(model => item.fecha)
-                                            </td>
-                                            <td>
-                                                
-
-                                             
-
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        
-                                    </tr>
-                                }
-                            </tbody>*@
-                            <tfoot>
-                                <tr>
-                                    <th>
-                                        Cod.
-                                    </th>
-                                    <th>
-                                        Historia Clinica
-                                    </th>
-                                    <th>
-                                        Motivo Consulta
-                                    </th>
-                                    <th>
-                                        Peso
-                                    </th>
-                                    <th>
-                                        Observacion
-                                    </th>
-                                    <th>
-                                        Fecha
-                                    </th>
-
-                                    <th>
-                                        Acciones
-                                    </th>
-                                </tr>
-                            </tfoot>
+                            <tbody>
+                                
+                            </tbody>
+                            
                         </table>
                     </div>
 
@@ -273,13 +201,11 @@
         
 
             <div class="card text-center mt-5">
-                <div class="card-header">
-                    Fichas Hemoparasitosis
+                <div class="card-header" style="background: aqua; color: black; font-weight: bold; font-size: 1.2em;font-family: 'Young Serif', sans-serif;">
+                    FICHAS HEMOPARASITOSIS
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    
                 </div>
                 <div class="card-footer text-muted">
                     2 days ago
@@ -398,51 +324,30 @@
                             success: function (data) {
                                 console.log("aquiii historial", data)
 
-                                //var dropdown = $("#petDropdown");
-                                //dropdown.empty(); // Clear existing options
+                                // Obtén la referencia del cuerpo de la tabla
+                                var tableBody = $("#tablaMascotas tbody");
 
-                                //// Populate the dropdown with pet names
-                                //data.forEach(function (pet) {
-                                //    dropdown.append($('<option></option>').val(pet.idMascota).html(pet.nombreMascota));
-                                //});
-                                //// Verifica si se está ejecutando y muestra los datos en la consola
-                                //console.log("Datos MASCOTAAAA:", data);
-                                //$("#petDropdown").change(function () {
-                                //    var selectedPetId = $(this).val();
+                                // Limpiar filas existentes
+                                tableBody.empty();
 
-                                //    // Find the selected pet in the data array
-                                //    var selectedPet = data.find(function (pet) {
-                                //        return pet.idMascota == selectedPetId;
-                                //    });
-
-                                //    // Fill the form with the selected pet's details
-                                //    $("#editNombre2").val(selectedPet.nombreMascota);
-                                //    $("#editPeso2").val(selectedPet.peso);
-                                //    $("#editRaza2").val(selectedPet.raza);
-                                //    $("#editSexo2").val(selectedPet.sexo);
-                                //    $("#idmasc2").val(selectedPet.idMascota);
-                                //    const partesFecha = selectedPet.fechaNacimiento.split(/[\/ :]/);
-                                //    const fechaNacimiento = new Date(
-                                //        partesFecha[2],
-                                //        partesFecha[1] - 1,
-                                //        partesFecha[0],
-                                //        partesFecha[3],
-                                //        partesFecha[4],
-                                //        partesFecha[5]
-                                //    );
-
-                                //    // Verificar si la fecha es válida
-                                //    if (!isNaN(fechaNacimiento.getTime())) {
-                                //        // Formatear la fecha a 'YYYY-MM-DD' para asignarla al input
-                                //        const fechaFormateada = fechaNacimiento.toISOString().split('T')[0];
-                                //        $("#editFecha2").val(fechaFormateada);
-                                //        console.log("Fecha de nacimiento en el modal:", fechaFormateada);
-                                //    } else {
-                                //        console.error('Fecha de nacimiento no válida');
-                                //    }
-
-                                //});
-
+                                if (data && data.fichasControl && data.fichasControl.length > 0) {
+                                    // Iterar sobre las fichas de control y agregar filas al cuerpo de la tabla
+                                    data.fichasControl.forEach(function (fichaControl) {
+                                        var row = $("<tr>");
+                                        row.append($("<td>").text(fichaControl.codigoFichaControl));
+                                        row.append($("<td>").text(data.idHistoriaClinica));
+                                        row.append($("<td>").text(fichaControl.motivo));
+                                        row.append($("<td>").text(fichaControl.peso));
+                                        row.append($("<td>").text(fichaControl.observacion));
+                                        // Manipula la cadena de fecha para mostrar solo la fecha
+                                        var fechaPartes = fichaControl.fecha.split('T');
+                                        var fechaSolo = fechaPartes[0];
+                                        row.append($("<td>").text(fechaSolo));
+                                        tableBody.append(row);
+                                    });
+                                } else {
+                                    console.log("No hay fichas de control para mostrar.");
+                                }
 
 
                             },
@@ -476,5 +381,6 @@
 
 
     </script>
+   
 </body>
 </html>
