@@ -122,7 +122,7 @@
                     </div>
                 </div>
             </div>
-            <form asp-action="EditarInfo">
+            <form asp-action="EditarInfo" class="formEditCl">
 
                 <div class="row col-md-8" style=" margin-left: 40%;margin-top:2%;margin-top: 2%;font-family: 'Young Serif', sans-serif; ">
                     <div class="form-group col-md-12" hidden>
@@ -181,7 +181,7 @@
                     <button type="button" style="color: black" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
             </div>
-            <form asp-action="DeleteInformacionC">
+            <form asp-action="DeleteInformacionC"  >
 
 
                 <div class="modal-body ">
@@ -458,6 +458,52 @@
                 return false;
             }
         }
+
+        $(document).ready(function () {
+            // Guarda los valores iniciales al cargar el modal
+            var initialValues = getFormValues();
+
+            // Marca si se han realizado cambios
+            var cambiosRealizados = false;
+
+            // Al cambiar cualquier campo, marca que se han realizado cambios
+            $('.formEditCl :input').on('input', function () {
+                cambiosRealizados = true;
+            });
+
+            // Al enviar el formulario, verifica si se han realizado cambios
+            $('.formEditCl').submit(function (event) {
+                if (!cambiosRealizados) {
+                    // No hay cambios, muestra SweetAlert y detén el envío del formulario
+                    Swal.fire({
+                        icon: "warning",
+                        title: "No se detectaron cambios",
+                        text: "Realice al menos una modificación antes de guardar.",
+                        confirmButtonColor: "green",
+                        confirmButtonText: "Ok",
+                        iconColor: "orange"
+                    });
+                    event.preventDefault();
+                } else {
+                    // Hay cambios, continúa con el envío del formulario
+                    // Puedes agregar aquí la lógica adicional necesaria
+                }
+            });
+
+            // Función para obtener los valores de los campos del formulario
+            function getFormValues() {
+                return {
+                    nombres: $('#nombreCliente2').val(),
+                    idCliente: $('#idCliente2').val(),
+                    identificacion: $('#cedCliente2').val(),
+                    direccion: $('#dirCliente2').val(),
+                    telefono: $('#telfCliente2').val(),
+                    correo: $('#correoCliente2').val()
+                };
+            }
+        });
+
+
     </script>
 
 
