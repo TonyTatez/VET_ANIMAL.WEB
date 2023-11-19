@@ -39,7 +39,7 @@
 
                 
                 <label for="">Mascota</label>
-                <select class="form-control" id="petDropdown">
+                <select class="form-control" readonly id="petDropdown">
                         
                 </select>
                 
@@ -60,22 +60,22 @@
 
                 <div class="form-group col-md-6">
                     <label for="nombreCliente">Nombres</label>
-                    <input type="text"  style="color: blue;font-size: 14px;" id="nombreCliente" class="form-control" placeholder="Ingrese nombres del cliente" />
+                    <input type="text" style="color: blue;font-size: 14px;" id="nombreCliente" class="form-control" readonly />
                 </div>
 
                 <div class="form-group col-md-6">
                     <label for="dirCliente">Dirección</label>
-                    <input type="text"  style="color: blue;font-size: 14px;" id="dirCliente" class="form-control" placeholder="Ingrese dirección del cliente" />
+                    <input type="text" style="color: blue;font-size: 14px;" id="dirCliente" class="form-control" readonly />
                 </div>
 
                 <div class="form-group col-md-6">
                     <label for="correoCliente">Correo</label>
-                    <input type="text"  onkeypress="return validarCorreoElectronico(event)" style="color: blue;font-size: 14px;" id="correoCliente" class="form-control" placeholder="Ingrese correo del cliente" required />
+                    <input type="text" onkeypress="return validarCorreoElectronico(event)" style="color: blue;font-size: 14px;" id="correoCliente" class="form-control" required readonly />
                 </div>
 
                 <div class="form-group col-md-6">
                     <label for="telefono">Teléfono</label>
-                    <input type="text"  onkeypress="return solo10Numeros(event)" style="color: blue;font-size: 14px;" id="telefono" class="form-control" placeholder="Ingrese teléfono del cliente" />
+                    <input type="text" onkeypress="return solo10Numeros(event)" style="color: blue;font-size: 14px;" id="telefono" class="form-control" readonly />
                 </div>
 
             </div>
@@ -94,26 +94,26 @@
 
                     <div class="form-group col-md-6">
                         <label for="">Nombre</label>
-                        <input type="text"  style="color: blue;font-size: 16px;" class="form-control" id="editNombre2" placeholder="Ingrese Nombre Mascota">
+                    <input type="text" style="color: blue;font-size: 16px;" class="form-control" id="editNombre2" readonly>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="">Dueño</label>
-                        <input id="editdueño22" type="text" class="form-control mb-3"  style="width:100%!important; color: red">
+                    <input id="editdueño22" type="text" class="form-control mb-3" style="width:100%!important; color: red" readonly>
                     </div>
                 <div class="form-group col-md-6" hidden >
                     <label for="">idmasc</label>
-                    <input id="idmasc2" type="text" class="form-control mb-3" style="width:100%!important; color: red">
+                    <input id="idmasc2" type="text" class="form-control mb-3" style="width:100%!important; color: red" readonly>
                 </div>
                  
             
                 
                     <div class="form-group col-md-6">
                         <label for="">Peso</label>
-                        <input type="text"  style="color: blue;font-size: 16px;" class="form-control" id="editPeso2" placeholder="Ingrese Peso Mascota" onkeypress="return soloNumeros(event)" required>
+                    <input type="text" style="color: blue;font-size: 16px;" class="form-control" id="editPeso2" readonly onkeypress="return soloNumeros(event)" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="">Raza</label>
-                        <select  class="form-control" id="editRaza2" style="color: blue;font-size: 16px;" required>
+                    <select readonly class="form-control" id="editRaza2" style="color: blue;font-size: 16px;" required>
                             <option value="">Seleccione</option>
                             <option value="Labrador">Labrador</option>
                             <option value="Bulldog">Bulldog</option>
@@ -128,7 +128,7 @@
                 
                     <div class="form-group col-md-6">
                         <label for="">Sexo</label>
-                        <select  class="form-control" id="editSexo2" style="color: blue;font-size: 16px;" required>
+                    <select class="form-control" id="editSexo2" style="color: blue;font-size: 16px;" readonly required>
                             <option value="">Seleccione</option>
                             <option value="Macho">Macho</option>
                             <option value="Hembra">Hembra</option>
@@ -136,7 +136,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="">Fecha de Nacimiento</label>
-                    <input style="color: blue;font-size: 16px;" class="form-control" id="editFecha2" name="editFecha2" style="width: 89%;" max="2024-12-31" type="date">
+                    <input style="color: blue;font-size: 16px;width: 89%" class="form-control" id="editFecha2" name="editFecha2" readonly  max="2024-12-31" type="date">
                     </div>
                
 

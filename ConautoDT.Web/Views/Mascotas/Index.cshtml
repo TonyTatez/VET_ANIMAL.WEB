@@ -128,7 +128,7 @@
                 </div>
             </div>
 
-            <form asp-action="EditarInfo" style="font-family: 'Young Serif', sans-serif;">
+            <form asp-action="EditarInfo" class="formEdit" style="font-family: 'Young Serif', sans-serif;">
 
                 <div class="col-md-4 float-left container-fluid h-custom" style="margin-top: 2%; margin-left: 55%; position:absolute">
 
@@ -246,7 +246,7 @@
 
             
             
-            <form asp-action="GuardarFichaControl" style="font-family: 'Young Serif', sans-serif;">
+            <form asp-action="GuardarFichaControl" class="controles" style="font-family: 'Young Serif', sans-serif;">
 
                 <div class="modal-body" style="font-family: 'Young Serif', sans-serif;">
                     <div class="row col-md-12">
@@ -722,7 +722,7 @@
         }
 
         $(document).ready(function () {
-            $('#GuardarFichaControl').submit(function (event) {
+            $('.controles').submit(function (event) {
                 var emergenciaCheckbox = $("#checkboxEmergencia");
                 var observacionTextArea = $("#Observacion");
 
@@ -782,7 +782,7 @@
 
         function guardarYRedirigir() {
             // Coloca aquí el código para guardar y redirigir
-            $('#GuardarFichaControl').unbind('submit').submit(); // Esto vuelve a enviar el formulario después de las validaciones
+            $('.controles').unbind('submit').submit(); // Esto vuelve a enviar el formulario después de las validaciones
         }
 
 
@@ -848,59 +848,49 @@
                 textColor: '#333'  // Color del texto del contenido
             });
         }
+        $(document).ready(function () {
+            // Guarda los valores iniciales al cargar el modal
+            var initialValues = getFormValues();
 
+            // Marca si se han realizado cambios
+            var cambiosRealizados = false;
 
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('guardarInformacion2').addEventListener('click', function (event) {
-                event.preventDefault();  // Evita que el formulario se envíe automáticamente
+            // Al cambiar cualquier campo, marca que se han realizado cambios
+            $('.formEdit :input').on('input', function () {
+                cambiosRealizados = true;
+            });
 
-                // Verifica si los campos están llenos
-                if (verificarCampos()) {
-                    // Si todos los campos están llenos, envía el formulario
-                    document.forms[0].submit();
-                } else {
-                    // Si algún campo está vacío, muestra un SweetAlert y resalta los campos vacíos
+            // Al enviar el formulario, verifica si se han realizado cambios
+            $('.formEdit').submit(function (event) {
+                if (!cambiosRealizados) {
+                    // No hay cambios, muestra SweetAlert y detén el envío del formulario
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Por favor, complete todos los campos.',
-                        confirmButtonColor: '#d33',
-                        customClass: {
-                            popup: 'error-message'
-                        }
+                        icon: "warning",
+                        title: "No se detectaron cambios",
+                        text: "Realice al menos una modificación antes de guardar.",
+                        confirmButtonColor: "green",
+                        confirmButtonText: "Ok",
+                        iconColor: "orange"
                     });
-
-                    resaltarCamposVacios();
+                    event.preventDefault();
+                } else {
+                    // Hay cambios, continúa con el envío del formulario
+                    // Puedes agregar aquí la lógica adicional necesaria
                 }
             });
 
-            function verificarCampos() {
-                // Busca los campos específicos por ID
-                var nameCampo = document.getElementById('verificarname');
-                var nameCampo = document.getElementById('CI');
-                var pesoCampo = document.getElementById('verificarpeso');
-                var razaCampo = document.getElementById('verificarraza');
-                var sexoCampo = document.getElementById('verificarsexo');
-
-                // Verifica si todos los campos están llenos
-                return nameCampo.value.trim() !== '' &&
-                    pesoCampo.value.trim() !== '' &&
-                    razaCampo.value.trim() !== '' &&
-                    sexoCampo.value.trim() !== '';
-            }
-
-            function resaltarCamposVacios() {
-                // Resalta los campos vacíos con un borde rojo
-                var campos = ['verificarname', 'verificarpeso', 'verificarraza', 'verificarsexo', 'CI'];
-
-                campos.forEach(function (campoID) {
-                    var campo = document.getElementById(campoID);
-                    if (!campo.value.trim()) {
-                        campo.style.border = '2px solid red';
-                    } else {
-                        campo.style.border = '';  // Restablece el estilo si el campo está lleno
-                    }
-                });
+            // Función para obtener los valores de los campos del formulario
+            function getFormValues() {
+                return {
+                    nombre: $('#editNombre').val(),
+                    idCliente: $('#editIdCliente2').val(),
+                    dueño: $('#editdueño2').val(),
+                    peso: $('#editPeso').val(),
+                    raza: $('#editRaza').val(),
+                    idMascota: $('#idMascota2').val(),
+                    sexo: $('#editSexo').val(),
+                    fechaNacimiento: $('#editFecha2').val()
+                };
             }
         });
 
