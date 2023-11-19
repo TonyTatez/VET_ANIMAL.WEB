@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using NLog;
 using RestSharp;
+using SendGrid;
 using Utf8Json;
 using VET_ANIMAL.WEB.Models;
 using VET_ANIMAL.WEB.Servicios;
@@ -295,38 +296,95 @@ namespace VET_ANIMAL.WEB.Controllers
             // return View(model);
         }
 
+
         [HttpPost]
-        public ActionResult GuardarClientes()
+        public async Task<ActionResult> GuardarFichaControl(ItemMascota model)
         {
+            string tokenValue = Request.Cookies["token"];
+
+            var guardarFicha = new ItemMascota
+            {
+                idHistoriaClinica = model.idHistoriaClinica,
+                idMotivo = model.idMotivo,
+                motivo = model.motivo,
+                peso = model.peso,
+                observacion = model.observacion,
+                
+            };
+
+            var request = new RestRequest("/api/Consulta/FichaControl", Method.Post);
+            request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
+
+            request.AddJsonBody(guardarFicha);
+
+            if (model.observacion == null)
+            {
+                TempData["MensajeError"] = "Rellene todos los campos";
+                return Redirect("Index");
+            }
+
             try
             {
-                string json = Request.Form["json"];
-
-                List<ClientesViewModel> listaObj = JsonConvert.DeserializeObject<List<ClientesViewModel>>(json);
-                ListaClientes model2 = new ListaClientes();
-                string tokenValue = Request.Cookies["token"];
-                var client = new RestClient(configuration["APIClient"]);
-                var request = new RestRequest("/api/Cliente/NuevoCliente", Method.Post);
-                request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
-
-                request.AddJsonBody(new
+                // Validación del idHistoriaClinica
+                if (model.idHistoriaClinica <= 0)
                 {
-                    Nombres = listaObj[0].nombres,
-                    Cedula = listaObj[0].identificacion,
-                    Direccion = listaObj[0].direccion,
-                    Telefono = listaObj[0].telefono,
-                    Correo = listaObj[0].correo
-                });
-                request.AddJsonBody(listaObj);
-                var response = client.Execute(request);
-                return Json(new { data = model2.ItemClientes });
+                    throw new ArgumentException("Historia Clinica no encontrada ");
+                }
+
+                if (model.observacion != null)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        _log.Info("Accediendo al API");
+                        var response = await _apiClient.ExecuteAsync(request, Method.Post);
+                        _log.Info("Registrando Mascota");
+                        if (response.IsSuccessful)
+                        {
+                            if (model.idHistoriaClinica != 0)
+                            {
+                                // SweetAlert para registro exitoso
+                                TempData["MensajeExito"] = "Ficha Control Registrada Exitosamente";
+                            }
+                            else
+                            {
+                                // SweetAlert para edición exitosa
+                                TempData["MensajeExito"] = "Se editó correctamente";
+                            }
+                            return RedirectToAction("Index", "Mascotas");
+                        }
+                        TempData["MensajeError"] = response.Content;
+                        return RedirectToAction("Index", "Mascotas");
+                    }
+                    // SweetAlert para campos no válidos
+                    TempData["MensajeError"] = "Rellene todos los campos";
+                    return View(model);
+                }
+                TempData["MensajeError"] = "Rellene todos los campos";
+                return RedirectToAction("Index", "Mascotas");
+            }
+            catch (ArgumentException ex)
+            {
+                // Manejo específico para ArgumentException
+                TempData["MensajeError"] = ex.Message;
+                return RedirectToAction("Index", "Mascotas");
+            }
+            catch (JsonParsingException e)
+            {
+                _log.Error(e, "Error Obteniendo Token");
+                _log.Error(e.GetUnderlyingStringUnsafe());
+                TempData["MensajeError"] = e.Message.ToString();
+                return View(model);
             }
             catch (Exception e)
             {
-                return Json(new { data = "" });
+                // SweetAlert para error general
+                _log.Error(e, "Error al iniciar sesión");
+                TempData["MensajeError"] = e.Message;
+                return Redirect("Index");
             }
         }
 
+        
         // POST: CiudadController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -341,5 +399,9 @@ namespace VET_ANIMAL.WEB.Controllers
                 return View();
             }
         }
+
+
+        
+        
     }
 }

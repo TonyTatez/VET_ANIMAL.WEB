@@ -244,88 +244,96 @@
                 </div>
             </div>
 
-            <div class="modal-body" style="font-family: 'Young Serif', sans-serif;">
-                <div class="row col-md-12">
-                    <div class="form-group col-md-6">
-                        <label for="">Mascota</label>
-                        <input type="text" asp-for="@Model.nombreMascota" disabled style="color: blue;font-size: 16px;" class="form-control" id="fichaNombre" placeholder="Ingrese Nombre Mascota">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="">Dueño</label>
-                        <input id="fichadueño2" type="text" class="form-control mb-3" disabled style="width:100%!important;font-size:13px; color: red">
-                    </div>
-                </div>
-
-                <div class="row col-md-12">
-                    <div class="form-group col-md-6">
-                        <label for="">Peso</label>
-                        <input type="text" asp-for="@Model.peso" style="color: blue;font-size: 16px;" class="form-control" id="fichaPeso" placeholder="Ingrese Peso Mascota" onkeypress="return soloNumeros(event)" required>
-                    </div>
-                </div>
-                <div class="form-row" hidden>
-
-                    <div class="form-group col-md-12" >
-                        <label for="masct">Id Mascota</label>
-                        <input type="text" asp-for="@Model.idMascota" style="color: blue;font-size: 16px;" id="idMascotaficha" class="form-control" placeholder="Ingrese nombres del cliente" />
-                    </div>                
-                    <div class="form-group col-md-6" >
-                        <label for="">Id Cliente</label>
-                        <input id="editIdClienteficha" asp-for="@Model.IdCliente" type="text" class="form-control mb-3" readonly style="width:50%!important; color: red">
-                    </div>
-                </div>
-                <div class="form-group col-md-12">
-                    <label for="Observacion">Motivo de la consulta</label>
-
-                    <div class="row m-5">
-                        <div class="form-check col-md-6">
-                            <input class="form-check-input checkbox-option" type="checkbox" value="" id="checkvacuna">
-                            <label class="form-check-label" for="checkvacuna">
-                                Vacunación
-                            </label>
-                        </div>
-
-                        <div class="form-check col-md-6">
-                            <input class="form-check-input checkbox-option" type="checkbox" value="" id="checkdespara">
-                            <label class="form-check-label" for="checkdespara">
-                                Desparasitación
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group col-md-12">
-                    <div class="row m-5">
-                        <div class="form-check col-md-6">
-                            <input class="form-check-input checkbox-option" type="checkbox" value="" id="checkboxBanio">
-                            <label class="form-check-label" for="checkboxBanio">
-                                Baño y Peluquería
-                            </label>
-                        </div>
-
-                        <div class="form-check col-md-6">
-                            <input class="form-check-input checkbox-option" type="checkbox" value="" id="checkboxEmergencia">
-                            <label class="form-check-label" for="checkboxEmergencia">
-                                Emergencia
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group col-md-12" id="observacionContainer" style="display: none;" >
-                    <label for="Observacion">Observación</label>
-                    <textarea class="form-control" id="Observacion" name="Observacion" rows="4" style="width: 100%;"></textarea > 
-                </div>
-            </div>
             
-            <form asp-action="EditarInfo" style="font-family: 'Young Serif', sans-serif;">
-                
+            
+            <form asp-action="GuardarFichaControl" style="font-family: 'Young Serif', sans-serif;">
+
+                <div class="modal-body" style="font-family: 'Young Serif', sans-serif;">
+                    <div class="row col-md-12">
+                        <div class="form-group col-md-6">
+                            <label for="">Mascota</label>
+                            <input type="text" disabled style="color: blue;font-size: 16px;" class="form-control" id="fichaNombre" placeholder="Ingrese Nombre Mascota">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">Dueño</label>
+                            <input id="fichadueño2" type="text" class="form-control mb-3" disabled style="width:100%!important;font-size:13px; color: red">
+                        </div>
+                    </div>
+
+                    <div class="row col-md-12">
+                        <div class="form-group col-md-6">
+                            <label for="">Peso</label>
+                            <input asp-for="@Model.peso" type="text" style="color: blue;font-size: 16px;" class="form-control" id="fichaPeso" placeholder="Ingrese Peso Mascota" onkeypress="return soloNumeros(event)" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row" hidden>
+
+                        <div class="form-group col-md-12">
+                            <label for="masct">Id Mascota</label>
+                            <input type="text" style="color: blue;font-size: 16px;" id="idMascotaficha" class="form-control" placeholder="Ingrese nombres del cliente" />
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="masct">idHC</label>
+                            <input type="text" asp-for="@Model.idHistoriaClinica" style="color: blue;font-size: 16px;" id="hcficha" class="form-control" placeholder="Ingrese nombres del cliente" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">Id Cliente</label>
+                            <input id="editIdClienteficha" type="text" class="form-control mb-3" readonly style="width:50%!important; color: red">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label  for="Observacion">Motivo de la consulta</label>
+                        <input type="hidden"  />
+                        <div class="row m-5">
+                            <div class="form-check col-md-6">
+                                <input asp-for="@Model.motivo" class="form-check-input checkbox-option" type="checkbox" value="VACUNACION" id="checkvacuna">
+                                <label  class="form-check-label" for="checkvacuna">
+                                    Vacunación
+                                </label>
+                            </div>
+
+                            <div class="form-check col-md-6">
+                                <input asp-for="@Model.motivo" class="form-check-input checkbox-option" type="checkbox" value="DESPARASITACION" id="checkdespara">
+                                <label class="form-check-label" for="checkdespara">
+                                    Desparasitación
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <div class="row m-5">
+                            <div class="form-check col-md-6">
+                                <input asp-for="@Model.motivo" class="form-check-input checkbox-option" type="checkbox" value="BAÑO" id="checkboxBanio">
+                                <label class="form-check-label" for="checkboxBanio">
+                                    Baño y Peluquería
+                                </label>
+                            </div>
+
+                            <div class="form-check col-md-6">
+                                <input asp-for="@Model.motivo" class="form-check-input checkbox-option" type="checkbox" value="EMERGENCIA" id="checkboxEmergencia">
+                                <label class="form-check-label" for="checkboxEmergencia">
+                                    Emergencia
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-md-12" id="observacionContainer" style="display: none;">
+                        <label for="Observacion">Observación</label>
+                        <textarea asp-for="@Model.observacion" class="form-control" id="Observacion" name="Observacion" rows="4" style="width: 100%;"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer" style="background: #DAE8FD">
+                    <button id="guardarInformacion3" type="submit" class="btn btn-success btn-grad btn-sm">
+                        Guardar
+                    </button>
+                </div>
             </form>
 
-            <div class="modal-footer" style="background: #DAE8FD">
-                <button id="guardarficha" type="" class="btn btn-success btn-grad btn-sm" onclick="guardarFichaConsulta()">
-                    Guardar
-                </button>
-            </div>
+            
         </div>
     </div>
 </div>
@@ -440,7 +448,7 @@
                                                 <i class="bi bi-pen"></i>
                                             </button>
 
-                                            <button title="Ficha Control" class="btn p-v-sm btn-primary btn-sm btn-editar" data-bs-toggle="modal" data-bs-target="#ModalConsulta" onclick="FichaMascota({idMascota:@item.idMascota ,nombreMascotas:'@item.nombreMascota',nombres:'@item.cliente',peso:'@item.peso' ,idcliente:'@item.idCliente'});">
+                                            <button title="Ficha Control" class="btn p-v-sm btn-primary btn-sm btn-editar" data-bs-toggle="modal" data-bs-target="#ModalConsulta" onclick="FichaMascota({idMascota:@item.idMascota ,nombreMascotas:'@item.nombreMascota',nombres:'@item.cliente', idHistoriaClinica:'@item.idHistoriaClinica', peso:'@item.peso' ,idcliente:'@item.idCliente'});">
                                                 <i class="bi bi-file-earmark-richtext-fill"></i>
                                             </button>
 
@@ -538,6 +546,11 @@
             });
         });
 
+        function eliminarMascota(guia) {
+            console.log(guia);
+            $("#idMascotaEliminar").val(guia.idMascota);
+        }
+
         $(document).ready(function () {
             $(".checkbox-option").change(function () {
                 if ($(this).prop("checked")) {
@@ -556,6 +569,10 @@
                 }
             });
         });
+
+        
+
+        
 
         function buscarCliente2() {
             console.log("Iniciando función buscarCliente2");
@@ -638,8 +655,8 @@
 
             console.log("Finalizando función buscarCliente2");
         }
-         
 
+        
         function editarMascota(Mascota) {
             console.log("esditarrr", Mascota);
             $('#editNombre').val(Mascota.nombreMascotas);
@@ -649,6 +666,7 @@
             $('#editRaza').val(Mascota.raza);
             $('#idMascota2').val(Mascota.idMascota);
             $('#editSexo').val(Mascota.sexo);
+            $('#hcficha').val(Mascota.idHistoriaClinica);
             // Parsear la cadena de fecha y crear una instancia de Date
             const partesFecha = Mascota.fechaNacimiento.split(/[\/ :]/);
             const fechaNacimiento = new Date(
@@ -696,82 +714,82 @@
             $('#fichaPeso').val(Mascota.peso);
             $('#editIdClienteficha').val(Mascota.idcliente);
             $('#idMascotaficha').val(Mascota.idMascota);
+            $('#hcficha').val(Mascota.idHistoriaClinica);
         }
 
         function nuevo() {
             $("#cedulaCliente").val("");
         }
 
-        function guardarFichaConsulta() {
-            var emergenciaCheckbox = $("#checkboxEmergencia");
-            var observacionTextArea = $("#Observacion");
+        $(document).ready(function () {
+            $('form').submit(function (event) {
+                var emergenciaCheckbox = $("#checkboxEmergencia");
+                var observacionTextArea = $("#Observacion");
 
-            // Verificar si el campo de observación está vacío
-            if (observacionTextArea.val().trim() === "") {
-                // Resaltar el borde del textarea en rojo
-                observacionTextArea.css("border", "1px solid red");
+                // Verificar si el campo de observación está vacío
+                if (observacionTextArea.val().trim() === "") {
+                    // Resaltar el borde del textarea en rojo
+                    observacionTextArea.css("border", "1px solid red");
 
-                // Mostrar un mensaje indicando que el campo de observación está vacío
-                Swal.fire({
-                    icon: "error",
-                    title: "Campos Vacíos",
-                    text: "Por favor, llene todos los campos.",
-                    confirmButtonColor: "green",
-                    confirmButtonText: "Ok",
-                    iconColor: "red"
-                });
+                    // Mostrar un mensaje indicando que el campo de observación está vacío
+                    Swal.fire({
+                        icon: "error",
+                        title: "Campos Vacíos",
+                        text: "Por favor, llene todos los campos.",
+                        confirmButtonColor: "green",
+                        confirmButtonText: "Ok",
+                        iconColor: "red"
+                    });
 
-                // Detener el flujo de la función porque el campo está vacío
-                return;
-            }
+                    // Detener el envío del formulario porque el campo está vacío
+                    event.preventDefault();
+                    return;
+                }
 
-            // Restaurar el estilo del borde del textarea
-            observacionTextArea.css("border", "");
+                // Restaurar el estilo del borde del textarea
+                observacionTextArea.css("border", "");
 
-            if (emergenciaCheckbox.prop("checked") && observacionTextArea.val().trim() !== "") {
-                // Mostrar SweetAlert para obtener la respuesta del usuario
-                Swal.fire({
-                    title: "¿Presenta sospecha de HEMOPARASITOSIS?",
-                    icon: "question",
-                    iconColor: "red",  // Color del icono
-                    confirmButtonText: "Sí",
-                    confirmButtonColor: "green",  // Color del botón "Sí"
-                    cancelButtonText: "No",
-                    cancelButtonColor: "red",  // Color del botón "No"
-                    textColor: "black",  // Color del texto
-                    showCancelButton: true,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Si el usuario elige "Sí", añadir "SOSPECHA HEMO" al textarea
-                        observacionTextArea.val(observacionTextArea.val() + " SOSPECHA HEMO");
+                if (emergenciaCheckbox.prop("checked")) {
+                    // Mostrar SweetAlert para obtener la respuesta del usuario
+                    Swal.fire({
+                        title: "¿Presenta sospecha de HEMOPARASITOSIS?",
+                        icon: "question",
+                        iconColor: "red",  // Color del icono
+                        confirmButtonText: "Sí",
+                        confirmButtonColor: "green",  // Color del botón "Sí"
+                        cancelButtonText: "No",
+                        cancelButtonColor: "red",  // Color del botón "No"
+                        textColor: "black",  // Color del texto
+                        showCancelButton: true,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Si el usuario elige "Sí", añadir "SOSPECHA HEMO" al textarea
+                            observacionTextArea.val(observacionTextArea.val() + " SOSPECHA HEMO");
+                        }
 
-                        // Continuar con el proceso de guardar y redirigir
+                        // Continuar con el proceso de guardar y redirigir después de las validaciones
                         guardarYRedirigir();
-                    } else {
-                        // Si el usuario elige "No", continuar con el proceso de guardar
-                        guardarYRedirigir();
-                    }
-                });
-            } else {
-                // Si el checkbox de emergencia no está marcado o el campo de observación está vacío
-                // Continuar con el proceso de guardar
-                guardarYRedirigir();
-            }
-        }
+                    });
 
-        // Función para guardar y redirigir
+                    // Detener el envío del formulario para manejar la lógica de SweetAlert
+                    event.preventDefault();
+                } else {
+                    // Si el checkbox de emergencia no está marcado, continuar con el proceso de guardar
+                    guardarYRedirigir();
+                }
+            });
+        });
+
         function guardarYRedirigir() {
-            // Aquí puedes agregar la lógica para enviar el formulario y redirigir a otra vista
-            // Puedes usar window.location.href para la redirección
-            // Ejemplo: window.location.href = "/otra-vista";
-            console.log("Guardar y redirigir");
+            // Coloca aquí el código para guardar y redirigir
+            $('form').unbind('submit').submit(); // Esto vuelve a enviar el formulario después de las validaciones
         }
 
 
-        function eliminarMascota(guia) {
-            console.log(guia);
-            $("#idMascotaEliminar").val(guia.idMascota);
-        }
+        
+
+
+       
         function solo10Numeros(e) {
             let tecla = (document.all) ? e.keyCode : e.which;
 
@@ -886,53 +904,12 @@
             }
         });
 
+        function cambioTermico() {
 
-        //document.addEventListener('DOMContentLoaded', function () {
-        //    document.getElementById('guardarInformacion').addEventListener('click', function (event) {
-        //        event.preventDefault();  // Evita que el formulario se envíe automáticamente
-        //        // Verifica si los campos están llenos
-        //        if (verificarCamposeditar()) {
-        //            // Si todos los campos están llenos, envía el formulario
-        //            document.forms[0].submit();
-        //        } else {
-        //            // Si algún campo está vacío, muestra un SweetAlert y resalta los campos vacíos
-        //            Swal.fire({
-        //                icon: 'error',
-        //                title: 'Error',
-        //                text: 'Por favor, complete todos los campos.',
-        //                confirmButtonColor: '#d33',
-        //                customClass: {
-        //                    popup: 'error-message'
-        //                }
-        //            });
-        //            resaltarCamposVacios();
-        //        }
-        //    });
-        //    function verificarCamposeditar() {
-        //        // Busca los campos específicos por ID
-        //        var nameCampo = document.getElementById('editNombre');
-        //        var pesoCampo = document.getElementById('editPeso');
-        //        var razaCampo = document.getElementById('editRaza');
-        //        var sexoCampo = document.getElementById('editSexo');
-        //        // Verifica si todos los campos están llenos
-        //        return nameCampo.value.trim() !== '' &&
-        //            pesoCampo.value.trim() !== '' &&
-        //            razaCampo.value.trim() !== '' &&
-        //            sexoCampo.value.trim() !== '';
-        //    }
-        //    function resaltarCamposVacios() {
-        //        // Resalta los campos vacíos con un borde rojo
-        //        var campos = ['editNombre', 'editPeso', 'editRaza', 'editSexo'];
-        //        campos.forEach(function (campoID) {
-        //            var campo = document.getElementById(campoID);
-        //            if (!campo.value.trim()) {
-        //                campo.style.border = '1px solid red';
-        //            } else {
-        //                campo.style.border = '';  // Restablece el estilo si el campo está lleno
-        //            }
-        //        });
-        //    }
-        //});
+            
+                
+        }
+        
     </script>
 
 }

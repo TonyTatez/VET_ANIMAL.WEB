@@ -28,6 +28,10 @@ namespace VET_ANIMAL.WEB.Models
         public long idMascota { get; set; }
         public string codigo { get; set; }
         public string nombreMascota { get; set; }
+        public string raza { get; set; }
+        public string sexo { get; set; }
+        public float? peso { get; set; }
+        public DateTime? fechaNacimiento { get; set; }
     }
 
     public class ListaClientes

@@ -12,6 +12,12 @@
 
         public DateTime? fechaNacimiento { get; set; }
         public long idCliente { get; set; }
+        public long idMotivo { get; set; }
+        public string observacion { get; set; }
+        public long idHistoriaClinica { get; set; }
+        public string motivo { get; set; }
+        public string codigoHistorial { get; set; }
+        public string cedula { get; set; }
     }
 
     public class ItemCliente
@@ -40,5 +46,24 @@
         public string sexo { get; set; }
         public float? peso { get; set; }
         public DateTime? fechaNacimiento { get; set; }
+        public long idHistoriaClinica { get; set; }
+        public long idMotivo { get; set; }
+        public string observacion { get; set; }
+        public string motivo { get; set; }
+        public string codigoHistorial { get; set; }
+        public string cedula { get; set; }
+
+    }
+
+    public class FichaControl
+    {
+        public long idFichaControl { get; set; }
+        public string codigoFichaControl { get; set; }
+        public DateTime fecha { get; set; }
+        public long idHistoriaClinica { get; set; }
+        public long idMotivo { get; set; }
+        public string motivo { get; set; }
+        public float peso { get; set; }
+        public string observacion { get; set; }
     }
 }
