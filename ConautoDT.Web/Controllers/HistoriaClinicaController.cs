@@ -86,7 +86,7 @@ namespace VET_ANIMAL.WEB.Controllers
             try
             {
                 string tokenValue = Request.Cookies["token"];
-                var client = new RestClient(configuration["APIClient"]);
+                var client = new RestClient(configuration["APIClient"]?? Environment.GetEnvironmentVariable("APIClient"));
                 var request = new RestRequest("/api/cat/Cliente", Method.Get);
                 request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
                 request.AddQueryParameter("CI", CI);
@@ -129,7 +129,7 @@ namespace VET_ANIMAL.WEB.Controllers
             try
             {
                 string tokenValue = Request.Cookies["token"];
-                var client = new RestClient(configuration["APIClient"]);
+                var client = new RestClient(configuration["APIClient"] ?? Environment.GetEnvironmentVariable("APIClient"));
                 var request = new RestRequest("/api/cat/Cliente/mascotas", Method.Get);
                 request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
                 request.AddQueryParameter("CI", CI);

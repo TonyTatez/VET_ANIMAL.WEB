@@ -23,7 +23,7 @@ namespace VET_ANIMAL.WEB.Controllers
         public ConfiguracionParametroController(IConfiguration configuration)
         {
             this.configuration = configuration;
-            _apiClient = new RestClient(configuration["APIClient"]);//RestClient(baseURL);
+            _apiClient = new RestClient(configuration["APIClient"] ?? Environment.GetEnvironmentVariable("APIClient"));//RestClient(baseURL);
             //_apiClient.ThrowOnAnyError = true;
             //_apiClient.Timeout = 120000;
             //_apiClient.UseUtf8Json();
@@ -35,7 +35,7 @@ namespace VET_ANIMAL.WEB.Controllers
             ConfiguracionParametroViewModel model = new ConfiguracionParametroViewModel();
 
             string tokenValue = Request.Cookies["token"];
-            var client = new RestClient(configuration["APIClient"]);
+            var client = new RestClient(configuration["APIClient"] ?? Environment.GetEnvironmentVariable("APIClient"));
             var request = new RestRequest("/api/ConfiguracionParametros/ListarConfiguracionParametros", Method.Get);
 
             //copiar y pegar en el resto de controladores

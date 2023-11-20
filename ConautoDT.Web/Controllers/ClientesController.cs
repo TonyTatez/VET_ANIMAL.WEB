@@ -21,7 +21,7 @@ namespace VET_ANIMAL.WEB.Controllers
         public ClientesController(IConfiguration configuration)
         {
             this.configuration = configuration;
-            _apiClient = new RestClient(configuration["APIClient"]);//RestClient(baseURL);
+            _apiClient = new RestClient(configuration["APIClient"] ?? Environment.GetEnvironmentVariable("APIClient"));//RestClient(baseURL);
             //_apiClient.ThrowOnAnyError = true;
             //_apiClient.Timeout = 120000;
             //_apiClient.UseUtf8Json();
@@ -34,7 +34,7 @@ namespace VET_ANIMAL.WEB.Controllers
             try
             {
                 string tokenValue = Request.Cookies["token"];
-                var client = new RestClient(configuration["APIClient"]);
+                var client = new RestClient(configuration["APIClient"] ?? Environment.GetEnvironmentVariable("APIClient"));
                 var request = new RestRequest("/api/cat/Cliente", Method.Get);
                 request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
                 request.AddQueryParameter("CI", CI);
@@ -75,7 +75,7 @@ namespace VET_ANIMAL.WEB.Controllers
             ClientesViewModel model = new ClientesViewModel();
 
             string tokenValue = Request.Cookies["token"];
-            var client = new RestClient(configuration["APIClient"]);
+            var client = new RestClient(configuration["APIClient"] ?? Environment.GetEnvironmentVariable("APIClient"));
             var request = new RestRequest("/api/cat/Clientes", Method.Get);
 
             //copiar y pegar en el resto de controladores
@@ -324,7 +324,7 @@ namespace VET_ANIMAL.WEB.Controllers
             ClientesViewModel model = new ClientesViewModel();
 
             string tokenValue = Request.Cookies["token"];
-            var client = new RestClient(configuration["APIClient"]);
+            var client = new RestClient(configuration["APIClient"] ?? Environment.GetEnvironmentVariable("APIClient"));
             var request = new RestRequest("/api/cat/Clientes", Method.Get);
 
             request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
@@ -358,7 +358,7 @@ namespace VET_ANIMAL.WEB.Controllers
                 List<ClientesViewModel> listaObj = JsonConvert.DeserializeObject<List<ClientesViewModel>>(json);
                 ListaClientes model2 = new ListaClientes();
                 string tokenValue = Request.Cookies["token"];
-                var client = new RestClient(configuration["APIClient"]);
+                var client = new RestClient(configuration["APIClient"] ?? Environment.GetEnvironmentVariable("APIClient"));
                 var request = new RestRequest("/api/Cliente/NuevoCliente", Method.Post);
                 request.AddParameter("Authorization", string.Format("Bearer " + tokenValue), ParameterType.HttpHeader);
 
