@@ -267,7 +267,7 @@
                         </div>
                     </div>
 
-                    <div class="form-row" hidden>
+                    <div class="form-row"hidden>
 
                         <div class="form-group col-md-12">
                             <label for="masct">Id Mascota</label>
@@ -275,7 +275,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label for="masct">idHC</label>
-                            <input type="text" asp-for="@Model.idHistoriaClinica" style="color: blue;font-size: 16px;" id="hcficha" class="form-control" placeholder="Ingrese nombres del cliente" />
+                            <input type="text" asp-for="@Model.idHistoriaClinica" style="color: blue;font-size: 16px;" id="hcficha2" class="form-control" placeholder="Ingrese nombres del cliente" />
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">Id Cliente</label>
@@ -714,7 +714,7 @@
             $('#fichaPeso').val(Mascota.peso);
             $('#editIdClienteficha').val(Mascota.idcliente);
             $('#idMascotaficha').val(Mascota.idMascota);
-            $('#hcficha').val(Mascota.idHistoriaClinica);
+            $('#hcficha2').val(Mascota.idHistoriaClinica);
         }
 
         function nuevo() {
