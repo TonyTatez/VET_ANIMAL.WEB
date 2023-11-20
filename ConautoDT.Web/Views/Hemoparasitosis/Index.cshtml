@@ -169,58 +169,199 @@
                         <button type="button" style="color: black" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                 </div>
-                <div class="form-row" style="margin-left: 12%;margin-top: 2%;font-family: 'Young Serif', sans-serif; ">
 
-                    <div class="form-group col-md-6">
-                        <label for="">Nombre</label>
-                        <input type="text" style="color: blue;font-size: 16px;" class="form-control" id="editNombre2" >
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item" >
+                        <h2 class="accordion-header" >
+                            <button class="accordion-button" id="acor1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                DATOS PACIENTE
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="form-row m-2" style="font-family: 'Young Serif', sans-serif; ">
+
+                                    <div class="form-group col-md-4">
+                                        <label for="">Nombre</label>
+                                        <input type="text" style="color: blue;font-size: 16px;" class="form-control" id="editNombre2">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="">Dueño</label>
+                                        <input id="editdueño22" type="text" class="form-control mb-3" style="width:100%!important; color: red">
+                                    </div>
+                                    <div class="form-group col-md-6" hidden>
+                                        <label for="">idmasc</label>
+                                        <input id="idmasc2" type="text" class="form-control mb-3" style="width:100%!important; color: red">
+                                    </div>
+
+
+
+                                    <div class="form-group col-md-4">
+                                        <label for="">Peso</label>
+                                        <input type="text" style="color: blue;font-size: 16px;" class="form-control" id="editPeso2" onkeypress="return soloNumeros(event)" required>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="">Raza</label>
+                                        <select class="form-control" id="editRaza2" style="color: blue;font-size: 16px;" required>
+                                            <option value="">Seleccione</option>
+                                            <option value="Labrador">Labrador</option>
+                                            <option value="Bulldog">Bulldog</option>
+                                            <option value="Mestizo">Mestizo</option>
+                                            <option value="Chihuahua">Chihuahua</option>
+                                            <option value="French">French</option>
+                                            <option value="Golden Retriever">Golden Retriever</option>
+                                            <option value="Pitbull">Pitbull</option>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group col-md-4">
+                                        <label for="">Sexo</label>
+                                        <select class="form-control" id="editSexo2" style="color: blue;font-size: 16px;" required>
+                                            <option value="">Seleccione</option>
+                                            <option value="Macho">Macho</option>
+                                            <option value="Hembra">Hembra</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="">Fecha de Nacimiento</label>
+                                        <input style="color: blue;font-size: 16px;width: 100%" class="form-control" id="editFecha2" name="editFecha2" max="2024-12-31" type="date">
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="">Dueño</label>
-                        <input id="editdueño22" type="text" class="form-control mb-3" style="width:100%!important; color: red" >
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" id="acor2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                SINTOMAS
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="form-row " style="font-family: 'Young Serif', sans-serif;">
+
+                                    <form id="miFormulario">
+
+                                        <div class="sintomas-header">
+                                            <h5 style="font-family: 'Young Serif', sans-serif;color:black">HEMOPARASITOSIS</h5>
+                                        </div>
+
+                                        <div class="form-row m-2" style="font-family: 'Young Serif', sans-serif; ">
+                                            <div class="checkbox-container ">
+                                                <input type="checkbox" id="sangradoCutaneo" name="sintomas" value="Sangrado cutáneo">
+                                                <label for="sangradoCutaneo">Sangrado cutáneo</label>
+                                            </div>
+
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="problemasRespiratorios" name="sintomas" value="Problemas respiratorios">
+                                                <label for="problemasRespiratorios">Problemas respiratorios</label>
+                                            </div>
+
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="perdidaPeso" name="sintomas" value="Pérdida de peso">
+                                                <label for="perdidaPeso">Pérdida de peso</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-row m-2" style="font-family: 'Young Serif', sans-serif; ">
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="linfadenopatia" name="sintomas" value="Linfadenopatía">
+                                                <label for="linfadenopatia">Linfadenopatía</label>
+                                            </div>
+
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="letargia" name="sintomas" value="Letargia">
+                                                <label for="letargia">Letargia</label>
+                                            </div>
+
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="ictericia" name="sintomas" value="Ictericia">
+                                                <label for="ictericia">Ictericia</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-row m-2" style="font-family: 'Young Serif', sans-serif; ">
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="hemorragiasMucosas" name="sintomas" value="Hemorragias en mucosas">
+                                                <label for="hemorragiasMucosas">Hemorragias en mucosas</label>
+                                            </div>
+
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="hemoglobinuria" name="sintomas" value="Hemoglobinuria">
+                                                <label for="hemoglobinuria">Hemoglobinuria</label>
+                                            </div>
+
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="fiebre" name="sintomas" value="Fiebre">
+                                                <label for="fiebre">Fiebre</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-row m-2" style="font-family: 'Young Serif', sans-serif; ">
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="esplenomegalia" name="sintomas" value="Esplenomegalia">
+                                                <label for="esplenomegalia">Esplenomegalia</label>
+                                            </div>
+
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="epistaxis" name="sintomas" value="Epistaxis">
+                                                <label for="epistaxis">Epistaxis</label>
+                                            </div>
+
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="cojeraArticular" name="sintomas" value="Cojera articular">
+                                                <label for="cojeraArticular">Cojera articular</label>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="form-row m-2" style="font-family: 'Young Serif', sans-serif; ">
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="cojeraIntermitente" name="sintomas" value="Cojera intermitente">
+                                                <label for="cojeraIntermitente">Cojera intermitente</label>
+                                            </div>
+
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="anorexia" name="sintomas" value="Anorexia">
+                                                <label for="anorexia">Anorexia</label>
+                                            </div>
+
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" id="depresion" name="sintomas" value="Depresión">
+                                                <label for="depresion">Depresión</label>
+                                            </div>
+
+                                        </div>
+
+
+
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group col-md-6" hidden>
-                        <label for="">idmasc</label>
-                        <input id="idmasc2" type="text" class="form-control mb-3" style="width:100%!important; color: red" >
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" id="acor3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                RESULTADO
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                            </div>
+                        </div>
                     </div>
-
-
-
-                    <div class="form-group col-md-6">
-                        <label for="">Peso</label>
-                        <input type="text" style="color: blue;font-size: 16px;" class="form-control" id="editPeso2"  onkeypress="return soloNumeros(event)" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="">Raza</label>
-                        <select  class="form-control" id="editRaza2" style="color: blue;font-size: 16px;" required>
-                            <option value="">Seleccione</option>
-                            <option value="Labrador">Labrador</option>
-                            <option value="Bulldog">Bulldog</option>
-                            <option value="Mestizo">Mestizo</option>
-                            <option value="Chihuahua">Chihuahua</option>
-                            <option value="French">French</option>
-                            <option value="Golden Retriever">Golden Retriever</option>
-                            <option value="Pitbull">Pitbull</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group col-md-6">
-                        <label for="">Sexo</label>
-                        <select class="form-control" id="editSexo2" style="color: blue;font-size: 16px;"  required>
-                            <option value="">Seleccione</option>
-                            <option value="Macho">Macho</option>
-                            <option value="Hembra">Hembra</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="">Fecha de Nacimiento</label>
-                        <input style="color: blue;font-size: 16px;width: 89%" class="form-control" id="editFecha2" name="editFecha2"  max="2024-12-31" type="date">
-                    </div>
-
-
                 </div>
                 
+               
+
                 <div class="modal-footer" style="background: #DAE8FD">
                     <button id="guardarInformacion2" type="submit" class="btn btn-success btn-grad btn-sm">
                         Guardar
