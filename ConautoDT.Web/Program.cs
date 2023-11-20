@@ -13,10 +13,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-Console.WriteLine(Directory.GetCurrentDirectory());
 app.UseStaticFiles(new StaticFileOptions
 {
-
     FileProvider = new PhysicalFileProvider(
         Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
     RequestPath = "/wwwroot"
