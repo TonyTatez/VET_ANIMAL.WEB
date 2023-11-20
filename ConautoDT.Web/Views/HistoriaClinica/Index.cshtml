@@ -285,6 +285,9 @@
                     var dropdown = $("#petDropdown");
                     dropdown.empty(); // Clear existing options
 
+                    // Agrega la opción por defecto "Seleccione"
+                    dropdown.append($('<option></option>').val('').html('Seleccione'));
+
                     // Populate the dropdown with pet names
                     data.forEach(function (pet) {
                         dropdown.append($('<option></option>').val(pet.idMascota).html(pet.nombreMascota));
