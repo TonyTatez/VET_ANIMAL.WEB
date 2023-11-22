@@ -1,4 +1,9 @@
+using Microsoft.Extensions.FileProviders;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<IFileProvider>(
+        new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
