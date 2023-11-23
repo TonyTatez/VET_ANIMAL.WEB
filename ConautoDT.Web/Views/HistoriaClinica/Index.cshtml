@@ -238,6 +238,7 @@
         
 
         function buscarCliente2() {
+            
             console.log("Iniciando función buscarCliente2");
 
             // Obtener el valor del input de cédula
@@ -292,9 +293,11 @@
                     data.forEach(function (pet) {
                         dropdown.append($('<option></option>').val(pet.idMascota).html(pet.nombreMascota));
                     });
+
+
                     // Verifica si se está ejecutando y muestra los datos en la consola
                     console.log("Datos MASCOTAAAA:", data);
-                    $("#petDropdown").change(function () {
+                    $("#petDropdown").off().change(function () {
                         var selectedPetId = $(this).val();
 
                         // Find the selected pet in the data array
