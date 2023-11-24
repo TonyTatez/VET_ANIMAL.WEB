@@ -18,6 +18,7 @@
         public string motivo { get; set; }
         public string codigoHistorial { get; set; }
         public string cedula { get; set; }
+        
     }
 
     public class ItemCliente

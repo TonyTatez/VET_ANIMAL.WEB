@@ -1,3 +1,55 @@
+#miFormulario {
+    width: 100%; /* Ajusta el ancho del formulario al 100% */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#acor1 {
+    width: 400%;
+    color: black; /* Color del texto en los botones */
+    background: #0dcaf0;
+}
+#acor2 {
+    width: 542%;
+    color: black; /* Color del texto en los botones */
+    background: #28a745;
+}
+#acor3 {
+    width: 505%;
+    color: black; /* Color del texto en los botones */
+    background: #007bff;
+}
+#collapseOne .accordion-button {
+    background-color: #007bff; /* Color del primer botón */
+}
+
+#collapseTwo .accordion-button {
+    background-color: #28a745; /* Color del segundo botón */
+}
+
+#collapseThree .accordion-button {
+    background-color: #dc3545; /* Color del tercer botón */
+}
+
+.sintomas-header {
+    border-bottom: 1px solid #333;
+    margin-bottom: 10px;
+}
+
+.form-row {
+    font-family: 'Young Serif', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 -5px;
+}
+
+.checkbox-container {
+    flex: 1;
+    margin: 0 5px;
+    vertical-align: top; /* Alinea los elementos en la parte superior */
+}
+
 html {
     font-size: 14px;
 }

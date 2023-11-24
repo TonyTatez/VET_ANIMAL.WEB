@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="~/Content/bootstrap.css" />
-    <link rel="stylesheet" href="~/Content/Site.css" />
+   
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,36 +19,45 @@
 </head>
 
 <body>
-    <div class="container" >
+    <div class="container" style="border: outset 3px">
         <h2 class="mb-3" style="color: black; font-weight: bold; font-size: 2.2em;font-family: 'Young Serif', sans-serif;">HISTORIA CLINICA </h2>
 
-        <div class="m-5">
-            <!-- Primer input y botón -->
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Ingrese Cedula del Cliente" id="CI" onkeypress="return solo10Numeros(event)" required>
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button" onclick="buscarCliente2()"><i class="bi bi-search"></i></button>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card p-4 border-0" style="border-radius: 15px; background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%); box-shadow: 10px 10px 15px 10px #888888;">
+                        
+
+                        <form style="color: black;font-family: 'Young Serif', sans-serif;">
+                            <div class="mb-3">
+                                <label for="CI" class="form-label">Cédula del Cliente</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="CI" placeholder="Ingrese Cédula" onkeypress="return solo10Numeros(event)" required>
+                                    <button class="btn btn-primary" type="button" onclick="buscarCliente2()"><i class="bi bi-search"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="cedCliente" class="form-label">Cliente</label>
+                                <input type="text" class="form-control" id="cedCliente" readonly style="color: red;">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="petDropdown" class="form-label">Mascota</label>
+                                <select class="form-select" id="petDropdown" readonly style="color: blue;">
+                                    <!-- Opciones de mascotas -->
+                                </select>
+                            </div>
+
+                            
+                        </form>
+                    </div>
                 </div>
             </div>
-
-            <div>
-                <!-- Segundos y terceros inputs -->
-                
-                <label for="getnombreCliente">Cliente</label>
-                <input type="text" class="form-control" id="cedCliente" readonly style="color: red">
-
-                
-                <label for="">Mascota</label>
-                <select class="form-control" readonly id="petDropdown">
-                        
-                </select>
-                
-            </div>
-
         </div>
 
         <!-- Botones que ocupan toda la pantalla -->
-        <div class="row">
+        <div class="row mt-5">
             <div class="col-12">
                 <button type="button" class="btn btn-primary btn-lg btn-block" onclick="mostrarFormulario('formulario1')">DATOS DEL CLIENTE</button>
             </div>
@@ -100,10 +109,10 @@
                         <label for="">Dueño</label>
                     <input id="editdueño22" type="text" class="form-control mb-3" style="width:100%!important; color: red" readonly>
                     </div>
-                <div class="form-group col-md-6" hidden >
-                    <label for="">idmasc</label>
-                    <input id="idmasc2" type="text" class="form-control mb-3" style="width:100%!important; color: red" readonly>
-                </div>
+                    <div class="form-group col-md-6" hidden >
+                        <label for="">idmasc</label>
+                        <input id="idmasc2" type="text" class="form-control mb-3" style="width:100%!important; color: red" readonly>
+                    </div>
                  
             
                 
@@ -229,6 +238,7 @@
         
 
         function buscarCliente2() {
+            
             console.log("Iniciando función buscarCliente2");
 
             // Obtener el valor del input de cédula
@@ -276,13 +286,18 @@
                     var dropdown = $("#petDropdown");
                     dropdown.empty(); // Clear existing options
 
+                    // Agrega la opción por defecto "Seleccione"
+                    dropdown.append($('<option></option>').val('').html('Seleccione'));
+
                     // Populate the dropdown with pet names
                     data.forEach(function (pet) {
                         dropdown.append($('<option></option>').val(pet.idMascota).html(pet.nombreMascota));
                     });
+
+
                     // Verifica si se está ejecutando y muestra los datos en la consola
                     console.log("Datos MASCOTAAAA:", data);
-                    $("#petDropdown").change(function () {
+                    $("#petDropdown").off().change(function () {
                         var selectedPetId = $(this).val();
 
                         // Find the selected pet in the data array
