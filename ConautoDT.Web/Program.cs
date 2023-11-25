@@ -13,7 +13,7 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseStaticFiles(new StaticFileOptions
 {
-    RequestPath = "public",
+    RequestPath = "/public",
 });
 app.UseHttpsRedirection();
 app.UseRouting();
