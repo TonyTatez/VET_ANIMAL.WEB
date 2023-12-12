@@ -20,7 +20,7 @@ namespace VET_ANIMAL.WEB.Controllers
         public CargaMasivaController(IConfiguration configuration)
         {
             this.configuration = configuration;
-            _apiClient = new RestClient(configuration["APIClient"]);
+            _apiClient = new RestClient(configuration["APIClient"] ?? Environment.GetEnvironmentVariable("APIClient"));
             //_apiClient.ThrowOnAnyError = true;
             //_apiClient.Timeout = 120000;
             //_apiClient.UseUtf8Json();

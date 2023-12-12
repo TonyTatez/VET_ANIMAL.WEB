@@ -25,7 +25,7 @@ namespace VET_ANIMAL.WEB.Controllers
         public AccountController(IConfiguration configuration)
         {
             this.configuration = configuration;
-            _apiClient = new RestClient(configuration["APIClient"]);//RestClient(baseURL);
+            _apiClient = new RestClient(configuration["APIClient"] ?? Environment.GetEnvironmentVariable("APIClient"));//RestClient(baseURL);
             //_apiClient.ThrowOnAnyError = true;
             //_apiClient.Timeout = 120000;
             //_apiClient.UseUtf8Json();
